@@ -34,7 +34,7 @@
   margin: 0 auto;
   display: grid;
   align-items: center;
-  grid-template-columns: 26% 1fr;
+  grid-template-columns:  1fr;
 }
 
 @include large {
@@ -90,6 +90,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 20px;
 }
 
 @include medium {
@@ -105,7 +106,7 @@
 }
 
 // Arabic & Japanese styles
-@media (max-width: 1300px) {
+@media (max-width: 1500px) {
   :where([lang=ar], [lang=ja]) .container {
     grid-template-columns: 17% 1fr;
   }

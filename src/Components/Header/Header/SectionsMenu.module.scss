@@ -1,5 +1,6 @@
 @import "src/Styles/mixins";
 
+
 .sectionsMenuButton {
   left: 20px;
   top: auto;
@@ -16,70 +17,46 @@
   }
 }
 
-@include large {
-  .sectionsMenuButton {
-    display: block;
-  }
-}
-
-@include medium {
-  .sectionsMenuButton {
-    top: 129px;
-  }
-}
-
-@include very-small {
-  .sectionsMenuButton {
-    left: 10px;
-  }
-}
-
-.sectionsMenuButton>svg {
-  width: 25px;
-  height: 25px;
-}
-
-.sectionsMenu {
-  width: 250px;
-  max-height: 404px;
-  display: flex;
-  flex-direction: column;
-  padding-inline-end: 10px;
-  overflow-y: auto;
-}
-
-.sectionsMenu::-webkit-scrollbar {
-  background-color: transparent;
-  width: 6px !important;
-}
-
-.sectionsMenu::-webkit-scrollbar-thumb {
-  background-color: #f2f2f2;
-  border-radius: 5px;
-
-  &:hover {
-    background-color: #e6e6e6;
-  }
-}
-
-@include large {
-  .sectionsMenu::-webkit-scrollbar {
-    width: 8px !important;
-  }
-
-  .sectionsMenu::-webkit-scrollbar-thumb {
-    background-color: #d0d0d0;
-    border-radius: 5px;
-
-    &:hover {
-      background-color: #bdbdbd;
+  @media only screen and (min-width: 1200px) {
+    .sectionsMenuButton {
+      display: block; /* Corrected value */
+    }
+  
+    .sectionsMenu {
+      position: fixed;
+      left: -250%;
+      top: 0;
+      height: calc(100vh - (100vh - 100%));
+      max-height: none;
+      background-color: var(--white);
+      z-index: 1000;
+      padding: 18px;
+      box-shadow: 0 0 20px -15px var(--black);
+      overflow-y: auto;
+      width: fit-content;
+      transition: left .2s ease;
+  
+      &.active {
+        left: 0;
+      }
+  
+      /* Scrollbar styles */
+      &::-webkit-scrollbar {
+        width: 8px !important;
+        background-color: transparent;
+      }
+  
+      &::-webkit-scrollbar-thumb {
+        background-color: #d0d0d0;
+        border-radius: 5px;
+  
+        &:hover {
+          background-color: #bdbdbd;
+        }
+      }
     }
   }
-}
 
-
-
-@include large {
   .sectionsMenu {
     position: fixed;
     left: -250%;
@@ -93,9 +70,80 @@
     overflow-y: auto;
     width: fit-content;
     transition: left .2s ease;
-
+    
     &.active {
       left: 0;
+
+    }
+
+    /* Scrollbar styles */
+    &::-webkit-scrollbar {
+      width: 8px !important;
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #d0d0d0;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: #bdbdbd;
+      }
+    }
+  }
+
+
+  @media only screen and (min-width: 992px) {
+    .sectionsMenuButton {
+      top: 129px;
+      display: block;
+    }
+  }
+
+
+@include medium {
+  .sectionsMenuButton {
+    top: 129px;
+    display: block;
+  }
+
+  [lang=ar] .sectionsMenuButton {
+    top: 126px;
+  }
+}
+
+@include very-small {
+  .sectionsMenuButton {
+    left: 10px;
+    display: block;
+  }
+}
+
+.sectionsMenuButton>svg {
+  width: 25px;
+  height: 25px;
+}
+
+.sectionsMenu {
+  width: 280px;
+  max-height: auto;
+  display: flex;
+  flex-direction: column;
+  padding-inline-end: 10px;
+  overflow-y: auto;
+
+  /* Scrollbar styles */
+  &::-webkit-scrollbar {
+    width: 6px !important;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #f2f2f2;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: #e6e6e6;
     }
   }
 }
@@ -133,17 +181,7 @@
   width: 100%;
   font-size: 13px;
 }
-.dropDownMenu li a:hover{
+
+.dropDownMenu li a:hover {
   border-bottom: 2px solid orange;
-}
-
-// Arabic styles
-[lang=ar] .sectionsMenuButton {
-  top: 120px;
-}
-
-@include medium {
-  [lang=ar] .sectionsMenuButton {
-    top: 126px;
-  }
 }
