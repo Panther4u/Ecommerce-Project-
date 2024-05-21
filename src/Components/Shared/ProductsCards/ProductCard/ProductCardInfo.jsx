@@ -10,8 +10,8 @@ const ProductCardInfo = ({ product, showColors, navigateToProductDetails }) => {
 
   function translateProduct(key, uppercase, dynamicData = {}) {
     const shortNameKey = shortName.replaceAll(" ", "");
-    const productTrans = `products.${shortNameKey}`;
-    const translateText = t(`${productTrans}.${key}`, dynamicData);
+    const productTrans = `${shortNameKey}`;
+    const translateText = t(`${productTrans} ${key}`, dynamicData);
     return uppercase ? translateText.toUpperCase() : translateText;
   }
 
@@ -19,7 +19,7 @@ const ProductCardInfo = ({ product, showColors, navigateToProductDetails }) => {
     <section className={s.productInfo}>
       <strong className={s.productName}>
         <a href="#" onClick={() => navigateToProductDetails()}>
-          {translateProduct("shortName")}
+          {translateProduct("")}
         </a>
       </strong>
       <div className={s.price}>

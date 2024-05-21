@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Footer from "../Components/Footer/Footer";
-import FirstHeader from "../Components/Header/FirstHeader/FirstHeader";
+// import FirstHeader from "../Components/Header/FirstHeader/FirstHeader";
 import Header from "../Components/Header/Header/Header";
 import ConnectionLabelAlert from "../Components/Shared/MiniComponents/ConnectionLabelAlert/ConnectionLabelAlert";
 import GlobalOverlay from "../Components/Shared/MiniComponents/GlobalOverlay/GlobalOverlay";
@@ -16,8 +16,8 @@ const RoutesLayout = () => {
 
   return (
     <div className="App" tabIndex="-1">
-      <SkipContentLink scrollTo={skipLinkSectionId} />
-      <FirstHeader />
+      {/* <SkipContentLink scrollTo={skipLinkSectionId} /> */}
+      {/* <FirstHeader /> */}
       <Header />
       <MobileNav />
       <GlobalOverlay />

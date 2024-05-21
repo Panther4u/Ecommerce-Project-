@@ -12,8 +12,8 @@ const CartProduct = ({ data }) => {
 
   function translateProduct(key, uppercase, dynamicData = {}) {
     const shortNameKey = shortName.replaceAll(" ", "");
-    const productTrans = `products.${shortNameKey}`;
-    const translateText = t(`${productTrans}.${key}`, dynamicData);
+    const productTrans = `${shortNameKey}`;
+    const translateText = t(`${productTrans} ${key}`, dynamicData);
     return uppercase ? translateText.toUpperCase() : translateText;
   }
 
@@ -26,7 +26,7 @@ const CartProduct = ({ data }) => {
         </div>
 
         <Link to={`/details?product=${name}`}>
-          {translateProduct("shortName")}
+          {translateProduct("")}
         </Link>
       </td>
 

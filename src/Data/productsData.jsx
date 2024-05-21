@@ -69,7 +69,7 @@ import { v4 as uuid } from "uuid";
 
 export const productsData = [
   {
-    shortName: "PS5 Gamepad",
+    shortName: "PS Gamepad",
     name: "PS5 Gamepad",
     category: "gaming",
     price: 69.99,

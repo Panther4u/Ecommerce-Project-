@@ -1,9 +1,8 @@
 @import "src/Styles/mixins";
 
 .sectionsMenuButton {
-  position: absolute;
   left: 20px;
-  top: 123px;
+  top: auto;
   background-color: transparent;
   border: none;
   outline: none;
@@ -78,6 +77,8 @@
   }
 }
 
+
+
 @include large {
   .sectionsMenu {
     position: fixed;
@@ -127,9 +128,13 @@
   outline: none;
   border: none;
   display: block;
-  padding: 10px 0;
+  padding: 8px 0;
   color: var(--black);
   width: 100%;
+  font-size: 13px;
+}
+.dropDownMenu li a:hover{
+  border-bottom: 2px solid orange;
 }
 
 // Arabic styles

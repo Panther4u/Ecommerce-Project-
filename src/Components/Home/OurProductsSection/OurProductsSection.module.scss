@@ -1,12 +1,12 @@
 @import "src/Styles/mixins";
 
 .ourProductsSection {
-  margin-bottom: 170px;
+  margin-bottom: 30px;
 }
 
 @include small {
   .ourProductsSection {
-    margin-bottom: 100px;
+    margin-bottom: 30px;
   }
 }
 

@@ -4,13 +4,13 @@
   display: flex;
   overflow: auto hidden;
   scrollbar-width: none;
-  margin-bottom: 180px;
+  margin-bottom: 30px;
   position: relative;
 }
 
 @include small {
   .categoriesSlider {
-    margin-bottom: 100px;
+    margin-bottom: 30px;
   }
 }
 

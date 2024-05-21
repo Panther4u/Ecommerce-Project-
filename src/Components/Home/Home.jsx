@@ -5,7 +5,7 @@ import FeaturedSection from "./FeaturedSection/FeaturedSection";
 import FeaturedSectionFeatures from "./FeaturedSection/FeaturedSectionFeatures";
 import s from "./Home.module.scss";
 import MainSlider from "./Introduction/MainSlider";
-import SectionsMenu from "./Introduction/SectionsMenu";
+// import SectionsMenu from "../Header/Header/SectionsMenu";
 import OurProductsSection from "./OurProductsSection/OurProductsSection";
 import ProductPoster from "./ProductPoster/ProductPoster";
 import ThisMonthSection from "./ThisMonthSection/ThisMonthSection";
@@ -23,7 +23,7 @@ const Home = () => {
       <div className={s.home}>
         <div className={s.container}>
           <div className={s.introductionContainer}>
-            <SectionsMenu />
+            {/* <SectionsMenu /> */}
 
             <div className={s.line}></div>
 

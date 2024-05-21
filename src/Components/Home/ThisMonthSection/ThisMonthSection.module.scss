@@ -1,12 +1,12 @@
 @import "src/Styles/mixins";
 
 .thisMonthSection {
-  margin-bottom: 170px;
+  margin-bottom: 30px;
 }
 
 @include small {
   .thisMonthSection {
-    margin-bottom: 100px;
+    margin-bottom: 30px;
   }
 }
 

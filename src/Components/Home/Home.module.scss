@@ -1,7 +1,7 @@
 @import "src/Styles/mixins";
 
 .container {
-  width: var(--container-width);
+  width: 95%;
   margin: 0 auto;
 }
 
@@ -13,8 +13,8 @@
 
 .introductionContainer {
   display: flex;
-  margin-top: 60px;
-  margin-bottom: 140px;
+  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 @include large {
@@ -25,7 +25,7 @@
 
 @include small {
   .introductionContainer {
-    margin-bottom: 80px;
+    margin-bottom: 30px;
   }
 }
 

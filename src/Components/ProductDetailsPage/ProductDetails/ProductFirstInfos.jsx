@@ -8,14 +8,14 @@ const ProductFirstInfos = ({ data }) => {
 
   function translateProduct(key, uppercase, dynamicData = {}) {
     const shortNameKey = shortName.replaceAll(" ", "");
-    const productTrans = `products.${shortNameKey}`;
-    const translateText = t(`${productTrans}.${key}`, dynamicData);
+    const productTrans = `${shortNameKey}`;
+    const translateText = t(`${productTrans} ${key}`, dynamicData);
     return uppercase ? translateText.toUpperCase() : translateText;
   }
 
   return (
     <section className={s.firstInfos}>
-      <b className={s.productName}>{translateProduct("name", true)}</b>
+      <b className={s.productName}>{translateProduct("", true)}</b>
 
       <section className={s.rateAndReviews}>
         <RateStars rate={rate} />

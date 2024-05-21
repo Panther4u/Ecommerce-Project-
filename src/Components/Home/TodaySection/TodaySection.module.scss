@@ -1,12 +1,12 @@
 @import "src/Styles/mixins";
 
 .todaysSection {
-  margin-bottom: 170px;
+  margin-bottom: 20px;
 }
 
 @include small {
   .todaysSection {
-    margin-bottom: 100px;
+    margin-bottom: 30px;
   }
 }
 

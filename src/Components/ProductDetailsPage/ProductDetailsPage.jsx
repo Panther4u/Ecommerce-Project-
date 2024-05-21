@@ -19,14 +19,14 @@ const ProductDetailsPage = () => {
   )?.[0];
   const productCategory = PRODUCT_DATA?.category.toLowerCase();
   const productCategoryTrans = t(`categoriesData.${productCategory}`);
-  const productName = PRODUCT_DATA?.shortName.replaceAll(" ", "");
+  const productName = PRODUCT_DATA?.shortName.replaceAll(" ", " ");
   const productNameTrans = t(`products.${productName}.name`);
   const history = [
     t("history.account"),
     productCategoryTrans,
     productNameTrans,
   ];
-  const historyPaths = [
+  const historyPaths = [ 
     {
       index: 0,
       path: "/profile",
