@@ -10,7 +10,7 @@ const DownloadAppInfo = () => {
 
   return (
     <>
-      <b>{t("footer.section5.downloadApp")}</b>
+      {/* <b>{t("footer.section5.downloadApp")}</b>
       <p>{t("footer.section5.saveThreeDollars")}</p>
 
       <div className={s.appInfo}>
@@ -27,7 +27,7 @@ const DownloadAppInfo = () => {
             <img src={appStore} alt="Download app at App store" />
           </button>
         </div>
-      </div>
+      </div> */}
 
       <div className={s.socialMedia}>
         {mySocialMedia.map((item) => {

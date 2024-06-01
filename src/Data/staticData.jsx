@@ -381,7 +381,7 @@ export const featuresSectionData = [
     iconImg: car,
     iconAlt: "Car",
     title: "FREE AND FAST DELIVERY",
-    description: "Free delivery for all orders over $140",
+    description: "hvhvhvhk",
     id: uuid(),
   },
   {

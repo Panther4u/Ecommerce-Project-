@@ -61,7 +61,7 @@ const Footer = () => {
             </ul>
           </section>
 
-          <section className={s.section4}>
+          {/* <section className={s.section4}>
             <b>{t(`${section}4.quickLink`)}</b>
 
             <ul>
@@ -78,7 +78,7 @@ const Footer = () => {
                 <Link to="/contact">{t(`${section}4.contact`)}</Link>
               </li>
             </ul>
-          </section>
+          </section> */}
 
           <section className={s.section5}>
             <DownloadAppInfo />

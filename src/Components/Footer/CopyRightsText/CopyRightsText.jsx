@@ -11,7 +11,7 @@ const CopyRightsText = () => {
     <p className={s.copyRights}>
       <span>{t(`${copyRightTrans}.designedBy`)}</span>
       <a href={designerProfile} target="_blank">
-        Develite
+        Unicoderr
       </a>
 
       <span>{t(`${copyRightTrans}.codedBy`)}</span>

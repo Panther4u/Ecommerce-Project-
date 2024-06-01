@@ -30,13 +30,13 @@ const CartProduct = ({ data }) => {
         </Link>
       </td>
 
-      <td className={s.price}>${afterDiscount}</td>
+      <td className={s.price}>RS. {afterDiscount}</td>
 
       <td>
         <CustomNumberInput product={data} quantity={quantity} />
       </td>
 
-      <td>${subTotal}</td>
+      <td>RS. {subTotal}</td>
     </tr>
   );
 };

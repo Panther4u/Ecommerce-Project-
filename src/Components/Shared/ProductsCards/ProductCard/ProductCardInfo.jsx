@@ -23,8 +23,8 @@ const ProductCardInfo = ({ product, showColors, navigateToProductDetails }) => {
         </a>
       </strong>
       <div className={s.price}>
-        ${afterDiscount}
-        {discount > 0 && <del className={s.afterDiscount}>${price}</del>}
+        RS.{afterDiscount}
+        {discount > 0 && <del className={s.afterDiscount}>RS.{price}</del>}
       </div>
 
       <div className={s.rateContainer}>
