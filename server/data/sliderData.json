@@ -1,0 +1,26 @@
+[
+        {
+        "_id": "6675d43a6a630bbfe0b533e9",
+        "productName": "Iphone 14 Series",
+        "productImg": "/images/introduction-product1.webp",
+        "logoImg": "/images/apple-logo.webp",
+        "discountText": "Up to 10% off Voucher",
+        "id": "000001"
+        },
+        {
+        "_id": "6675d43a6a630bbfe0b533ea",
+        "productName": "Canon EOS 5D MkII",
+        "productImg": "/images/introduction-product2.webp",
+        "logoImg": "/images/canon-logo.webp",
+        "discountText": "Up to 30% off Voucher",
+        "id": "000002"
+        },
+        {
+        "_id": "6675d43a6a630bbfe0b533eb",
+        "productName": "MacBook Pro 16",
+        "productImg": "/images/introduction-product3.webp",
+        "logoImg": "/images/apple-logo.webp",
+        "discountText": "Up to 15% off Voucher",
+        "id": "000003"
+        }
+]

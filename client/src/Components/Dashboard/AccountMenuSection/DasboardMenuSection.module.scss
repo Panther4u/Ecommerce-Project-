@@ -1,0 +1,121 @@
+/* AccountMenuSection.module.scss */
+
+@import "src/Styles/mixins";
+
+.menuSection {
+  max-width: 280px;
+  min-width: 140px;
+  left: -200%;
+  transition: left 0.5s ease;
+
+  &.active {
+    left: 0;
+  }
+
+  &.mobile {
+    position: fixed;
+    top: 0;
+    background-color: var(--white);
+    height: calc(100vh - (100vh - 100%));
+    padding: 20px;
+    z-index: 1000;
+    padding-top: 30px;
+    text-align: start;
+  }
+}
+
+.section {
+  margin-bottom: 20px;
+
+  > h2 {
+    font-weight: 500;
+    font-size: .8rem;
+  }
+
+  > ul {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 6px 0;
+    padding-left: 15px;
+    list-style: none;
+
+    > li {
+      > a {
+        color: var(--dark-gray);
+        font-size: 13px;
+        text-decoration: none;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: var(--tomato);
+        }
+
+        &.active {
+          color: var(--dark-tomato);
+
+          &:hover {
+            color: var(--tomato);
+          }
+        }
+
+        &:focus-visible {
+          text-decoration: underline;
+          color: var(--orange-degree2);
+        }
+      }
+
+      > ul.dropdown {
+        display: none;
+        list-style: none;
+        padding-left: 0;
+        margin-top: 5px;
+
+        > li {
+          > a {
+            color: var(--dark-gray);
+            font-size: 13px;
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+
+            &:hover {
+              color: var(--tomato);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.section > ul > li > ul {
+  list-style: none;
+  padding-left: 0;
+  display: none;
+}
+
+.section > ul > li.active > ul {
+  display: block;
+}
+
+.section > ul > li > ul li {
+  color: var(--dark-gray);
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.section > ul > li > ul li a {
+  color: var(--dark-gray);
+  font-size: 13px;
+  display: block;
+  padding: 0px 16px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--tomato);
+  }
+}

@@ -1,0 +1,149 @@
+@import "src/Styles/mixins";
+
+// .orderProduct {
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   justify-content: space-between;
+//   padding: 24px 30px;
+//   box-shadow: 0 1px 13px 0 #0000000D;
+//   border-radius: 4px;
+//   background-color: #fff;
+//   margin-bottom: 20px;
+// }
+
+// .productImage {
+//   width: 80px;
+//   height: 80px;
+//   border-radius: 4px;
+//   object-fit: cover;
+//   margin-right: 20px;
+// }
+
+// .productDetails {
+//   flex: 1;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+// }
+
+// .productName {
+//   font-size: 16px;
+//   font-weight: 600;
+//   margin-bottom: 5px;
+// }
+
+// .productPrice {
+//   font-size: 14px;
+//   font-weight: 500;
+//   color: #888;
+// }
+
+// .productQuantity {
+//   font-size: 14px;
+//   font-weight: 500;
+//   color: #888;
+// }
+
+// .productSubtotal {
+//   font-size: 16px;
+//   font-weight: 600;
+//   color: #333;
+// }
+
+// @include small {
+//   .orderProduct {
+//     flex-direction: column;
+//     align-items: flex-start;
+//     padding: 12px 15px;
+//   }
+
+//   .productImage {
+//     width: 60px;
+//     height: 60px;
+//     margin-bottom: 10px;
+//   }
+
+//   .productDetails {
+//     width: 100%;
+//     align-items: flex-start;
+//   }
+
+//   .productName,
+//   .productPrice,
+//   .productQuantity,
+//   .productSubtotal {
+//     font-size: 12px;
+//     margin-bottom: 3px;
+//   }
+// }
+
+// @include medium {
+//   .orderProduct {
+//     padding: 20px 25px;
+//   }
+
+//   .productImage {
+//     width: 70px;
+//     height: 70px;
+//     margin-right: 15px;
+//   }
+
+//   .productName,
+//   .productPrice,
+//   .productQuantity,
+//   .productSubtotal {
+//     font-size: 14px;
+//   }
+// }
+@import "src/Styles/mixins";
+
+.productContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.product {
+
+  align-items: center;
+  width: auto;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  margin-left: -10px;
+}
+
+.imgHolder {
+  width: auto;
+  height: auto;
+  user-select: none;
+  position: relative;
+}
+
+.product a {
+  outline: none;
+  color: var(--black);
+  transition: color .1s;
+
+  &:hover {
+    color: var(--dark-gray);
+  }
+
+  &:focus-visible {
+    color: var(--orange-degree2);
+  }
+}
+
+.product img {
+  width: 54px;
+
+}
+
+
+@include small {
+  .product img {
+    width: 44px;
+  }
+}

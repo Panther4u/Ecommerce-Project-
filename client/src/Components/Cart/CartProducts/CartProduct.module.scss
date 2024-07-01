@@ -1,0 +1,51 @@
+@import "src/Styles/mixins";
+
+.productContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.product {
+
+  align-items: center;
+  width: auto;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  margin-left: -10px;
+}
+
+.imgHolder {
+  width: auto;
+  height: auto;
+  user-select: none;
+  position: relative;
+}
+
+.product a {
+  outline: none;
+  color: var(--black);
+  transition: color .1s;
+
+  &:hover {
+    color: var(--dark-gray);
+  }
+
+  &:focus-visible {
+    color: var(--orange-degree2);
+  }
+}
+
+.product img {
+  width: 54px;
+
+}
+
+
+@include small {
+  .product img {
+    width: 44px;
+  }
+}

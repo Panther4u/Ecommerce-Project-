@@ -1,0 +1,138 @@
+// @import "src/Styles/mixins";
+
+// .orderSummaryPage {
+//   width: 100%;
+//   min-height: 370px;
+//   margin-bottom: 40px; /* Added margin bottom for spacing */
+// }
+
+// .orderProducts {
+//   width: 100%;
+//   min-height: 370px;
+//   margin-bottom: 40px; /* Added margin bottom for spacing */
+// }
+
+// .orderProducts tr {
+//   box-shadow: 0 1px 13px 0 #0000000D;
+//   border-radius: 4px;
+//   padding: 24px 30px;
+// }
+
+// .orderProducts thead tr {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   margin-bottom: 20px; /* Adjusted margin bottom */
+// }
+
+// .orderProducts tbody {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 20px;
+//   flex-wrap: wrap; /* Allow items to wrap in smaller screens */
+// }
+
+// .orderProducts tbody tr {
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   justify-content: space-between;
+//   gap: 20px;
+//   width: 100%; /* Full width for each item in small screens */
+// }
+
+// @include small {
+//   .orderProducts thead tr {
+//     font-size: 12px;
+//     margin: 0;
+//   }
+  
+//   .orderProducts tbody tr {
+//     font-size: 10px;
+//     font-weight: 400;
+//     gap: 10px;
+//   }
+
+//   .orderProducts tbody tr td {
+//     @include center-x-y; /* Center align for small screens */
+//   }
+// }
+
+// @include medium {
+//   .orderProducts tbody tr {
+//     padding: 24px 30px; /* Restore padding for medium screens */
+//   }
+// }
+
+@import "src/Styles/mixins";
+
+.container{
+  
+}
+
+
+
+.cartProducts {
+  width: 100%;
+  min-height: 70vh;
+  margin: var(--page-margin);
+}
+
+.cartProducts tr {
+  box-shadow: 0 1px 13px 0 #0000000D;
+  border-radius: 4px;
+  padding: 24px 30px;
+}
+
+.cartProducts thead tr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px; /* Adjusted margin bottom */
+  
+}
+
+
+.cartProducts tbody {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap; /* Allow items to wrap in smaller screens */
+}
+
+.cartProducts tbody tr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%; /* Full width for each item in small screens */ /* Adjusted padding */
+}
+
+
+
+@include small {
+  .cartProducts thead tr {
+    font-size: 12px;
+    margin: 0;
+
+  }
+.cartProducts tbody tr {
+  font-size: 10px;
+  font-weight: 400;
+  gap: 10px;
+}
+
+  .cartProducts tbody tr td {
+    @include center-x-y; /* Center align for small screens */
+  }
+}
+
+@include medium {
+  .cartProducts tbody tr {
+    padding: 24px 30px; /* Restore padding for medium screens */
+  }
+}
+
+
+

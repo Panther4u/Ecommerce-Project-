@@ -1,0 +1,90 @@
+@import "src/Styles/mixins";
+
+.categoriesSlider {
+  display: flex;
+  overflow: auto hidden;
+  scrollbar-width: none;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+@include small {
+  .categoriesSlider {
+    margin-bottom: 30px;
+  }
+}
+
+.categoriesSlider::-webkit-scrollbar {
+  display: none;
+}
+
+// [Category Cards]
+.categoriesSlider>* {
+  flex: 0 0 auto;
+  width: calc(((100% / 6) - 30px) + (30px / 6));
+  width: 100%;
+  margin-right: 30px;
+}
+
+@media (max-width: 1500px) {
+  .categoriesSlider>* {
+    width: calc(((100% / 5) - 30px) + (30px / 5));
+    width: 100%;
+  }
+}
+
+@include large {
+  .categoriesSlider>* {
+    width: calc(((100% / 5) - 30px) + (30px / 5));
+    width: 100%;
+  }
+}
+
+@include medium {
+  .categoriesSlider>* {
+    width: calc(((100% / 4) - 30px) + (30px / 4));
+    width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .categoriesSlider>* {
+    width: calc(((100% / 3) - 30px) + (30px / 3));
+    width: 100%;
+  }
+}
+
+@media (max-width: 470px) {
+  .categoriesSlider>* {
+    width: 100%;
+  }
+}
+
+.categoriesSlider>*:last-child {
+  margin-right: 0;
+}
+
+.categoriesSlider {
+  .slider {
+    display: flex;
+    overflow: hidden;
+    scrollbar-width: none;
+    position: relative;
+    width: 100%;
+
+    .slick-list {
+      overflow: visible; /* Ensure overflow is visible to prevent clipping */
+    }
+
+    .slideItem {
+      padding-right: 0; /* Remove padding between slides */
+      margin-right: 1px; /* Remove margin between slides */
+      outline: none; /* Remove outline on slides */
+      padding: 10px; /* Ensure slides take full width */
+    }
+  }
+
+  .slick-dots {
+    bottom: -20px; /* Adjust dots position as needed */
+  }
+}

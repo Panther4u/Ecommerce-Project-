@@ -1,0 +1,183 @@
+@import "src/Styles/mixins";
+
+.contactForm {
+  flex: 1;
+  width: 800px;
+  box-shadow: 0 1px 13px 0 #0000000D;
+  padding: 40px 32px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+@include medium {
+  .contactForm {
+    width: 100%;
+  }
+}
+
+.inputs {
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.wrapper {
+  margin-bottom: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.input {
+  flex: 1;
+}
+
+.input>input,
+.inputs>textarea {
+  border: none;
+  outline: none;
+  width: 235px;
+  height: 50px;
+  border-radius: 4px;
+  padding: 10px;
+  width: 100%;
+  background-color: var(--very-light-gray2);
+  border: solid 2px var(--very-light-gray2);
+
+  &:hover,
+  &:focus {
+    border-color: var(--medium-light-gray);
+  }
+}
+
+.input>input::placeholder {
+  color: var(--dark-gray);
+}
+
+.input:has([required]) {
+  position: relative;
+
+  .star {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    width: 6px;
+    height: 6px;
+    color: var(--rose);
+    z-index: 2;
+    pointer-events: none;
+
+    &::before {
+      content: "*";
+      position: absolute;
+      top: 50%;
+      translate: 0 calc(-50% + 3px);
+      left: -16px;
+    }
+  }
+}
+
+.input:has([required])>input:not(:placeholder-shown)+.star {
+  display: none;
+}
+
+.inputs>textarea {
+  resize: none;
+  height: 207px;
+}
+
+.buttons {
+  align-self: flex-end;
+}
+
+.buttons>button[type=reset] {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  padding: 4px;
+  margin-right: 16px;
+  font-size: 1rem;
+  color: var(--black);
+
+  &:hover {
+    color: var(--tomato);
+  }
+
+  &:focus-visible {
+    color: var(--tomato);
+    text-decoration: underline;
+  }
+}
+
+@include small {
+  .buttons>button[type=reset] {
+    font-size: .9rem;
+  }
+}
+
+.buttons>button[type=submit] {
+  outline: none;
+  border: none;
+  padding: 16px 48px;
+  border-radius: 4px;
+  background-color: var(--dark-tomato);
+  border: solid 2px var(--dark-tomato);
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color .1s, color .1s;
+
+  &:focus-visible {
+    transition: background-color .1s, color .1s, var(--outline-transition);
+    border: 2px dashed var(--dark-tomato);
+    background-color: var(--white);
+    color: var(--dark-tomato);
+  }
+
+  &:hover {
+    background-color: var(--white);
+    color: var(--dark-tomato);
+  }
+}
+
+@include medium {
+  .buttons>button[type=submit] {
+    padding: 12px 32px;
+    font-size: .9rem;
+  }
+}
+
+.loader {
+  position: relative;
+  width: 16px; /* Reduced width */
+  height: 16px; /* Reduced height */
+  animation: spin 1s linear infinite;
+}
+
+.loader::before {
+  content: '';
+  position: absolute;
+  top: -2px; /* Adjust position to cover the top border */
+  left: -2px; /* Adjust position to cover the top border */
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: linear-gradient(to right, #7eaa26, #3498db, #e74c3c, #9b59b6, #f39c12);
+  animation: changeGradient 3s linear infinite, glow 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes changeGradient {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 6px 3px rgba(255, 255, 255, 0.5); } /* Reduced glow effect */
+  50% { box-shadow: 0 0 12px 6px rgba(255, 255, 255, 0.9); } /* Increased glow effect */
+}

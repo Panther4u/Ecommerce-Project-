@@ -1,0 +1,35 @@
+.editProfileInputs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns by default */
+  gap: 15px;
+  width: 100%;
+  
+  @media (max-width: 1440px) {
+    height: 20%;
+    grid-template-columns: repeat(4, 1fr); /* 3 columns on screens up to 1440px */
+  }
+
+  @media (max-width: 1200px) {
+    height: 20%;
+    grid-template-columns: repeat(4, 1fr); /* 2 columns on screens up to 1200px */
+  }
+
+  @media (max-width: 968px) {
+    height: 40%;
+    grid-template-columns: repeat(3, 1fr); /* 1 column on screens up to 968px */
+  }
+  @media (max-width: 768px) {
+    height: 40%;
+    grid-template-columns: repeat(2, 1fr); /* 1 column on screens up to 968px */
+  }
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr; /* 1 column on screens up to 968px */
+    height: 40%;
+  }
+}
+
+.editProfile {
+  box-shadow: 0 1px 13px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  height: 100px;
+}

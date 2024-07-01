@@ -1,0 +1,82 @@
+@import "src/Styles/mixins";
+
+.imgHolder {
+  height: 460px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  user-select: none;
+}
+
+.imgHolder>img {
+  border-radius: inherit;
+}
+
+.info>b {
+  font: 500 2rem "Inter", sans-serif;
+  letter-spacing: .04rem;
+  width: fit-content;
+  outline: dashed 0 transparent;
+  outline-offset: 0;
+
+  &:focus-visible {
+    transition: opacity .3s, var(--outline-transition), outline-offset .25s .05s;
+    outline: 2px dashed var(--black);
+    outline-offset: 2px;
+  }
+}
+
+.info>p {
+  margin-bottom: 10px;
+  width: fit-content;
+  outline: dashed 0 transparent;
+  outline-offset: 0;
+
+  &:focus-visible {
+    transition: opacity .3s, var(--outline-transition), outline-offset .25s .05s;
+    outline: 2px dashed var(--black);
+    outline-offset: 2px;
+  }
+}
+
+.socialMedia {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.socialMedia>a {
+  position: relative;
+  outline: none;
+}
+
+.socialMedia>a>svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--black);
+
+  & path {
+    fill: var(--black);
+  }
+}
+
+.socialMedia>.instagram>svg>path {
+  fill: var(--white);
+  stroke: var(--black);
+}
+
+.socialMedia>a:focus-visible [data-is-tooltip=true] {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.socialMedia>a:not(.instagram):focus-visible>svg {
+  stroke: var(--orange-degree2);
+
+  & path {
+    fill: var(--orange-degree2);
+  }
+}
+
+.instagram:focus-visible>svg>path {
+  stroke: var(--orange-degree2);
+}

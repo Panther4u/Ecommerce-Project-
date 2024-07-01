@@ -1,0 +1,136 @@
+@import "src/Styles/mixins";
+
+/* Styles for the mobile menu */
+.mobileMenu {
+  background-color: var(--very-dark-gray);
+  filter: contrast(1);
+  position: fixed;
+  right: -300%; /* Offscreen initially */
+  top: 0;
+  height: calc(100vh - (100vh - 100%)); /* Fill the entire viewport height */
+  padding: 40px 20px;
+  padding-right: 140px; /* Adjust as needed */
+  z-index: 1001;
+  overflow-y: auto; /* Enable scrolling if content exceeds height */
+  margin-right: 4px; /* Add margin */
+  transition: right .5s; /* Smooth transition for opening/closing */
+}
+
+/* Active state of the mobile menu */
+.mobileMenu.active {
+  transition: right .8s; /* Adjust transition duration */
+  right: 0; /* Bring it onto the screen */
+}
+
+/* Responsive styles for smaller screens */
+@include small {
+  .mobileMenu {
+    padding-right: 100px; /* Adjust padding for smaller screens */
+  }
+}
+
+/* Styles for scrollbar */
+.mobileMenu::-webkit-scrollbar {
+  background-color: transparent;
+  width: 8px; /* Width of the scrollbar */
+}
+
+.mobileMenu::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, .3); /* Color of the scrollbar thumb */
+  border-radius: 2px; /* Border radius of the scrollbar thumb */
+}
+
+/* Styles for user info */
+.userInfo .img {
+  display: block;
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
+  display: flex;
+  outline: solid 3px #54577a;
+  transition: outline-color .3s;
+}
+
+.userInfo .img img {
+  border-radius: inherit;
+}
+
+.userInfo .img:hover {
+  outline-color: #787db0;
+}
+
+.userInfo p {
+  color: var(--medium-light-gray);
+  margin: 20px 0 50px;
+}
+
+.userInfo p .userName {
+  display: block;
+  color: var(--white);
+  margin-top: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Styles for navigation links */
+.navLinks {
+  position: relative;
+  left: -10px;
+  min-height: 310px;
+}
+
+.navLinks ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navLinks ul li a,
+.signOutButton {
+  all: unset;
+  color: var(--medium-light-gray);
+  padding: 10px;
+  min-width: 126px;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color .2s;
+
+  &[class=active],
+  &:hover {
+    background-color: rgba(87, 87, 87, .5);
+  }
+
+  &[class=active]:hover {
+    background-color: rgba(87, 87, 87, .8);
+  }
+}
+
+.navLinks ul li a span,
+.signOutButton span {
+  padding-left: 16px;
+}
+
+.navLinks ul svg,
+.signOutButton svg {
+  fill: var(--white);
+  width: 20px;
+  height: 20px;
+}
+
+/* Styles for horizontal line */
+.line {
+  width: 130px;
+  height: 2px;
+  margin: 30px 0;
+  border-color: var(--regular-light-gray);
+}
+
+/* Selection style */
+.userInfo p::selection,
+.navLinks ul li a span::selection,
+.mobileMenu button span::selection {
+  background-color: var(--white) !important;
+}

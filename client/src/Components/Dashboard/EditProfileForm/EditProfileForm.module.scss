@@ -1,0 +1,82 @@
+@import "src/Styles/mixins";
+
+.profileForm {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: auto;
+}
+// .profileForm {
+//   box-shadow: 0 1px 13px 0 #0000000D;
+//   width: 100%;
+//   border-radius: 4px;
+//   padding: 40px 70px 30px 70px;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// @include medium {
+//   .profileForm {
+//     padding: 30px;
+//   }
+// }
+
+// @include small {
+//   .profileForm {
+//     padding: 20px;
+//   }
+// }
+
+// .profileForm>h2 {
+//   color: var(--dark-tomato);
+//   font-weight: 500;
+//   font-size: 1.25rem;
+//   margin-bottom: 20px;
+// }
+
+
+
+
+// .profileImageUpload {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   flex-direction: column;
+//   margin-bottom: 20px;
+// }
+
+// .avatarContainer {
+//   position: relative;
+//   width: 100px;
+//   height: 100px;
+// }
+
+// .avatarOverlay {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   cursor: pointer;
+//   opacity: 0;
+//   border-radius: 50%;
+//   background-color: rgba(0, 0, 0, 0.6);
+//   transition: opacity 0.3s ease;
+// }
+
+// .avatarContainer:hover .avatarOverlay {
+//   opacity: 1;
+// }
+
+// .uploadText {
+//   color: #fff;
+//   font-size: 12px;
+//   text-align: center;
+// }
+
+// .inputFile {
+//   display: none;
+// }

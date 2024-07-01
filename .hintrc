@@ -7,9 +7,10 @@
       "default",
       {
         "ignore": [
-          "width: fit-content"
+          "user-select"
         ]
       }
-    ]
+    ],
+    "apple-touch-icons": "off"
   }
 }
