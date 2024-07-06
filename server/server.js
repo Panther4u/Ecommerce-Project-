@@ -31,8 +31,6 @@ app.use(cors({
 
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-// Serve static files (images) from the 'images' directory
-// app.use('/images', express.static('images'));
 
 
 
@@ -102,60 +100,6 @@ function generateCouponCode() {
   const couponCode = `COUPON${alphanumeric}`;
   return couponCode;
 }
-
-// // Generate a coupon for a new user
-// app.post('/api/generate-coupon', async (req, res) => {
-//   try {
-//     const { userId } = req.body;
-//     const existingCoupon = await Coupon.findOne({ userId: userId });
-
-//     if (existingCoupon) {
-//       return res.status(400).json({ message: 'Coupon already generated for this user.' });
-//     }
-
-//     const couponCode = generateCouponCode();
-//     const coupon = new Coupon({
-//       coupon: couponCode,
-//       discountPercent: 10, // Example: 10% discount
-//       validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Valid for 30 days
-//       userId: userId,
-//     });
-
-//     await coupon.save();
-//     res.status(201).json({ couponCode });
-//   } catch (error) {
-//     console.error('Error generating coupon:', error);
-//     res.status(500).json({ message: 'Failed to generate coupon. Please try again later.' });
-//   }
-// });
-
-// // Apply a coupon
-
-// app.post('/api/apply-coupon', async (req, res) => {
-//   try {
-//     const { userId, couponCode } = req.body;
-
-//     if (!userId || !couponCode) {
-//       return res.status(400).json({ success: false, message: 'Missing userId or couponCode.' });
-//     }
-
-//     const coupon = await Coupon.findOne({ coupon: couponCode });
-
-//     if (!coupon || coupon.userId !== userId|| coupon.usedAt) {
-//       return res.status(400).json({ success: false, message: 'Invalid or expired coupon code.' });
-//     }
-
-//     const discount = coupon.discountPercent / 100;
-
-//     coupon.usedAt = new Date();
-//     await coupon.save();
-
-//     res.status(200).json({ success: true, discount });
-//   } catch (error) {
-//     console.error('Error applying coupon:', error);
-//     res.status(500).json({ message: 'Failed to apply coupon. Please try again later.' });
-//   }
-// });
 
 app.post('/apply-coupon', async (req, res) => {
   const { userId, couponCode, discountPercentage } = req.body;
@@ -369,11 +313,6 @@ app.post('/api/user/save-billing', async (req, res) => {
 
 
 
-// app.post('/api/checkout', (req, res) => {
-//   const billingInfo = req.body;
-//   // Perform any necessary actions related to checkout
-//   res.json({ message: 'Checkout successful', billingInfo });
-// });
 
 
 // Existing route to save order
@@ -413,112 +352,6 @@ app.get('/api/orders', async (req, res) => {
 });
 
 
-// // Fetch billing details for authenticated user
-// app.get('/billing-details/:userId', async (req, res) => {
-//   try {
-//     const billingDetails = await BillingDetails.findOne({ user: req.params.userId });
-
-//     if (!billingDetails) {
-//       return res.status(404).json({ message: 'Billing details not found' });
-//     }
-
-//     res.json(billingDetails);
-//   } catch (error) {
-//     console.error('Error fetching billing details:', error);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
-
-// // Save billing details for authenticated user
-// router.post('/save-billing', async (req, res) => {
-//   const { _id, name, streetAddress, townCity, apartment, pincode, mobileNumber } = req.body;
-
-//   try {
-//     let billingDetails = await BillingDetails.findOne({ user: _id });
-
-//     if (!billingDetails) {
-//       // Create new billing details entry if none exists
-//       billingDetails = new BillingDetails({
-//         user: _id,
-//         name,
-//         streetAddress,
-//         townCity,
-//         apartment,
-//         pincode,
-//         mobileNumber,
-//       });
-
-//       await billingDetails.save();
-//     } else {
-//       // Update existing billing details
-//       billingDetails.name = name;
-//       billingDetails.streetAddress = streetAddress;
-//       billingDetails.townCity = townCity;
-//       billingDetails.apartment = apartment;
-//       billingDetails.pincode = pincode;
-//       billingDetails.mobileNumber = mobileNumber;
-
-//       await billingDetails.save();
-//     }
-
-//     res.json(billingDetails);
-//   } catch (error) {
-//     console.error('Error saving billing details:', error);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
-
-
-
-
-// app.post('/api/checkout', (req, res) => {
-//   const billingInfo = req.body;
-//   // Perform any necessary actions related to checkout
-//   res.json({ message: 'Checkout successful', billingInfo });
-// });
-
-
-// app.post('/auth/signup', upload.single('profileImage'), async (req, res) => {
-//   try {
-//     const { username, email, password, mobileNumber, addressLine1, addressLine2, pincode } = req.body;
-//     const profileImage = req.file ? req.file.path : '';
-
-//     if (!email) {
-//       return res.status(400).json({ error: "Email is required." });
-//     }
-
-//     if (!validator.isEmail(email)) {
-//       return res.status(400).json({ error: "Invalid email address." });
-//     }
-
-//     const existingUser = await User.findOne({ email });
-//     if (existingUser) {
-//       return res.status(400).json({ error: "User with this email already exists." });
-//     }
-
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     const userId = uuidv4(); // Generate a UUID for user ID
-
-//     const newUser = new User({
-//       userId,
-//       username,
-//       email,
-//       password: hashedPassword,
-//       mobileNumber,
-//       addressLine1,
-//       addressLine2,
-//       pincode,
-//       profileImage,
-//     });
-
-//     await newUser.save();
-//     res.status(201).json({ userId, message: "User created successfully." });
-//     console.log({ userId, message: "User created successfully." });
-//   } catch (error) {
-//     console.error("Error during sign-up:", error);
-//     res.status(500).json({ error: "An error occurred during sign-up. Please try again." });
-//   }
-// });
 
 
 // POST endpoint to create a new admin account
@@ -658,115 +491,6 @@ app.post('/auth/login', async (req, res) => {
 });
 
 
-// app.post('/auth/login', async (req, res) => {
-//   const { email, password } = req.body;
-//   try {
-//     // Find user by email
-//     let user = await User.findOne({ email });
-//     let admin = await Admin.findOne({ email });
-//     let isMatch, token, userData;
-
-//     // If neither user nor admin is found, return error
-//     if (!user && !admin) {
-//       return res.status(400).json({ message: 'Invalid credentials' });
-//     }
-
-//     if (user) {
-//       // Compare user password
-//       isMatch = await bcrypt.compare(password, user.password);
-
-//       if (!isMatch) {
-//         return res.status(400).json({ message: 'Invalid credentials' });
-//       }
-
-//       // Update last login timestamp
-//       user.lastLogin = new Date();
-//       await user.save();
-
-//       // Generate JWT token
-//       token = generateToken(user._id);
-
-//       // Prepare user data
-//       userData = {
-//         _id: user._id,
-//         userId: user.userId,
-//         username: user.username,
-//         email: user.email,
-//         mobileNumber: user.mobileNumber,
-//         streetaddress: user.streetaddress,
-//         towncity: user.towncity,
-//         pincode: user.pincode,
-//         profileImage: user.profileImage,
-//         lastLogin: user.lastLogin,
-//         role: user.role,
-//       };
-//     } else {
-//       // Compare admin password
-//       isMatch = await bcrypt.compare(password, admin.password);
-
-//       if (!isMatch) {
-//         return res.status(400).json({ message: 'Invalid credentials' });
-//       }
-
-//       // Update last login timestamp
-//       admin.lastLogin = new Date();
-//       await admin.save();
-
-//       // Generate JWT token
-//       token = generateToken(admin._id);
-
-//       // Prepare admin data
-//       userData = {
-//         _id: admin._id,
-//         username: admin.username,
-//         email: admin.email,
-//         role: admin.role,
-//         profileImage: admin.profileImage,
-//         lastLogin: admin.lastLogin,
-//       };
-//     }
-
-//     // Return user or admin data and token
-//     res.json({
-//       user: userData,
-//       token,
-//     });
-
-//   } catch (error) {
-//     console.error('Login error:', error);
-//     res.status(500).json({ message: 'An error occurred during login. Please try again.' });
-//   }
-// });
-
-// app.put('/api/user', upload.single('profileImage'), async (req, res) => {
-//   const { _id, mobileNumber, addressLine1, addressLine2, pincode, username, email } = req.body;
-
-//   try {
-//     let user = await User.findById(_id);
-
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     user.username = username;
-//     user.email = email;
-//     user.mobileNumber = mobileNumber;
-//     user.addressLine1 = addressLine1;
-//     user.addressLine2 = addressLine2;
-//     user.pincode = pincode;
-
-//     if (req.file) {
-//       user.profileImage = req.file.path;
-//     }
-
-//     await user.save();
-
-//     res.json({ message: 'User profile updated successfully', user });
-//   } catch (error) {
-//     console.error('Error updating profile:', error);
-//     res.status(500).json({ message: 'An error occurred while updating profile' });
-//   }
-// });
 
 app.put('/api/user', upload.single('profileImage'), async (req, res) => {
   const { _id, mobileNumber, streetAddress, townCity, pincode, username, email } = req.body;
@@ -1004,8 +728,36 @@ app.post('/api/contact', async (req, res) => {
 });
 
 
+//-----------------------------------------Dashboard--------------------------------------------->
 
+// Endpoint to fetch user details by username
+app.get('/api/user/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ username });
 
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user); // Return user details as JSON response
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint to fetch all orders
+app.get('/api/orders', async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ date: -1 });
+
+    res.json(orders); // Return orders as JSON response
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 //-----------------------------------------Products--------------------------------------------->
 

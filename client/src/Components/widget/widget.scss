@@ -1,0 +1,83 @@
+.widget {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  padding: 10px;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  border-radius: 10px;
+  height: 100px;
+  
+  .left,
+  .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .title {
+    font-weight: bold;
+    font-size: 14px;
+    color: rgb(160, 160, 160);
+  }
+
+  .counter {
+    font-size: 28px;
+    font-weight: 300;
+  }
+
+  .link {
+    font-size: 8px;
+    border-bottom: 1px solid gray;
+    width: max-content; /* Adjust width for better responsiveness */
+  }
+
+  .percentage {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+
+    &.positive {
+      color: green;
+    }
+    &.negative {
+      color: red;
+    }
+  }
+
+  .icon {
+    font-size: 18px;
+    padding: 5px;
+    border-radius: 5px;
+    align-self: flex-end;
+  }
+
+  @media (max-width: 768px) {
+    .widget {
+      flex-direction: column; /* Stack items vertically on smaller screens */
+      height: auto; /* Allow height to adjust based on content */
+    }
+
+    .left,
+    .right {
+      width: 100%; /* Take full width on smaller screens */
+      margin-bottom: 10px; /* Add space between sections */
+    }
+
+    .link {
+      width: auto; /* Adjust link width to auto for smaller screens */
+    }
+
+    .counter {
+      font-size: 12px; /* Decrease counter font size for smaller screens */
+    }
+
+    .percentage {
+      font-size: 12px; /* Decrease percentage font size for smaller screens */
+    }
+
+    .icon {
+      font-size: 16px; /* Decrease icon font size for smaller screens */
+    }
+  }
+}

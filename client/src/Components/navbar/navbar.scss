@@ -1,0 +1,108 @@
+.navbar {
+  height: 50px;
+  border-bottom: 0.5px solid rgb(231, 228, 228);
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+  padding: 13px;
+
+  .ite {
+    cursor: pointer; 
+    display: flex;
+    justify-content: center;       
+    align-items: center;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      color: #f0f0f0;
+    }
+
+    .icon {
+      font-size: 2rem;
+      color: #7451f8;
+    }
+  }
+
+  .wrapper {
+    width: 100%;
+    padding: 10px; /* Reduce padding for smaller screens */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .search {
+      display: flex;
+      align-items: center;
+      border: 0.5px solid lightgray;
+      padding: 3px;
+      margin-right: 10px; /* Adjust margin for spacing */
+
+      input {
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 12px; /* Adjust font size for smaller screens */
+        width: 100%; /* Take full width of container */
+        padding: 5px; /* Increase padding for better touch accessibility */
+      }
+    }
+
+    .items {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px; /* Add gap between items */
+      
+      .item {
+        display: flex;
+        align-items: center;
+        position: relative;
+        justify-content: flex-end;
+
+        .icon {
+          font-size: 20px;
+        }
+
+        .avatar {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+        }
+
+        .counter {
+          min-width: 15px; /* Ensure minimum width for counter */
+          height: 15px;
+          background-color: red;
+          border-radius: 50%;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 10px;
+          font-weight: bold;
+          position: absolute;
+          top: -5px;
+          right: -5px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .wrapper {
+      flex-direction: row; /* Stack items vertically on smaller screens */
+      gap: 10px; /* Add gap between stacked items */
+      padding: 5px; /* Adjust padding for smaller screens */
+    }
+
+    .search {
+      margin-right: 0; /* Remove margin for search on smaller screens */
+      width: 100%; /* Take full width of container */
+    }
+
+    .items {
+      justify-content: flex-end; /* Align items to right on smaller screens */
+    }
+  }
+}

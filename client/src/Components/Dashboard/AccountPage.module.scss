@@ -1,13 +1,14 @@
 @import "src/Styles/mixins";
 
 .accountPage {
-  margin: 30px;
+  margin: 20px;
 }
 
 .wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 10px;
 }
 
 .welcomeMessage {
@@ -62,6 +63,15 @@
 
 @media (max-width:768px) {
   .wrapper {
-    margin-left: 30px;
+    margin-left: 0px;
   }
 }
+
+
+
+
+
+
+
+
+

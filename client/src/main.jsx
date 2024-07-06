@@ -51,16 +51,16 @@
 
 
 import { StrictMode } from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
 import App from "./App.jsx";
-import  store from "../src/App/store.jsx";
+import store from "../src/App/store.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./Styles/main.scss";
 import "./Translations/i18n";
-import "react-toastify/dist/ReactToastify.css"; 
+import "react-toastify/dist/ReactToastify.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StrictMode>

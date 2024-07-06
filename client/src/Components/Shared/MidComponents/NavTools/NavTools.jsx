@@ -42,3 +42,4 @@ const NavTools = ({ showHeart = true, showCart = true, showUser = true }) => {
 };
 
 export default NavTools;
+

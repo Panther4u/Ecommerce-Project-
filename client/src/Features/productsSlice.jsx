@@ -5,11 +5,11 @@
 // const initialState = productsDataLocal
 //   ? JSON.parse(productsDataLocal)
 //   : {
-//       saveBillingInfoToLocal: false,
-//       favoritesProducts: [],
-//       searchProducts: [],
-//       cartProducts: [],
-//       wishList: [],
+      // saveBillingInfoToLocal: false,
+      // favoritesProducts: [],
+      // searchProducts: [],
+      // cartProducts: [],
+      // wishList: [],
 //     };
 
 // const productsSlice = createSlice({
@@ -70,6 +70,7 @@ function getDefaultInitialState() {
     cartProducts: [],
     discount: 0,
     appliedCoupon: null,
+    
   };
 }
 

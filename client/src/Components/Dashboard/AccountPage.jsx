@@ -4,8 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PagesHistory from "../Shared/MiniComponents/PagesHistory/PagesHistory";
 import s from "./AccountPage.module.scss";
-import EditProfileForm from "./EditProfileForm/EditProfileForm";
-// import DasboardMenuSection from "./AccountMenuSection/DasboardMenuSection";
+import DashHome from "../../pages/home/Home";
 
 
 const DashBoard = () => {
@@ -28,12 +27,7 @@ const DashBoard = () => {
               <Link to="/profile">{loginInfo.username}</Link>
             </p>
           </div>
-
-          <div className={s.accountPageContent}>
-            {/* <DasboardMenuSection /> */}
-            <EditProfileForm />
-
-          </div>
+          <DashHome/>
         </main>
 
     </>

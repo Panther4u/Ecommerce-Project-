@@ -66,3 +66,4 @@ const UserMenu = ({ isActive, toggler }) => {
 };
 
 export default UserMenu;
+
