@@ -3,14 +3,16 @@
   left: -250px; /* Adjust based on your layout */
   top: 0;
   bottom: 0;
-  width: 250px; /* Adjust based on your sidebar width */
-  background-color: white;
+  width: 230px; /* Adjust based on your sidebar width */
+  background-color: #252525;
   transition: left 0.3s ease;
   overflow-y: auto;
   z-index: 1000;
+
   &.active {
     left: 0;
   }
+
   .top {
     margin-top: 4rem;
     height: 50px;
@@ -20,30 +22,14 @@
 
     .logo {
       font-size: 20px;
-      font-weight: bold;
-      color: #6439ff;
-    }
-
-  }
-  .item {
-    cursor: pointer;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: #f0f0f0;
-    }
-
-    .icon {
-      font-size: 24px;
-      color: #7451f8;
+      font-weight: 600;
+      color: white;
+      letter-spacing: 1px;
     }
   }
 
   .center {
-    padding-left: 30px;
+    padding: 15px;
 
     ul {
       list-style: none;
@@ -52,10 +38,11 @@
 
       .title {
         font-size: 10px;
-        font-weight: bold;
-        color: #999;
+        font-weight: 500;
+        color: gray;
         margin-top: 15px;
         margin-bottom: 5px;
+        letter-spacing: 0.5px;
       }
 
       li {
@@ -65,18 +52,20 @@
         cursor: pointer;
 
         &:hover {
-          background-color: #ece8ff;
+          border-radius: 5px;
+          background-color: rgba(87, 87, 87, 0.5);
         }
 
         .icon {
           font-size: 18px;
-          color: #7451f8;
+          color: white;
         }
 
         span {
           font-size: 13px;
-          font-weight: 600;
-          color: #888;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+          color: white;
           margin-left: 10px;
         }
       }
@@ -87,24 +76,24 @@
     display: flex;
     align-items: center;
     margin: 10px;
-
-    .colorOption {
-      width: 20px;
-      height: 20px;
-      border-radius: 5px;
-      border: 1px solid #7451f8;
-      cursor: pointer;
-      margin: 5px;
-
-      &:nth-child(1) {
-        background-color: whitesmoke;
-      }
-      &:nth-child(2) {
-        background-color: #333;
-      }
-      &:nth-child(3) {
-        background-color: darkblue;
-      }
-    }
   }
+
+  // // Overlay styles
+  // &::after {
+  //   content: "";
+  //   position: fixed;
+  //   top: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   height: 100%;
+  //   background-color: rgba(0, 0, 0, 0); /* Initially transparent */
+  //   z-index: -1; /* Ensure the overlay is behind the sidebar */
+  //   pointer-events: none; /* Ensure the overlay does not block clicks on sidebar content */
+  //   transition: background-color 0.3s ease; /* Transition for smooth appearance */
+  // }
+
+  // &.active::after {
+  //   background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+  //   pointer-events: auto; /* Enable clicks on the overlay */
+  // }
 }

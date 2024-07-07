@@ -8,6 +8,7 @@
   border-radius: 10px;
   height: 100px;
   
+  
   .left,
   .right {
     display: flex;
@@ -22,8 +23,8 @@
   }
 
   .counter {
-    font-size: 28px;
-    font-weight: 300;
+    font-size: 16px;
+    font-weight: 500;
   }
 
   .link {
@@ -35,6 +36,7 @@
   .percentage {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     font-size: 14px;
 
     &.positive {
@@ -52,7 +54,7 @@
     align-self: flex-end;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 818px) {
     .widget {
       flex-direction: column; /* Stack items vertically on smaller screens */
       height: auto; /* Allow height to adjust based on content */
@@ -61,7 +63,7 @@
     .left,
     .right {
       width: 100%; /* Take full width on smaller screens */
-      margin-bottom: 10px; /* Add space between sections */
+      margin-bottom: 0px; /* Add space between sections */
     }
 
     .link {

@@ -31,28 +31,32 @@
 // export default PaymentCalculation;
 
 
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { getSubTotal } from 'src/Functions/helper'; // Assuming helper function for subtotal calculation
+import s from './PaymentCalculation.module.scss';
 
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { getSubTotal } from "src/Functions/helper";
-import s from "./PaymentCalculation.module.scss";
-
-const PaymentCalculation = () => {
+const PaymentCalculation = ({ setTotalAmount }) => {
   const { cartProducts } = useSelector((state) => state.products);
-  const { couponDiscount } = useSelector((state) => state.cart); // Assuming coupon discount is stored in cart slice of Redux state
-  const subTotal = getSubTotal(cartProducts); // Calculate subtotal using helper function
-  const discountAmount = (subTotal * couponDiscount) / 100; // Calculate discount amount based on percentage
-  const total = subTotal - discountAmount; // Calculate total after applying coupon discount
-  const { t } = useTranslation();
-  const cartInfo = "cartPage.cartInfoMenu";
+  const { couponDiscount } = useSelector((state) => state.cart);
 
-  // Function to format currency values to two decimal places
+  const subTotal = getSubTotal(cartProducts);
+  const discountAmount = (subTotal * couponDiscount) / 100;
+  const total = subTotal - discountAmount;
+
+  useEffect(() => {
+    setTotalAmount(total);
+  }, [total, setTotalAmount]);
+
+  const { t } = useTranslation();
+  const cartInfo = 'cartPage.cartInfoMenu';
+
   const formatCurrency = (value) => {
     if (typeof value === 'number') {
-      return value.toFixed(2); // Round to 2 decimal places if value is a number
+      return value.toFixed(2);
     }
-    return value; // Return as is if value is not a number
+    return value;
   };
 
   return (
@@ -63,13 +67,23 @@ const PaymentCalculation = () => {
       </div>
 
       <div className={s.item}>
+        <span>Total Products:</span>
+        <span>{cartProducts.length}</span>
+      </div>
+
+      <div className={s.item}>
         <span>{t(`${cartInfo}.shipping`)}:</span>
         <span>{t(`${cartInfo}.free`)}</span>
       </div>
 
       <div className={s.item}>
         <span>{t(`${cartInfo}.total`)}:</span>
-        <span>RS.{formatCurrency(total)}</span> {/* Display formatted total */}
+        <span>RS.{formatCurrency(total)}</span>
+      </div>
+
+      <div className={s.item}>
+        <span>Delivery Method:</span>
+        <span>Express Delivery</span>
       </div>
     </div>
   );

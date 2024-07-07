@@ -19,6 +19,7 @@ const { User, Coupon } = require('./model/User');
 const Order = require('./model/orderModel');
 const Admin = require('./model/Admin');
 
+
 // Create Express app
 const app = express();
 
@@ -314,28 +315,34 @@ app.post('/api/user/save-billing', async (req, res) => {
 
 
 
-
-// Existing route to save order
+// POST endpoint for checkout
 app.post('/api/checkout', async (req, res) => {
-  const { userId, cartProducts, ...billingValues } = req.body;
-
   try {
-    // Create a new order instance based on the model
+    const {
+      userId,
+      cartProducts,
+      billingDetails,
+      deliveryMethod,
+      totalBillAmount, // Ensure totalBillAmount is received from frontend
+    } = req.body;
+
+    // Create new order instance
     const newOrder = new Order({
       userId,
       orderedProducts: cartProducts,
-      billingInfo: billingValues
+      billingInfo: billingDetails,
+      totalProducts: cartProducts.length,
+      deliveryMethod,
+      totalBillAmount, // Include totalBillAmount in the order
     });
 
-    // Save the order to the database
+    // Save the order to MongoDB
     await newOrder.save();
-    console.log('Order saved successfully');
 
-    // Respond with success message and the new order data
-    res.status(201).json({ message: 'Order placed successfully', newOrder });
+    res.status(201).json({ message: 'Order placed successfully', order: newOrder });
   } catch (error) {
     console.error('Error placing order:', error);
-    res.status(500).json({ error: 'Failed to place order' });
+    res.status(500).json({ error: 'Error placing order' });
   }
 });
 
@@ -730,36 +737,181 @@ app.post('/api/contact', async (req, res) => {
 
 //-----------------------------------------Dashboard--------------------------------------------->
 
-// Endpoint to fetch user details by username
-app.get('/api/user/:username', async (req, res) => {
+
+
+//-----------------------------------------Widget-------------------------------------------->
+// Example route to fetch total user count
+app.get('/api/totalUserCount', async (req, res) => {
   try {
-    const { username } = req.params;
-    const user = await User.findOne({ username });
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    res.json(user); // Return user details as JSON response
+    const count = await User.countDocuments();
+    res.json({ count });
   } catch (error) {
-    console.error('Error fetching user:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error fetching total user count:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
-// Endpoint to fetch all orders
-app.get('/api/orders', async (req, res) => {
+// Example route to fetch total number of user orders
+app.get('/api/totalUserOrderCount', async (req, res) => {
   try {
-    const orders = await Order.find().sort({ date: -1 });
-
-    res.json(orders); // Return orders as JSON response
+    const orders = await Order.find({ userId: { $exists: true } }); // Assuming orders placed by users have userId
+    const totalOrderCount = orders.length;
+    res.json({ count: totalOrderCount });
   } catch (error) {
-    console.error('Error fetching orders:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error fetching total user order count:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+// Route to fetch total bill amount of all orders
+app.get('/api/totalBillAmount', async (req, res) => {
+  try {
+    const orders = await Order.find();
+    let totalBillAmount = 0;
+
+    // Iterate through all orders and sum up the total bill amount
+    orders.forEach(order => {
+      totalBillAmount += order.totalBillAmount;
+    });
+
+    // Round the total bill amount to the nearest integer
+    totalBillAmount = Math.round(totalBillAmount);
+
+    res.json({ amount: totalBillAmount });
+  } catch (error) {
+    console.error('Error fetching total bill amount:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+
+// Example route to fetch total balance amount (sum of all user balances)
+app.get('/api/totalBalanceAmount', async (req, res) => {
+  try {
+    const users = await User.find();
+    let totalBalance = 0;
+    users.forEach(user => {
+      totalBalance += parseFloat(user.balance || 0); // Assuming each user has a 'balance' field
+    });
+    res.json({ amount: totalBalance });
+  } catch (error) {
+    console.error('Error fetching total balance amount:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+//-----------------------------------------Features-------------------------------------------->
+
+
+// Endpoint to fetch last week's revenue
+app.get('/api/lastWeekRevenue', async (req, res) => {
+  try {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+    const orders = await Order.find({ orderDate: { $gte: oneWeekAgo } });
+    let totalAmount = 0;
+    orders.forEach(order => {
+      totalAmount += Math.round(order.totalBillAmount);
+    });
+    res.json({ amount: totalAmount });
+  } catch (error) {
+    console.error('Error fetching last week revenue:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Endpoint to fetch last month's revenue
+app.get('/api/lastMonthRevenue', async (req, res) => {
+  try {
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+    const orders = await Order.find({ orderDate: { $gte: oneMonthAgo } });
+    let totalAmount = 0;
+    orders.forEach(order => {
+      totalAmount += Math.round(order.totalBillAmount);
+    });
+    res.json({ amount: totalAmount });
+  } catch (error) {
+    console.error('Error fetching last month revenue:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Endpoint to fetch target revenue (for demonstration purposes)
+app.get('/api/targetRevenue', async (req, res) => {
+  try {
+    const targetRevenue = 20000; // Example target value
+    res.json({ amount: targetRevenue });
+  } catch (error) {
+    console.error('Error fetching target revenue:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+//-----------------------------------------Charts--------------------------------------------->
+
+// Generate dummy data function
+const generateDummyData = () => {
+  const currentMonth = new Date().getMonth(); // Get current month (0-indexed)
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  
+  const dummyData = [];
+  
+  // Generate data for the last 6 months
+  for (let i = 0; i < 6; i++) {
+    const monthIndex = (currentMonth - i + 12) % 12; // Ensure positive month index
+    const monthName = months[monthIndex];
+    const totalRevenue = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000; // Generate random revenue between 1000 to 3000
+    dummyData.unshift({ name: monthName, Total: totalRevenue }); // Add to beginning of array to maintain chronological order
+  }
+  
+  return dummyData;
+};
+
+// Route to fetch revenue data
+app.get('/api/revenue', async (req, res) => {
+  try {
+    // Fetch real revenue data from MongoDB
+    const revenueData = await Order.aggregate([
+      {
+        $group: {
+          _id: { $month: '$createdAt' }, // Group by month
+          totalRevenue: { $sum: '$totalBillAmount' } // Sum total bill amount for each month
+        }
+      },
+      {
+        $sort: { _id: 1 } // Sort by month
+      }
+    ]);
+
+    // Format the data to match the frontend expectations
+    const formattedData = revenueData.map(item => ({
+      name: new Date(0, item._id - 1).toLocaleString('default', { month: 'long' }), // Convert month number to month name
+      Total:  Math.round(item.totalRevenue)
+    }));
+
+    // Combine real and dummy data for the last 6 months
+    const dummyData = generateDummyData();
+    const finalData = dummyData.concat(formattedData.slice(-6)); // Combine dummy data and last 6 months of real data
+
+    res.json(finalData);
+  } catch (error) {
+    console.error('Error fetching revenue data', error);
+    res.status(500).json({ message: 'Server error', error });
   }
 });
 
 //-----------------------------------------Products--------------------------------------------->
+
+
 
 
 

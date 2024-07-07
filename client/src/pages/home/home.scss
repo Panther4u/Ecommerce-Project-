@@ -8,44 +8,42 @@
   .homeContainer {
     flex: 6;
 
-    .widgets{
-      margin-top: 1rem;
+    .widgets {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Grid with responsive column width */
+      gap: 15px;
+      margin-bottom: 20px;
+
+      @media (max-width: 818px) {
+        margin-top: 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Grid with responsive column width */
+        gap: 15px;
+        margin-bottom: 20px;
+      }
     }
-    .widgets,
+
     .charts {
       display: flex;
-      padding: 20px;
       gap: 20px;
 
-      @media (max-width: 768px) {
+      @media (max-width: 1100px) {
         flex-direction: column; /* Stack items vertically on smaller screens */
-        padding: 10px; /* Reduce padding for smaller screens */
+        margin-bottom: 2rem;
       }
     }
 
-    .charts {
-      padding: 5px 20px;
-
-      @media (max-width: 768px) {
-        padding: 5px 10px; /* Adjust padding for smaller screens */
-      }
-    }
 
     .listContainer {
       -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
       box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
       padding: 20px;
-      margin: 20px;
 
       .listTitle {
         font-weight: 500;
         color: gray;
         margin-bottom: 15px;
-      }
-
-      @media (max-width: 768px) {
-        padding: 10px; /* Reduce padding for smaller screens */
-        margin: 10px; /* Reduce margin for smaller screens */
       }
     }
   }

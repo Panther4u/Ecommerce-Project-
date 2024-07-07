@@ -39,10 +39,9 @@ import { useTranslation } from 'react-i18next';
 import s from './PaymentSection.module.scss';
 import { clearCart } from 'src/Features/cartSlice';
 import PlaceOrderButton from './PlaceOrderButton';
-import axios from 'axios';
 import { setOrderedProducts } from 'src/Features/orderSlice';
 
-const PaymentSection = ({ handlePlaceOrder, handleApplyCoupon }) => {
+const PaymentSection = ({ handlePlaceOrder, handleApplyCoupon, setTotalAmount }) => {
   const { products } = useSelector((state) => state.cart);
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -62,7 +61,7 @@ const PaymentSection = ({ handlePlaceOrder, handleApplyCoupon }) => {
         toast.success('Order placed successfully', {
           onClose: () => navigate('/order-summary')
         });
-      }, 2000); // Wait for 2 seconds before navigating
+      }, 5000); // Wait for 2 seconds before navigating
 
     } catch (error) {
       console.error('Error placing order:', error);
@@ -76,7 +75,7 @@ const PaymentSection = ({ handlePlaceOrder, handleApplyCoupon }) => {
     <section className={s.paymentSection}>
       <h2>{t('Order Summary')}</h2>
       <PaymentProducts products={products} />
-      <PaymentCalculation products={products} handleApplyCoupon={handleApplyCoupon} />
+      <PaymentCalculation products={products} handleApplyCoupon={handleApplyCoupon} setTotalAmount={setTotalAmount} />
       <PaymentOptionsSelection />
 
       <PlaceOrderButton

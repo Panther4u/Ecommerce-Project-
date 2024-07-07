@@ -47,7 +47,7 @@ import OrderSummaryPage from "../Components/Cart/OrderProduct/OrderSummaryPage";
 import CheckoutPage from "../Components/CheckoutPage/CheckoutPage";
 import Contact from "../Components/Contact/Contact";
 import AdminSignup from "../Components/Dashboard/AccountMenuSection/AdminSignup/AdminSignup";
-import DashBoard from "../Components/Dashboard/AccountPage";
+import DashBoard from "../Components/Dashboard/AdminDashBoardPage";
 import FavoritePage from "../Components/FavoritePage/FavoritePage";
 import Home from "../Components/Home/Home";
 import ForgotPassword from "../Components/LogIn/ForgotPassword/ ForgotPassword";

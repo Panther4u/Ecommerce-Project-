@@ -355,27 +355,26 @@
 // export default CheckoutPage;
 
 
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import BillingDetails from './BillingDetails/BillingDetails'; // Assuming this component handles billing details
-import PaymentSection from './PaymentSection/PaymentSection'; // Assuming this component handles payment section
-import { saveBillingInfo } from 'src/Features/userSlice'; // Redux action to save billing info
-import { setOrderedProducts as setOrderedProductsInCart } from 'src/Features/cartSlice'; // Redux action to update cart
-import { setOrderedProducts as setOrderedProductsInOrderSlice } from 'src/Features/orderSlice'; // Redux action to update orders
+import BillingDetails from './BillingDetails/BillingDetails';
+import PaymentSection from './PaymentSection/PaymentSection';
+import { saveBillingInfo } from 'src/Features/userSlice';
+import { setOrderedProducts as setOrderedProductsInCart } from 'src/Features/cartSlice';
+import { setOrderedProducts as setOrderedProductsInOrderSlice } from 'src/Features/orderSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import s from './CheckoutPage.module.scss';
-import PagesHistory from '../Shared/MiniComponents/PagesHistory/PagesHistory'; 
+import PagesHistory from '../Shared/MiniComponents/PagesHistory/PagesHistory';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { _id } = useSelector((state) => state.user.loginInfo); // Assuming Redux state manages user login info
-  const { cartProducts } = useSelector((state) => state.products); // Assuming Redux state manages cart products
+  const { _id } = useSelector((state) => state.user.loginInfo);
+  const { cartProducts } = useSelector((state) => state.products);
 
   const [billingValues, setBillingValues] = useState({
     name: '',
@@ -386,6 +385,8 @@ const CheckoutPage = () => {
     mobileNumber: '',
     saveInfo: false,
   });
+
+  const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
     const savedBillingInfo = JSON.parse(localStorage.getItem('billingInfo'));
@@ -407,35 +408,34 @@ const CheckoutPage = () => {
 
   const handlePlaceOrder = async () => {
     try {
-      // Save billing information if user opted to save it
       if (billingValues.saveInfo) {
         await handleSaveBillingInfo();
       }
 
-      // Place order
       const orderResponse = await axios.post('http://localhost:8000/api/checkout', {
         userId: _id,
         cartProducts,
-        ...billingValues,
+        billingDetails: billingValues,
+        deliveryMethod: "Express Delivery",
+        totalBillAmount: totalAmount,
       });
-
+      console.log('AMOUNT:', totalAmount);
       console.log('Order placed successfully:', orderResponse.data);
 
-      // Dispatch actions to update cart and order slices
-      dispatch(setOrderedProductsInCart([])); // Clear cart products
-      dispatch(setOrderedProductsInOrderSlice(cartProducts)); // Update ordered products in order slice
+      dispatch(setOrderedProductsInCart([]));
+      dispatch(setOrderedProductsInOrderSlice(cartProducts));
 
-      // Notify user and navigate to order summary page
       toast.success('Order placed successfully');
-      navigate('/order-summary');
+      setTimeout(() => {
+        navigate("/order-summary");
+      }, 5000);
     } catch (error) {
-      console.error('Error placing order:', error);
-      toast.error('Error placing order');
+      console.error("Error placing order:", error);
+      toast.error("Error placing order");
     }
   };
 
   const handleApplyCoupon = (couponValue) => {
-    // Implement apply coupon functionality if needed
     console.log('Applying coupon:', couponValue);
   };
 
@@ -450,6 +450,7 @@ const CheckoutPage = () => {
 
   const pageHistory = ['Account', 'Checkout'];
   const historyPaths = [{ index: 0, path: '/profile' }];
+
   return (
     <>
       <Helmet>
@@ -468,6 +469,7 @@ const CheckoutPage = () => {
             <PaymentSection
               handlePlaceOrder={handlePlaceOrder}
               handleApplyCoupon={handleApplyCoupon}
+              setTotalAmount={setTotalAmount}
             />
           </form>
         </main>

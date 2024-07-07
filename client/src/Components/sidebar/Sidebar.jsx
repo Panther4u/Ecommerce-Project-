@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -13,7 +14,6 @@ import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSyst
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
-import { Link } from "react-router-dom";
 
 const Sidebar = ({ showSidebar, closeSidebar }) => {
   const sidebarRef = useRef(null);
@@ -21,7 +21,9 @@ const Sidebar = ({ showSidebar, closeSidebar }) => {
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-        closeSidebar();
+        if (showSidebar) {
+          closeSidebar();
+        }
       }
     };
 
@@ -48,8 +50,8 @@ const Sidebar = ({ showSidebar, closeSidebar }) => {
           <p className="title">MAIN</p>
           <Link to="/dashboard" style={{ textDecoration: "none" }}>
             <li>
-            <DashboardIcon className="icon" />
-            <span>Dashboard</span>
+              <DashboardIcon className="icon" />
+              <span>Dashboard</span>
             </li>
           </Link>
           <p className="title">LISTS</p>

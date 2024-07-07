@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PagesHistory from "../Shared/MiniComponents/PagesHistory/PagesHistory";
-import s from "./AccountPage.module.scss";
+import s from "./AdminDashBoardPage.module.scss";
 import DashHome from "../../pages/home/Home";
 
 

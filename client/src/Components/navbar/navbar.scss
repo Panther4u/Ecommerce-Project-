@@ -6,7 +6,8 @@
   font-size: 14px;
   color: #555;
   padding: 13px;
-
+  padding-left: 0px;
+  padding-right: 0px;
   .ite {
     cursor: pointer; 
     display: flex;
@@ -20,7 +21,7 @@
 
     .icon {
       font-size: 2rem;
-      color: #7451f8;
+      color: gray;
     }
   }
 

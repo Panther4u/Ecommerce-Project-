@@ -45,7 +45,7 @@ const PaymentProducts = () => {
             <img src={img} alt={shortName} />
             <span>{shortName}</span>
           </div>
-          <span className={s.price}>${afterDiscount}</span>
+          <span className={s.price}>Rs.{afterDiscount}</span>
         </Link>
       ))}
     </div>

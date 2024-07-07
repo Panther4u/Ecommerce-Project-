@@ -18,7 +18,7 @@ const DashHome = () => {
     setShowSidebar(false);
   };
 
-  return (
+  return ( 
     <div className="home">
       <Sidebar showSidebar={showSidebar} closeSidebar={closeSidebar} />
       <div className={`homeContainer ${showSidebar ? "sidebarOpen" : ""}`}>

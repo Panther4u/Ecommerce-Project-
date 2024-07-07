@@ -1,4 +1,5 @@
 import "./chart.scss";
+import React, { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -7,17 +8,24 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import axios from "axios";
 
-const data = [
-  { name: "January", Total: 1200 },
-  { name: "February", Total: 2100 },
-  { name: "March", Total: 800 },
-  { name: "April", Total: 1600 },
-  { name: "May", Total: 900 },
-  { name: "June", Total: 1700 },
-];
+const Chart = ({ aspect = 16 / 9, title = "Chart Title" }) => {
+  const [data, setData] = useState([]);
 
-const Chart = ({ aspect, title }) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/revenue');
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching chart data', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="chart">
       <div className="title">{title}</div>
@@ -29,20 +37,30 @@ const Chart = ({ aspect, title }) => {
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
           <defs>
-            <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+            <linearGradient id="second-chart-total" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="name" stroke="gray" />
+          <XAxis
+            dataKey="name"
+            stroke="gray"
+            allowDataOverflow={false}
+            interval={0}
+            padding={{ left: 0, right: 0 }}
+            tick={{ fontSize: 12, fill: "gray" }}
+            type="category"
+          />
           <CartesianGrid strokeDasharray="3 3" className="chartGrid" />
-          <Tooltip />
+          <Tooltip
+            formatter={(value) => Number(value).toLocaleString() + ' /-'} // Format tooltip value with commas
+          />
           <Area
             type="monotone"
             dataKey="Total"
-            stroke="#8884d8"
+            stroke="#82ca9d"
             fillOpacity={1}
-            fill="url(#total)"
+            fill="url(#second-chart-total)"
           />
         </AreaChart>
       </ResponsiveContainer>
