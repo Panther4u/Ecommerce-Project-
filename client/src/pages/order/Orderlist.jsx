@@ -1,14 +1,13 @@
 
 // New.jsx
 import React, { useState } from "react";
-import "./new.scss";
+import "./Orderlist.scss";
 import Sidebar from "../../Components/sidebar/Sidebar";
 import Navbar from "../../Components/navbar/Navbar";
-import axios from "axios";
-import Form from "../single/Single";
 import PagesHistory from "../../Components/Shared/MiniComponents/PagesHistory/PagesHistory";
+import OrderDatatable from "./Order";
 
-const New = () => {
+const OrderList = () => {
   const [showSidebar, setShowSidebar] = useState(false);
 
   const toggleSidebar = () => {
@@ -22,15 +21,15 @@ const New = () => {
   return (
     <div className="new">
       <div className='top'>
-        <PagesHistory history={["Dashboard", ("Add New")]} />
+        <PagesHistory history={["Dashboard", ("Orders")]} />
       </div>
       <Sidebar showSidebar={showSidebar} closeSidebar={closeSidebar} />
       <div className={`newContainer ${showSidebar ? "sidebarOpen" : ""}`}>
       <Navbar toggleSidebar={toggleSidebar} />
-        <Form/>
+        <OrderDatatable/>
       </div>
     </div>
   );
 };
 
-export default New;
+export default OrderList;

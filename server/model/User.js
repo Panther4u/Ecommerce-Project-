@@ -54,6 +54,14 @@ const userSchema = new mongoose.Schema({
   coupon: String,
   lastLogin: Date,
   balance: Number,
+  status: {
+    type: String,
+    default: 'active', // or any other default value
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 // Hash password before saving user to database
@@ -61,6 +69,13 @@ userSchema.pre('save', async function(next) {
   const user = this;
   if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8);
+  }
+  next();
+});
+
+userSchema.pre('save', async function(next) {
+  if (!this.userId) {
+    this.userId = await User.generateUserId();
   }
   next();
 });

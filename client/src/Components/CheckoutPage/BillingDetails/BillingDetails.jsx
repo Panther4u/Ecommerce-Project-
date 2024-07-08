@@ -1,38 +1,11 @@
-// import { useTranslation } from "react-i18next";
-// import CustomCheckbox from "../../Shared/MiniComponents/CustomCheckbox/CustomCheckbox";
-// import s from "./BillingDetails.module.scss";
-// import BillingInputs from "./BillingInputs";
-
-// const BillingDetails = ({ inputsData: { billingValues, handleChange } }) => {
-//   const { t } = useTranslation();
-
-//   return (
-//     <section className={s.billingDetailsSection}>
-//       <h2>{t("billingDetails")}</h2>
-
-//       <BillingInputs inputsData={{ billingValues, handleChange }} />
-
-//       <CustomCheckbox
-//         inputData={{
-//           name: "saveInfo",
-//           value: billingValues.saveInfo,
-//           onchange: handleChange,
-//           id: "save-info",
-//         }}
-//       />
-//     </section>
-//   );
-// };
-// export default BillingDetails;
-
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import CustomCheckbox from '../../Shared/MiniComponents/CustomCheckbox/CustomCheckbox';
-import BillingInputs from './BillingInputs'; // Ensure correct path to BillingInputs
+import BillingInputs from './BillingInputs';
 import s from './BillingDetails.module.scss';
 
-const BillingDetails = ({ billingValues, setBillingValues }) => {
+const BillingDetails = ({ billingValues, setBillingValues, submitted }) => {
   const { t } = useTranslation();
   const [editable, setEditable] = useState(false); // Initialize editable state
 
@@ -40,8 +13,8 @@ const BillingDetails = ({ billingValues, setBillingValues }) => {
     const fetchBillingInfo = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/user/save-billing");
-        setBillingValues(response.data); // Update billingValues state
-        setEditable(!!response.data); // Determine editability based on fetched data
+        setBillingValues(response.data); // Update billingValues state with fetched data
+        setEditable(true); // Enable editing if data is fetched successfully
       } catch (error) {
         console.error("Error fetching billing information:", error);
         // Handle error fetching data
@@ -68,6 +41,7 @@ const BillingDetails = ({ billingValues, setBillingValues }) => {
         billingValues={billingValues}
         setBillingValues={setBillingValues}
         editable={editable}
+        submitted={submitted} // Pass submitted state to BillingInputs
       />
 
       <CustomCheckbox

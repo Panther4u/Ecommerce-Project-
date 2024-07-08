@@ -1,42 +1,121 @@
+// export const userColumns = [
+//   { field: "id", headerName: "ID", width: 70 },
+//   {
+//     field: "user",
+//     headerName: "User",
+//     width: 230,
+//     renderCell: (params) => {
+//       return (
+//         <div className="cellWithImg">
+//           <img className="cellImg" src={params.row.img} alt="avatar" />
+//           {params.row.username}
+//         </div>
+//       );
+//     },
+//   },
+//   {
+//     field: "email",
+//     headerName: "Email",
+//     width: 230,
+//   },
+
+//   {
+//     field: "age",
+//     headerName: "Age",
+//     width: 100,
+//   },
+//   {
+//     field: "status",
+//     headerName: "Status",
+//     width: 160,
+//     renderCell: (params) => {
+//       return (
+//         <div className={`cellWithStatus ${params.row.status}`}>
+//           {params.row.status}
+//         </div>
+//       );
+//     },
+//   },
+// ];
+
 export const userColumns = [
-  { field: "id", headerName: "ID", width: 70 },
+  {
+    field: "userId",
+    headerName: "ID",
+    width: 150,
+    renderCell: (params) => {
+      const shortId = params.row.userId.slice(-12);
+      return <span>{shortId}</span>;
+    },
+  },
   {
     field: "user",
     headerName: "User",
     width: 230,
     renderCell: (params) => {
+      const profileImage = params.row.profileImage;
+      const imgSrc = profileImage ? `http://localhost:8000/${profileImage}` : "src/Assets/Images/Avatar.jpg";
+      const username = params.row.username || "-";
       return (
         <div className="cellWithImg">
-          <img className="cellImg" src={params.row.img} alt="avatar" />
-          {params.row.username}
+          <img className="cellImg" src={imgSrc} alt="avatar" />
+          {username}
         </div>
       );
     },
   },
   {
     field: "email",
-    headerName: "Email",
+    headerName: "Email Address",
     width: 230,
+    renderCell: (params) => {
+      return <span>{params.row.email || '-'}</span>;
+    },
   },
-
   {
-    field: "age",
-    headerName: "Age",
-    width: 100,
+    field: "phone",
+    headerName: "Phone Number",
+    width: 160,
+    renderCell: (params) => {
+      return <span>{params.row.mobileNumber || '-'}</span>;
+    },
+  },
+  {
+    field: "address",
+    headerName: "Address",
+    width: 250,
+    renderCell: (params) => {
+      const address = [params.row.streetAddress, params.row.townCity, params.row.pincode].filter(Boolean).join(", ");
+      return <span>{address || '-'}</span>;
+    },
   },
   {
     field: "status",
-    headerName: "Status",
+    headerName: "Account Status",
     width: 160,
     renderCell: (params) => {
       return (
-        <div className={`cellWithStatus ${params.row.status}`}>
-          {params.row.status}
+        <div className={`cellWithStatus ${params.row.status || ''}`}>
+          {params.row.status || '-'}
         </div>
       );
     },
   },
+  {
+    field: "createdAt",
+    headerName: "Created At",
+    width: 200,
+    renderCell: (params) => {
+      const date = params.row.createdAt ? new Date(params.row.createdAt) : null;
+      return (
+        <span>
+          {date ? date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : '-'}
+        </span>
+      );
+    },
+  },
 ];
+
 
 //temporary data
 export const userRows = [

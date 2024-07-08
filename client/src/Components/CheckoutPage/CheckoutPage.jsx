@@ -360,13 +360,13 @@ import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import BillingDetails from './BillingDetails/BillingDetails';
-import PaymentSection from './PaymentSection/PaymentSection';
 import { saveBillingInfo } from 'src/Features/userSlice';
 import { setOrderedProducts as setOrderedProductsInCart } from 'src/Features/cartSlice';
 import { setOrderedProducts as setOrderedProductsInOrderSlice } from 'src/Features/orderSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import BillingDetails from './BillingDetails/BillingDetails';
+import PaymentSection from './PaymentSection/PaymentSection';
 import s from './CheckoutPage.module.scss';
 import PagesHistory from '../Shared/MiniComponents/PagesHistory/PagesHistory';
 
@@ -377,7 +377,7 @@ const CheckoutPage = () => {
   const { cartProducts } = useSelector((state) => state.products);
 
   const [billingValues, setBillingValues] = useState({
-    name: '',
+    firstName: '',
     streetAddress: '',
     townCity: '',
     apartment: '',
@@ -406,8 +406,24 @@ const CheckoutPage = () => {
     }
   };
 
+  const validateBillingDetails = () => {
+    // Validate if any billing details fields are empty
+    return (
+      billingValues.firstName &&
+      billingValues.streetAddress &&
+      billingValues.townCity &&
+      billingValues.pincode &&
+      billingValues.mobileNumber
+    );
+  };
+
   const handlePlaceOrder = async () => {
     try {
+      if (!validateBillingDetails()) {
+        toast.error('Please fill in all billing details');
+        return;
+      }
+
       if (billingValues.saveInfo) {
         await handleSaveBillingInfo();
       }
@@ -419,8 +435,11 @@ const CheckoutPage = () => {
         deliveryMethod: "Express Delivery",
         totalBillAmount: totalAmount,
       });
-      console.log('AMOUNT:', totalAmount);
+
       console.log('Order placed successfully:', orderResponse.data);
+
+      // Clearing local storage
+      localStorage.removeItem('billingInfo');
 
       dispatch(setOrderedProductsInCart([]));
       dispatch(setOrderedProductsInOrderSlice(cartProducts));
@@ -473,7 +492,7 @@ const CheckoutPage = () => {
             />
           </form>
         </main>
-      </div> 
+      </div>
     </>
   );
 };

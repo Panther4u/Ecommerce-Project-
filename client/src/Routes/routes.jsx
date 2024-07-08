@@ -61,24 +61,22 @@ import SignUp from "../Components/SignUp/SignUp";
 import WishList from "../Components/WishList/WishList";
 import DashHome from "../pages/home/Home";
 import List from "../pages/list/List";
-import Single from "../pages/single/Single";
 import New from "../pages/new/New";
+import OrderList from "../pages/order/Orderlist";
+import Single from "../pages/single/Single";
+
 
 export const ROUTES_CONFIG = [
   // { path: "/dashboard", element: <DashHome/> },
   { path: "/users", element: <List /> },
-  // { path: "/users/:userId", element: <Single /> },
+  { path: "/new", element: <New/> },
+  { path: "/orderlist", element: <OrderList /> },
+  // { path: "/user/:id", element: <Single /> },
   // {
   //   path: "/users/new",
   //   element: <New inputs={userInputs} title="Add New User" />,
   // },
   { path: "/product", element: <List /> },
-  // { path: "/product/:productId", element: <Single /> },
-
-  // {
-  //   path: "/product/new",
-  //   element: <New inputs={productInputs} title="Add New Product" />,
-  // },
   { path: "/", element: <Home /> },
   { path: "/contact", element: <Contact /> },
   { path: "/about", element: <About /> },

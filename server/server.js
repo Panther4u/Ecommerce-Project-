@@ -909,11 +909,87 @@ app.get('/api/revenue', async (req, res) => {
   }
 });
 
+//-----------------------------------------Users--------------------------------------------->
+
+// Routes
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post('/api/users', async (req, res) => {
+  const user = new User(req.body);
+  try {
+    await user.save();
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+app.put('/api/users/:userId', async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { userId },
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+app.delete('/api/users/:userId', async (req, res) => {
+  const { userId } = req.params;
+  // console.log(`Received userId: ${userId}`); // Log received userId
+  try {
+    const deletedUser = await User.findByIdAndDelete(userId); // Use findByIdAndDelete if userId is the _id
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'User deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//-----------------------------------------Orders--------------------------------------------->
+
+
+// GET endpoint to fetch all orders for a specific user
+app.get('/api/orders', async (req, res) => {
+  const { userId } = req.query; // Get userId from query parameters
+  try {
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 }); // Fetch orders by userId and sort by creation date
+    res.status(200).json(orders); // Respond with JSON array of orders
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ error: 'Failed to fetch orders' });
+  }
+});
+
+// DELETE endpoint to delete an order by orderId
+app.delete('/api/orders/:orderId', async (req, res) => {
+  const { orderId } = req.params;
+  try {
+    await Order.findByIdAndDelete(orderId);
+    res.json({ message: 'Order deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting order' });
+  }
+});
+
+
 //-----------------------------------------Products--------------------------------------------->
-
-
-
-
 
 
 

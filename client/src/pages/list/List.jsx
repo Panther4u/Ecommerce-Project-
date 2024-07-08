@@ -16,9 +16,9 @@ const List = () => {
   };
   return (
     <div> 
-      {/* <div className='top'>
-        <PagesHistory history={["/", ("nav.profile")]} />
-      </div> */}
+      <div className='top'>
+        <PagesHistory history={["Dashboard", ("User")]} />
+      </div>
       
       <div className="list">
         <Sidebar showSidebar={showSidebar} closeSidebar={closeSidebar} />

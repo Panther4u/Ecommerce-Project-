@@ -67,10 +67,12 @@ const Sidebar = ({ showSidebar, closeSidebar }) => {
               <span>Products</span>
             </li>
           </Link>
-          <li>
+          <Link to="/orderlist" style={{ textDecoration: "none" }}>
+            <li>
             <CreditCardIcon className="icon" />
-            <span>Orders</span>
-          </li>
+              <span>Orders</span>
+            </li>
+          </Link>
           <li>
             <LocalShippingIcon className="icon" />
             <span>Delivery</span>
