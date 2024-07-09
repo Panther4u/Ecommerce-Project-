@@ -62,6 +62,7 @@ import WishList from "../Components/WishList/WishList";
 import DashHome from "../pages/home/Home";
 import List from "../pages/list/List";
 import New from "../pages/new/New";
+import OrderDetails from "../pages/order/OrderDetails";
 import OrderList from "../pages/order/Orderlist";
 import Single from "../pages/single/Single";
 
@@ -71,6 +72,7 @@ export const ROUTES_CONFIG = [
   { path: "/users", element: <List /> },
   { path: "/new", element: <New/> },
   { path: "/orderlist", element: <OrderList /> },
+  { path: "/orderdetails/:orderId", element: <OrderDetails /> },
   // { path: "/user/:id", element: <Single /> },
   // {
   //   path: "/users/new",

@@ -12,3 +12,14 @@
   margin-top: 1rem;
   margin-left: .6rem;
 }
+
+// BillingInfo.module.scss
+.billingInfo {
+  display: flex;
+  flex-direction: row;
+  gap: 8px; /* Adjust the gap as needed */
+}
+
+.billingInfo span {
+  display: block;
+}

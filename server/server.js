@@ -988,6 +988,44 @@ app.delete('/api/orders/:orderId', async (req, res) => {
   }
 });
 
+// Fetch order details by ID
+app.get('/api/orders/:id', async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const order = await Order.findById(orderId).populate('orderedProducts'); // Assuming orderedProducts is an array of references to product documents
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    console.error('Error fetching order details:', error);
+    res.status(500).json({ message: 'Error fetching order details' });
+  }
+});
+
+// GET order details by ID
+app.get('/:orderId', async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      return res.status(400).json({ error: 'Invalid Order ID' });
+    }
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 //-----------------------------------------Products--------------------------------------------->
 

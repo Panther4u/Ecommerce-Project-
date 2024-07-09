@@ -1,3 +1,4 @@
+// OrderDatatable.js
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
@@ -57,7 +58,7 @@ const OrderDatatable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/orders/${params.row.id}`} style={{ textDecoration: 'none' }}>
+            <Link to={`/orderdetails/${params.row.id}`} style={{ textDecoration: 'none' }}>
               <div className="viewButton">View</div>
             </Link>
             <div className="deleteButton" onClick={() => handleDelete(params.row.id)}>
@@ -70,25 +71,29 @@ const OrderDatatable = () => {
   ];
 
   const orderColumns = [
-    { field: '_id', headerName: 'Order ID', width: 200 },
+    {
+      field: '_id',
+      headerName: 'Order ID',
+      width: 200
+    },
     {
       field: 'userId',
       headerName: 'User ID',
       width: 200,
-      renderCell: (params) => {
+      renderCell: params => {
         const shortId = params.value ? params.value.slice(-12) : '-';
         return <span>{shortId}</span>;
-      },
+      }
     },
     {
       field: 'billingInfo',
       headerName: 'Billing Info',
       width: 300,
       renderCell: (params) => {
-        const { name, streetAddress, townCity, pincode } = params.value || {};
+        const { firstName, streetAddress, townCity, pincode } = params.value || {};
         return (
-          <div>
-            <span>{name || '-'}</span>
+          <div className='billingInfo'>
+            <span>{firstName || '-'}</span>
             <span>{streetAddress || '-'}</span>
             <span>{townCity || '-'}</span>
             <span>{pincode || '-'}</span>
@@ -96,21 +101,43 @@ const OrderDatatable = () => {
         );
       },
     },
-    { field: 'totalProducts', headerName: 'Total Products', width: 200 },
-    { field: 'deliveryMethod', headerName: 'Delivery Method', width: 200 },
-    { field: 'paymentMethod', headerName: 'Payment Method', width: 200 },
-    { field: 'transactionId', headerName: 'Transaction ID', width: 200 },
+    {
+      field: 'totalProducts',
+      headerName: 'Total Products',
+      width: 200,
+      renderCell: params => <span>{params.value || '-'}</span>
+    },
+    {
+      field: 'deliveryMethod',
+      headerName: 'Delivery Method',
+      width: 200,
+      renderCell: params => <span>{params.value || '-'}</span>
+    },
+    {
+      field: 'paymentMethod',
+      headerName: 'Payment Method',
+      width: 200,
+      renderCell: params => <span>{params.value || '-'}</span>
+    },
+    {
+      field: 'transactionId',
+      headerName: 'Transaction ID',
+      width: 200,
+      renderCell: params => <span>{params.value || '-'}</span>
+    },
     {
       field: 'totalBillAmount',
       headerName: 'Total Bill Amount',
       width: 200,
-      renderCell: (params) => <span>Rs. {params.value ? params.value.toFixed(2) : '-'}</span>,
+      renderCell: params => (
+        <span>Rs.{params.value ? params.value.toFixed(2) : '-'}</span>
+      )
     },
     {
       field: 'createdAt',
       headerName: 'Created At',
       width: 200,
-      renderCell: (params) => {
+      renderCell: params => {
         const date = params.value ? new Date(params.value) : null;
         return (
           <span>
@@ -118,18 +145,18 @@ const OrderDatatable = () => {
               ? date.toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
-                  day: 'numeric',
+                  day: 'numeric'
                 })
               : '-'}
           </span>
         );
-      },
+      }
     },
     {
       field: 'orderDate',
       headerName: 'Order Date',
       width: 200,
-      renderCell: (params) => {
+      renderCell: params => {
         const date = params.value ? new Date(params.value) : null;
         return (
           <span>
@@ -137,13 +164,13 @@ const OrderDatatable = () => {
               ? date.toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
-                  day: 'numeric',
+                  day: 'numeric'
                 })
               : '-'}
           </span>
         );
-      },
-    },
+      }
+    }
   ];
 
   if (loading) {

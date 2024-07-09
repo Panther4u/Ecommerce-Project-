@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
     votes: { type: Number }
   }],
   billingInfo: {
-    name: { type: String },
+    firstName: { type: String },
     streetAddress: { type: String },
     townCity: { type: String },
     apartment: { type: String },

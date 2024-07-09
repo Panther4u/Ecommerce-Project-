@@ -454,6 +454,51 @@ const CheckoutPage = () => {
     }
   };
 
+
+
+  // const handlePlaceOrder = async () => {
+  //   try {
+  //     if (!validateBillingDetails()) {
+  //       toast.error('Please fill in all billing details');
+  //       return;
+  //     }
+  
+  //     if (billingValues.saveInfo) {
+  //       await handleSaveBillingInfo();
+  //     }
+  
+  //     const orderResponse = await axios.post('http://localhost:8000/api/checkout', {
+  //       userId: _id,
+  //       cartProducts,
+  //       billingDetails: billingValues,
+  //       deliveryMethod: "Express Delivery",
+  //       totalBillAmount: totalAmount,
+  //     });
+  
+  //     const { orderId } = orderResponse.data; // Assuming orderId is returned from backend
+  
+  //     console.log('Order placed successfully:', orderResponse.data);
+  
+  //     // Store orderId in localStorage or state
+  //     localStorage.setItem('orderId', orderId); // Example: Storing orderId in localStorage
+  
+  //     // Clearing local storage for billing info
+  //     localStorage.removeItem('billingInfo');
+  
+  //     dispatch(setOrderedProductsInCart([]));
+  //     dispatch(setOrderedProductsInOrderSlice(cartProducts));
+  
+  //     toast.success('Order placed successfully');
+  //     setTimeout(() => {
+  //       navigate("/order-summary");
+  //     }, 5000);
+  //   } catch (error) {
+  //     console.error("Error placing order:", error);
+  //     toast.error("Error placing order");
+  //   }
+  // };
+  
+
   const handleApplyCoupon = (couponValue) => {
     console.log('Applying coupon:', couponValue);
   };
