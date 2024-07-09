@@ -311,7 +311,7 @@ export const mobileNavData = [
   },
   {
     name: "My Order",
-    link: "/order-summary",
+    link: "/order/:userId",
     icon: "bag",
     requiteSignIn: true,
   },

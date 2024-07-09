@@ -1,0 +1,661 @@
+@import "../../../Styles/fonts.css";
+
+.orderDetails {
+  margin: 15px auto;
+  font-family: "Inter";
+  src: url("../Fonts/Inter/Inter-Regular.ttf"), format("ttf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+
+  h2 {
+    font-size: 1.3rem;
+    padding: 10px;
+    font-family: "Inter";
+    src: url("../Fonts/Inter/Inter-Regular.ttf"), format("ttf");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+    text-align: center;
+  }
+
+  .billingInfo,
+  .productDetails {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .billingInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px; 
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1); // Added border
+
+    p {
+      margin: 5px 0;
+      font-size: 1rem;
+
+      span {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .productDetails {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .product {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.1); // Added border
+      padding: 10px; // Added padding to separate the content from the border
+
+      img {
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .productInfo {
+        flex: 1;
+
+        h4 {
+          margin: 0 0 10px;
+          font-size: .9rem;
+          font-family: Poppins;
+        }
+
+        p {
+          margin: 5px 0;
+          font-size: 0.9rem;
+          color: gray;
+
+          span {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgba(8, 8, 8, 0.812);
+          }
+
+          .description {
+            font-size: 0.9rem;
+            font-family: "Inter";
+            src: url("../Fonts/Inter/Inter-Regular.ttf"), format("ttf");
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+          }
+        }
+      }
+    }
+    // button {
+    //   background: #28a745;
+    //   color: #fff;
+    //   border: none;
+    //   padding: 5px 8px;
+    //   margin-right: 10px;
+    //   border-radius: 4px;
+    //   font-size: 10px;
+    //   cursor: pointer;
+    //   transition: background 0.3s;
+
+    //   &:hover {
+    //     background: #218838;
+    //   }
+
+    //   &:last-child {
+    //     background: #007bff;
+
+    //     &:hover {
+    //       background: #0056b3;
+    //     }
+    //   }
+    // }
+    .pagination {
+      grid-column: span 2;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin: 0 5px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s;
+
+        &:hover {
+          background: #0056b3;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 2560px) {
+  .orderDetails {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .billingInfo,
+    .productDetails {
+      flex-direction: column;
+      align-items: flex-start;  
+    }
+
+    .billingInfo {
+      gap: 10px;
+
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+      }
+    }
+    .billingInfo {
+
+      p {
+        font-size: 0.8rem;
+      }
+      p span {
+        font-size: 0.8rem;
+      }
+    }
+    button {
+      background: #28a745;
+      color: #fff;
+      font-size: 8px;
+      border: none;
+      padding: 5px 8px;
+      margin-right: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #218838;
+      }
+
+      &:last-child {
+        background: #007bff;
+
+        &:hover {
+          background: #0056b3;
+        }
+      }
+    }
+    .productDetails {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+
+      .product {
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        img {
+          width: 100px;
+          height: 100px;
+          margin-bottom: 10px;
+        }
+
+        .productInfo {
+          h4 {
+            font-size: .8rem;
+            font-weight: 400;
+          }
+
+          p {
+            font-size: 0.8rem;
+          }
+          p span {
+            font-size: 0.8rem;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1500px) {
+  .orderDetails {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .billingInfo,
+    .productDetails {
+      flex-direction: column;
+      align-items: flex-start;  
+    }
+
+    .billingInfo {
+      gap: 10px;
+
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+      }
+    }
+    .billingInfo {
+
+      p {
+        font-size: 0.8rem;
+      }
+      p span {
+        font-size: 0.8rem;
+      }
+    }
+    button {
+      background: #28a745;
+      color: #fff;
+      font-size: 8px;
+      border: none;
+      padding: 5px 8px;
+      margin-right: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #218838;
+      }
+
+      &:last-child {
+        background: #007bff;
+
+        &:hover {
+          background: #0056b3;
+        }
+      }
+    }
+    .productDetails {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+
+      .product {
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        img {
+          width: 100px;
+          height: 100px;
+          margin-bottom: 10px;
+        }
+
+        .productInfo {
+          h4 {
+            font-size: 9px;
+            font-weight: 500;
+          }
+
+          p {
+            font-size: 0.5rem;
+          }
+          p span {
+            font-size: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1200px) {
+  .orderDetails {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .billingInfo,
+    .productDetails {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .billingInfo {
+      gap: 10px;
+
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+      }
+    }
+    .billingInfo {
+
+      p {
+        font-size: 0.8rem;
+      }
+      p span {
+        font-size: 0.8rem;
+      }
+    }
+    button {
+      background: #28a745;
+      color: #fff;
+      font-size: 8px;
+      border: none;
+      padding: 5px 8px;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #218838;
+      }
+
+      &:last-child {
+        background: #007bff;
+
+        &:hover {
+          background: #0056b3;
+        }
+      }
+    }
+    .productDetails {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      .product {
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        img {
+          width: 100px;
+          height: 100px;
+          margin-bottom: 10px;
+        }
+
+        .productInfo {
+          h4 {
+            font-size: 9px;
+            font-weight: 500;
+          }
+
+          p {
+            font-size: 0.5rem;
+          }
+          p span {
+            font-size: 0.5rem;
+          }
+        }
+      
+      }
+    }
+  }
+}
+
+@media (max-width: 968px) {
+  .orderDetails {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .billingInfo,
+    .productDetails {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .billingInfo {
+      gap: 10px;
+
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+      }
+    }
+    .billingInfo {
+
+      p {
+        font-size: 0.8rem;
+      }
+      p span {
+        font-size: 0.8rem;
+      }
+    }
+    button {
+      background: #28a745;
+      color: #fff;
+      font-size: 8px;
+      border: none;
+      width: 100%;
+      padding: 5px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #218838;
+      }
+
+      &:last-child {
+        background: #007bff;
+
+        &:hover {
+          background: #0056b3;
+        }
+      }
+    }
+    .productDetails {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+
+      .product {
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        img {
+          width: 100px;
+          height: 100px;
+          margin-bottom: 10px;
+        }
+
+        .productInfo {
+          h4 {
+            font-size: 9px;
+            font-weight: 500;
+          }
+
+          p {
+            font-size: 0.5rem;
+          }
+          p span {
+            font-size: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .orderDetails {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .billingInfo,
+    .productDetails {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .billingInfo {
+      gap: 10px;
+
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+      }
+    }
+    .billingInfo {
+
+      p {
+        font-size: 0.8rem;
+      }
+      p span {
+        font-size: 0.8rem;
+      }
+    }
+
+    button {
+      background: #28a745;
+      color: #fff;
+      font-size: 8px;
+      border: none;
+      padding: 5px 8px;
+      margin-right: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #218838;
+      }
+
+      &:last-child {
+        background: #007bff;
+
+        &:hover {
+          background: #0056b3;
+        }
+      }
+    }
+    .productDetails {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+
+      .product {
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        img {
+          width: 100px;
+          height: 100px;
+          margin-bottom: 10px;
+        }
+
+        .productInfo {
+          h4 {
+            font-size: 9px;
+            font-weight: 500;
+          }
+
+          p {
+            font-size: 0.5rem;
+          }
+          p span {
+            font-size: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 580px) {
+  .orderDetails {
+    h2 {
+      font-size: 1.25rem;
+    }
+
+    .billingInfo,
+    .productDetails {
+      flex-direction: column;
+    }
+
+    .billingInfo {
+
+      p {
+        font-size: 0.7rem;
+      }
+      p span {
+        font-size: 0.7rem;
+      }
+    }
+    button {
+      background: #28a745;
+      color: #fff;
+      font-size: 8px;
+      border: none;
+      padding: 5px 8px;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #218838;
+      }
+
+      &:last-child {
+        background: #007bff;
+
+        &:hover {
+          background: #0056b3;
+        }
+      }
+    }
+    .productDetails {
+      .product {
+        flex-direction: column;
+        align-items: center;
+
+        img {
+          width: 100px;
+          height: 100px;
+        }
+
+        .productInfo {
+          h4 {
+            font-size: 9px;
+            font-weight: 500;
+          }
+
+          p {
+            font-size: 0.5rem;
+          }
+          p span {
+            font-size: 0.5rem;
+          }
+        }
+      }
+    }
+    
+  }
+}
+

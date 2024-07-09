@@ -77,6 +77,7 @@ if (initialStateLocal && initialStateLocal !== 'undefined') {
 //     }
 //   }
 // );
+// Async thunk for user login
 export const loginUser = createAsyncThunk(
   'user/loginUser',
   async ({ email, password, role }, { rejectWithValue, dispatch }) => {
@@ -84,7 +85,7 @@ export const loginUser = createAsyncThunk(
       const endpoint = role === 'admin' ? 'admin/login' : 'auth/login';
       const response = await axios.post(`http://localhost:8000/${endpoint}`, { email, password });
       const userData = response.data.user;
-      dispatch(setLoginData({ ...userData, role })); // Dispatch action to set login data
+      dispatch(setLoginData(userData)); // Dispatch action to set login data
       return userData;
     } catch (error) {
       return rejectWithValue(error.response.data.message || 'Login failed');
@@ -100,7 +101,8 @@ export const signUpUser = createAsyncThunk(
       const response = await axios.post('http://localhost:8000/auth/signup', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      return response.data.user;
+      const userData = response.data.user;
+      return userData;
     } catch (error) {
       return rejectWithValue(error.response.data.message || 'Failed to sign up');
     }

@@ -314,49 +314,55 @@ app.post('/api/user/save-billing', async (req, res) => {
 
 
 
-
-// POST endpoint for checkout
+// POST /api/checkout
 app.post('/api/checkout', async (req, res) => {
+  const { userId, cartProducts, billingDetails, deliveryMethod, totalBillAmount } = req.body;
+
+  // Validate incoming data
+  if (!userId || !Array.isArray(cartProducts) || cartProducts.length === 0 || !billingDetails || !deliveryMethod || !totalBillAmount) {
+    return res.status(400).json({ message: 'Invalid request data' });
+  }
+
+  // Create a new order instance
+  const newOrder = new Order({
+    userId,
+    orderedProducts: cartProducts,
+    billingInfo: billingDetails,
+    totalProducts: cartProducts.length,
+    deliveryMethod,
+    totalBillAmount,
+    paymentMethod: 'Credit Card', // Assuming a payment method, adjust as needed
+  });
+
   try {
-    const {
-      userId,
-      cartProducts,
-      billingDetails,
-      deliveryMethod,
-      totalBillAmount, // Ensure totalBillAmount is received from frontend
-    } = req.body;
-
-    // Create new order instance
-    const newOrder = new Order({
-      userId,
-      orderedProducts: cartProducts,
-      billingInfo: billingDetails,
-      totalProducts: cartProducts.length,
-      deliveryMethod,
-      totalBillAmount, // Include totalBillAmount in the order
-    });
-
-    // Save the order to MongoDB
-    await newOrder.save();
-
-    res.status(201).json({ message: 'Order placed successfully', order: newOrder });
+    // Save the new order to the database
+    const savedOrder = await newOrder.save();
+    res.status(201).json({ orderId: savedOrder._id, message: 'Order created successfully' });
   } catch (error) {
-    console.error('Error placing order:', error);
-    res.status(500).json({ error: 'Error placing order' });
+    console.error('Error creating order:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
+// GET order details by userId
+app.get('/api/order/:userId', async (req, res) => {
+  const userId = req.params.userId;
 
-app.get('/api/orders', async (req, res) => {
-  const { userId } = req.query;
   try {
-    const orders = await Order.find({ userId }).sort({ date: -1 });
-    res.json(orders);
-  } catch (err) {
-    console.error('Error fetching order summary:', err);
-    res.status(500).json({ error: 'Server error' });
+    // Fetch order details from database based on userId
+    const orders = await Order.find({ userId });
+
+    if (!orders) {
+      return res.status(404).json({ message: 'No orders found' });
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Failed to fetch orders:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 
 
 
@@ -1027,6 +1033,22 @@ app.get('/:orderId', async (req, res) => {
   }
 });
 
+// Update order status
+app.put('/orders/:orderId/status', async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+
+  try {
+    const order = await Order.findByIdAndUpdate(orderId, { status }, { new: true });
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    res.json(order);
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 //-----------------------------------------Products--------------------------------------------->
 
 

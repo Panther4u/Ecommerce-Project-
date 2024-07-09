@@ -92,7 +92,7 @@ export const ROUTES_CONFIG = [
   { path: "/signup", element: <SignUp /> },
   { path: "/adminsignup", element: <AdminSignup /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },
-  { path: "/order-summary", element: <OrderSummaryPage /> },
+  { path: "/order/:userId", element: <OrderSummaryPage /> },
   { path: "/login", element: <LogIn /> },
   { path: "/profile", element: <AccountPage /> },
   { path: "/search", element: <SearchPage /> },

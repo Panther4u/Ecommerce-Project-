@@ -32,7 +32,7 @@ const UserMenu = ({ isActive, toggler }) => {
         </NavLink>
       )}
 
-      <NavLink to="/order-summary">
+      <NavLink to="/order/:userId">
         <SvgIcon name="cart" />
         <span>My Order</span>
       </NavLink>
