@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -16,7 +16,7 @@ import PagesHistory from '../Shared/MiniComponents/PagesHistory/PagesHistory';
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { _id } = useSelector((state) => state.user.loginInfo);
+  const { userId } = useSelector((state) => state.user.loginInfo);
   const { cartProducts } = useSelector((state) => state.products);
 
   const [billingValues, setBillingValues] = useState({
@@ -40,7 +40,7 @@ const CheckoutPage = () => {
 
   const handleSaveBillingInfo = async () => {
     try {
-      await dispatch(saveBillingInfo({ _id, ...billingValues })).unwrap();
+      await dispatch(saveBillingInfo({ userId, ...billingValues })).unwrap();
       console.log('Billing information saved successfully');
       toast.success('Billing information saved successfully');
     } catch (error) {
@@ -71,7 +71,7 @@ const CheckoutPage = () => {
       }
 
       const orderResponse = await axios.post('http://localhost:8000/api/checkout', {
-        userId: _id,
+        userId: userId,
         cartProducts,
         billingDetails: billingValues,
         deliveryMethod: "Express Delivery",
@@ -91,7 +91,8 @@ const CheckoutPage = () => {
 
       toast.success('Order placed successfully');
       setTimeout(() => {
-        navigate(`/order/${_id}`); // Navigate to order summary with user ID
+        navigate(`/order/${userId}`); // Navigate to order summary with user ID
+        // navigate(`/order-summary`); // Navigate to order summary with user ID
       }, 5000);
     } catch (error) {
       console.error("Error placing order:", error);

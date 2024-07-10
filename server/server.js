@@ -18,6 +18,7 @@ const fs = require('fs');
 const { User, Coupon } = require('./model/User'); 
 const Order = require('./model/orderModel');
 const Admin = require('./model/Admin');
+const isAdmin = require('./Middleware/isAdmin');
 
 
 // Create Express app
@@ -279,16 +280,16 @@ app.get("/api/user/save-billing", async (req, res) => {
 
 
 app.post('/api/user/save-billing', async (req, res) => {
-  const { _id, firstName, streetAddress, townCity, apartment, pincode, mobileNumber } = req.body;
+  const { userId, firstName, streetAddress, townCity, apartment, pincode, mobileNumber } = req.body;
 
   try {
     // Validate _id is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(_id)) {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ error: 'Invalid userId format' });
     }
 
     // Find user by userId and update billing information
-    const user = await User.findById(_id);
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -313,6 +314,84 @@ app.post('/api/user/save-billing', async (req, res) => {
 });
 
 
+// // POST /api/user/save-billing
+// app.post('/api/user/save-billing', async (req, res) => {
+//   const { userId, firstName, streetAddress, townCity, apartment, pincode, mobileNumber } = req.body;
+
+//   try {
+//     // Validate userId is a valid ObjectId
+//     if (!mongoose.Types.ObjectId.isValid(userId)) {
+//       return res.status(400).json({ error: 'Invalid userId format' });
+//     }
+
+//     // Check if the user exists in both User and Admin collections
+//     let user = await User.findById(userId);
+//     let admin = await Admin.findById(userId);
+
+//     if (!user && !admin) {
+//       return res.status(404).json({ error: 'User or admin not found' });
+//     }
+
+//     // Determine whether the entity is a user or admin
+//     let entity = user || admin;
+
+//     // Update user/admin's billing information
+//     entity.firstName = firstName;
+//     entity.streetAddress = streetAddress;
+//     entity.townCity = townCity;
+//     entity.apartment = apartment;
+//     entity.pincode = pincode;
+//     entity.mobileNumber = mobileNumber;
+
+//     // Save updated entity (either user or admin)
+//     await entity.save();
+
+//     // Respond with success message
+//     res.status(200).json({ message: 'Billing information saved successfully' });
+//   } catch (error) {
+//     console.error('Error saving billing information:', error);
+//     res.status(500).json({ message: 'Error saving billing information' });
+//   }
+// });
+
+// // POST /api/checkout
+// app.post('/api/checkout', async (req, res) => {
+//   const { userId, cartProducts, billingDetails, deliveryMethod, totalBillAmount } = req.body;
+
+//   // Validate incoming data
+//   if (!userId || !Array.isArray(cartProducts) || cartProducts.length === 0 || !billingDetails || !deliveryMethod || !totalBillAmount) {
+//     return res.status(400).json({ message: 'Invalid request data' });
+//   }
+
+//   try {
+//     // Check if the user or admin exists
+//     const user = await User.findById(userId);
+//     const admin = await Admin.findById(userId); // Assuming admin has separate model/schema
+
+//     if (!user && !admin) {
+//       return res.status(404).json({ message: 'User or admin not found' });
+//     }
+
+//     // Create a new order instance
+//     const newOrder = new Order({
+//       userId,
+//       orderedProducts: cartProducts,
+//       billingInfo: billingDetails,
+//       totalProducts: cartProducts.length,
+//       deliveryMethod,
+//       totalBillAmount,
+//       paymentMethod: 'Credit Card', // Assuming a payment method, adjust as needed
+//     });
+
+//     // Save the new order to the database
+//     const savedOrder = await newOrder.save();
+
+//     res.status(201).json({ orderId: savedOrder._id, message: 'Order created successfully' });
+//   } catch (error) {
+//     console.error('Error creating order:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 
 // POST /api/checkout
 app.post('/api/checkout', async (req, res) => {
@@ -344,25 +423,60 @@ app.post('/api/checkout', async (req, res) => {
   }
 });
 
-// GET order details by userId
+// Example backend route to fetch orders by user ID
 app.get('/api/order/:userId', async (req, res) => {
   const userId = req.params.userId;
 
   try {
-    // Fetch order details from database based on userId
-    const orders = await Order.find({ userId });
-
-    if (!orders) {
-      return res.status(404).json({ message: 'No orders found' });
-    }
-
-    res.status(200).json(orders);
+    // Retrieve orders from your database or another data source
+    const orders = await Order.find({ userId }).populate('orderedProducts');
+    res.json(orders);
   } catch (error) {
     console.error('Failed to fetch orders:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Failed to fetch orders' });
   }
 });
 
+// Route to fetch orders by userId
+app.get('/api/order/:userId', async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const orders = await Order.find({ userId }).populate('orderedProducts.id', 'name img'); // Populate products with name and img
+    res.json(orders);
+  } catch (error) {
+    console.error('Failed to fetch orders:', error);
+    res.status(500).json({ error: 'Failed to fetch orders' });
+  }
+});
+
+// Route to update order status by orderId
+app.put('/api/orders/:orderId/status', async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    );
+    res.json(updatedOrder);
+  } catch (error) {
+    console.error('Failed to update order status:', error);
+    res.status(500).json({ error: 'Failed to update order status' });
+  }
+});
+
+// Route to fetch product details for multiple productIds
+app.post('/api/products/details', async (req, res) => {
+  const { productIds } = req.body;
+  try {
+    const products = await Order.find({ id: { $in: productIds } });
+    res.json(products);
+  } catch (error) {
+    console.error('Failed to fetch product details:', error);
+    res.status(500).json({ error: 'Failed to fetch product details' });
+  }
+});
 
 
 
@@ -482,9 +596,9 @@ app.post('/auth/login', async (req, res) => {
 
     entity.lastLogin = new Date();
     await entity.save();
-    token = generateToken(entity._id);
+    token = generateToken(entity.userId);
     userData = {
-      _id: entity._id,
+      userId: entity.userId,
       username: entity.username,
       email: entity.email,
       mobileNumber: entity.mobileNumber,
@@ -503,6 +617,61 @@ app.post('/auth/login', async (req, res) => {
   }
 });
 
+
+// app.post('/auth/login', async (req, res) => {
+//   const { email, password } = req.body;
+  
+//   try {
+//     // First, try to find a User with the provided email
+//     let entity = await User.findOne({ email });
+
+//     // If no User found, check if the email belongs to an Admin
+//     if (!entity) {
+//       entity = await Admin.findOne({ email });
+//       if (!entity) {
+//         return res.status(400).json({ message: 'Invalid credentials' });
+//       }
+//     }
+
+//     // Verify the password
+//     const isMatch = await bcrypt.compare(password, entity.password);
+//     if (!isMatch) {
+//       return res.status(400).json({ message: 'Invalid credentials' });
+//     }
+
+//     // Update last login timestamp
+//     entity.lastLogin = new Date();
+//     await entity.save();
+
+//     // Prepare user data to send in response
+//     const userData = {
+//       userId: entity.userId, // Assuming userId is a common field between User and Admin
+//       username: entity.username,
+//       email: entity.email,
+//       mobileNumber: entity.mobileNumber,
+//       streetAddress: entity.streetAddress,
+//       townCity: entity.townCity,
+//       pincode: entity.pincode,
+//       profileImage: entity.profileImage,
+//       lastLogin: entity.lastLogin,
+//       role: entity instanceof User ? 'user' : 'admin', // Check the instance to determine the role
+//     };
+
+//     // Generate token using userId
+//     const token = generateToken(entity.userId);
+
+//     // Send response with user data and token
+//     res.json({ user: userData, token });
+//   } catch (error) {
+//     console.error('Login error:', error);
+//     res.status(500).json({ message: 'An error occurred during login. Please try again.' });
+//   }
+// });
+
+// // Function to generate JWT token
+// function generateToken(userId) {
+//   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Adjust expiration as needed
+// }
 
 
 app.put('/api/user', upload.single('profileImage'), async (req, res) => {
@@ -971,19 +1140,18 @@ app.delete('/api/users/:userId', async (req, res) => {
 //-----------------------------------------Orders--------------------------------------------->
 
 
-// GET endpoint to fetch all orders for a specific user
-app.get('/api/orders', async (req, res) => {
-  const { userId } = req.query; // Get userId from query parameters
+// GET all orders
+app.get('/api/orders/all', async (req, res) => {
   try {
-    const orders = await Order.find({ userId }).sort({ createdAt: -1 }); // Fetch orders by userId and sort by creation date
-    res.status(200).json(orders); // Respond with JSON array of orders
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.status(200).json(orders);
   } catch (error) {
-    console.error('Error fetching orders:', error);
+    console.error('Error fetching all orders:', error);
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
 });
 
-// DELETE endpoint to delete an order by orderId
+// DELETE an order by orderId
 app.delete('/api/orders/:orderId', async (req, res) => {
   const { orderId } = req.params;
   try {
@@ -998,7 +1166,7 @@ app.delete('/api/orders/:orderId', async (req, res) => {
 app.get('/api/orders/:id', async (req, res) => {
   try {
     const orderId = req.params.id;
-    const order = await Order.findById(orderId).populate('orderedProducts'); // Assuming orderedProducts is an array of references to product documents
+    const order = await Order.findById(orderId).populate('orderedProducts'); // Assuming orderedProducts is populated
 
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
@@ -1008,28 +1176,6 @@ app.get('/api/orders/:id', async (req, res) => {
   } catch (error) {
     console.error('Error fetching order details:', error);
     res.status(500).json({ message: 'Error fetching order details' });
-  }
-});
-
-// GET order details by ID
-app.get('/:orderId', async (req, res) => {
-  const { orderId } = req.params;
-
-  try {
-    if (!mongoose.Types.ObjectId.isValid(orderId)) {
-      return res.status(400).json({ error: 'Invalid Order ID' });
-    }
-
-    const order = await Order.findById(orderId);
-
-    if (!order) {
-      return res.status(404).json({ error: 'Order not found' });
-    }
-
-    res.status(200).json(order);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server error' });
   }
 });
 

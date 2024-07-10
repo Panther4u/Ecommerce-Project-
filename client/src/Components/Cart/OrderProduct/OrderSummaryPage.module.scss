@@ -1,0 +1,469 @@
+@import "../../../Styles/fonts.css";
+
+.orderDetails {
+  margin: 15px auto;
+  font-family: "Inter";
+  src: url("../Fonts/Inter/Inter-Regular.ttf"), format("ttf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  height: 100vh;
+}
+.orderDetails h2 {
+  font-size: 1.3rem;
+  padding: 10px;
+  font-family: "Inter";
+  src: url("../Fonts/Inter/Inter-Regular.ttf"), format("ttf");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.orderDetails .productDetails  {
+  padding: 10px;
+  
+}
+.orderDetails .productDetails .product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  text-align: start;
+  gap: 20px;
+  padding: 15px;
+}
+
+.orderDetails .productDetails .product img {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 0;
+  padding: 0;
+  right: 0;
+  overflow: hidden;
+  margin-left: 20px;
+}
+
+.orderDetails .productDetails .product .productInfo {
+  flex: 1;
+}
+
+.orderDetails .productDetails .product .productInfo h4 {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+    font-family: "Rubik";
+  src: url("../Fonts/Rubik/Rubik-SemiBold.ttf"), format("ttf");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+.orderDetails .productDetails .product .productInfo p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: gray;
+  font-family: "Poppins";
+  src: url("../Fonts/Poppins/Poppins-Light.ttf"), format("ttf");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.orderDetails .productDetails .product .productInfo p span {
+  font-size: 0.5rem;
+  color: rgba(8, 8, 8, 0.812);
+  font-family: "Rubik";
+  src: url("../Fonts/Rubik/Rubik-SemiBold.ttf"), format("ttf");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+.orderDetails .productDetails .product .productInfo p .description {
+  font-size: 0.9rem;
+  font-family: "Poppins";
+  src: url("../Fonts/Poppins/Poppins-Light.ttf"), format("ttf");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.orderDetails .productDetails .product .productInfo p .view {
+  
+}
+
+@media (max-width: 2560px) {
+  .orderDetails h2 {
+    font-size: 1.25rem;
+    display: flex;
+    margin-left: 10px;
+    color: gray;
+  }
+
+  .orderDetails .productDetails {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .orderDetails .productDetails .product {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .orderDetails .productDetails .product img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: -0.5px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-right: 3px;
+    color: black;
+  }
+
+  .orderDetails .productDetails .product .productInfo p {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p span {
+    font-size: 0.5rem;
+  }
+  .orderDetails .productDetails .product .productInfo p .view {
+    font-size: 6px;
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 1500px) {
+  .orderDetails h2 {
+    font-size: 1.25rem;
+    display: flex;
+    margin-left: 10px;
+    color: gray;
+  }
+
+  .orderDetails .productDetails {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .orderDetails .productDetails .product {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .orderDetails .productDetails .product img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: -0.5px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-right: 3px;
+    color: black;
+  }
+
+  .orderDetails .productDetails .product .productInfo p {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p span {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p .view {
+    font-size: 6px;
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 1200px) {
+  .orderDetails h2 {
+    font-size: 1.25rem;
+    display: flex;
+    margin-left: 10px;
+    color: gray;
+  }
+
+  .orderDetails .productDetails {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .orderDetails .productDetails .product {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .orderDetails .productDetails .product img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: -0.5px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-right: 3px;
+    color: black;
+  }
+
+  .orderDetails .productDetails .product .productInfo p {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p span {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p .view {
+    font-size: 6px;
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 968px) {
+  .orderDetails h2 {
+    font-size: 1.25rem;
+    display: flex;
+    margin-left: 10px;
+    color: gray;
+  }
+
+  .orderDetails .productDetails {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .orderDetails .productDetails .product {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .orderDetails .productDetails .product img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: -0.5px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-right: 3px;
+    color: black;
+  }
+
+  .orderDetails .productDetails .product .productInfo p {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p span {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p .view {
+    font-size: 6px;
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 768px) {
+  .orderDetails h2 {
+    font-size: 1.25rem;
+    display: flex;
+    margin-left: 10px;
+    color: gray;
+  }
+
+  .orderDetails .productDetails {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .orderDetails .productDetails .product {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: start;
+    gap: 20px;
+  }
+
+  .orderDetails .productDetails .product img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: -0.5px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-right: 3px;
+    color: black;
+  }
+
+  .orderDetails .productDetails .product .productInfo p {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p span {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p .view {
+    font-size: 8px;
+    text-decoration: underline;
+  }
+}
+@media (max-width: 580px) {
+  .orderDetails h2 {
+    font-size: 1.25rem;
+    display: flex;
+    margin-left: 10px;
+    color: gray;
+  }
+
+  .orderDetails .productDetails {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .orderDetails .productDetails .product {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: start;
+    gap: 20px;
+  }
+
+  .orderDetails .productDetails .product img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: -0.5px;
+  }
+
+  .orderDetails .productDetails .product .productInfo h4 span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-right: 3px;
+    color: black;
+  }
+
+  .orderDetails .productDetails .product .productInfo p {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p span {
+    font-size: 0.5rem;
+  }
+
+  .orderDetails .productDetails .product .productInfo p .view {
+    font-size: 6px;
+    text-decoration: underline;
+  }
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.welcomeMessage {
+  font-weight: 400;
+  font-size: .875rem;
+}
+
+.welcomeMessage>a {
+  outline: none;
+  color: var(--dark-tomato);
+  position: relative;
+
+  &:hover,
+  &:focus {
+    color: var(--tomato);
+  }
+
+  &:focus::before {
+    width: 100%;
+  }
+}
+
+.welcomeMessage>a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background-color: var(--tomato);
+  transition: width .3s;
+}
+
+.welcomeMessage>a:hover::before {
+  width: 100%;
+}
+
+.accountPageContent {
+  display: flex;
+  justify-content: start;
+  margin: var(--page-margin);
+  gap: 3px;
+}

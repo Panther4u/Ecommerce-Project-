@@ -64,7 +64,6 @@
 
 // export default OrderProduct;
 
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
@@ -100,7 +99,7 @@ const OrderProduct = () => {
       console.log(`Updating order status to ${newStatus} for order ID ${orderId}`);
       const response = await axios.put(`http://localhost:8000/api/orders/${orderId}/status`, { status: newStatus });
       console.log('Response:', response.data);
-      setOrder(response.data);
+      setOrder({ ...order, status: newStatus }); // Update order status in local state
       toast.success('Order status updated successfully');
     } catch (error) {
       console.error('Error updating order status:', error);
@@ -115,11 +114,17 @@ const OrderProduct = () => {
     <div className="orderDetails">
       <h2>Order Details</h2>
       <div className="billingInfo">
-        <p><span>Name:</span> {order.billingInfo.name}</p>
-        <p><span>Address:</span> {order.billingInfo.streetAddress}, {order.billingInfo.townCity}</p>
-        <p><span>Apartment:</span> {order.billingInfo.apartment}</p>
-        <p><span>Pincode:</span> {order.billingInfo.pincode}</p>
-        <p><span>Mobile:</span> {order.billingInfo.mobileNumber}</p>
+        <div>
+          <p><span>Name:</span> {order.billingInfo.firstName}</p>
+          <p><span>Address:</span> {order.billingInfo.streetAddress}, {order.billingInfo.townCity}</p>
+          <p><span>Apartment:</span> {order.billingInfo.apartment}</p>
+          <p><span>Pincode:</span> {order.billingInfo.pincode}</p>
+          <p><span>Mobile:</span> {order.billingInfo.mobileNumber}</p>
+        </div>
+        <div>
+          <p><span>Total Bill Amount:</span>Rs. {order.totalBillAmount}</p>
+          <p><span>Status: </span> <span className={`status-${order.status.toLowerCase()}`}>{order.status}</span></p>
+        </div>
       </div>
       <div className="productDetails">
         {order.orderedProducts.map(product => (
@@ -130,8 +135,17 @@ const OrderProduct = () => {
               <p><span>Price: Rs.</span> {product.price} </p>
               <p><span>Quantity:</span> {product.quantity}</p>
               <p><span>Color:</span> {product.colors[0].name}</p>
-              <button onClick={() => updateOrderStatus('Shipped')}>Mark as Shipped</button>
-              <button onClick={() => updateOrderStatus('Delivered')}>Mark as Delivered</button>
+              <p><span>Status: </span> <span className={`status-${order.status.toLowerCase()}`}>{order.status}</span></p>
+              {/* Button to update order status */}
+              {order.status === 'Pending' && (
+                <>
+                  <button className="button-primary" onClick={() => updateOrderStatus('Shipped')}>Mark as Shipped</button>
+                  <button className="button-success"onClick={() => updateOrderStatus('Delivered')}>Mark as Delivered</button>
+                </>
+              )}
+              {order.status === 'Shipped' && (
+                <button className="button-danger" onClick={() => updateOrderStatus('Delivered')}>Mark as Delivered</button>
+              )}
             </div>
           </div>
         ))}

@@ -105,16 +105,15 @@
 
 // export default EditProfileForm;
 
-
 import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProfile } from 'src/Features/userSlice';
+import { updateProfile } from '../../../Features/userSlice'; // Adjust path based on your project structure
 import EditProfileInputs from './EditProfileInputs';
 import ProfileFormButtons from './ProfileFormButtons';
 import Avatar from '@mui/material/Avatar';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import s from './EditProfileForm.module.scss';
+import s from './EditProfileForm.module.scss'; // Adjust path based on your project structure
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -128,7 +127,7 @@ const EditProfileForm = () => {
     if (loginInfo && loginInfo.profileImage) {
       setImagePreview(`http://localhost:8000/${loginInfo.profileImage}`);
     } else {
-      setImagePreview('src/Assets/Images/Avatar.jpg'); // Replace with your default image path
+      setImagePreview('/src/Assets/Images/Avatar.jpg'); // Adjust default image path based on your project structure
     }
   }, [loginInfo]);
 
@@ -153,7 +152,7 @@ const EditProfileForm = () => {
     }
 
     try {
-      await dispatch(updateProfile(formData));
+      await dispatch(updateProfile(formData)); // Dispatching updateProfile thunk
       toast.success('Profile updated successfully');
     } catch (error) {
       toast.error(error.message || 'Failed to update profile');

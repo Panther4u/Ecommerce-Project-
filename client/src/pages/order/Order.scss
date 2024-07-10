@@ -18,8 +18,42 @@
   display: flex;
   flex-direction: row;
   gap: 8px; /* Adjust the gap as needed */
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 .billingInfo span {
   display: block;
+}
+.status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.pending {
+  background-color: yellow;
+  color: black;
+}
+
+.processing {
+  background-color: orange;
+  color: white;
+}
+
+.shipped {
+  background-color: #007bff;
+  color: white;
+}
+
+.delivered {
+  background-color: green;
+  color: white;
+}
+
+.default {
+  background-color: lightgray;
+  color: black;
 }

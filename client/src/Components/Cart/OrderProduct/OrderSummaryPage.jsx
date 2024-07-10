@@ -59,107 +59,349 @@
 
 // export default OrderSummaryPage;
 
+// import React, { useEffect, useState } from 'react';
+// import { useParams } from 'react-router-dom';
+// import axios from 'axios';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { setLoginData } from '../../../Features/userSlice'; // Update path as per your folder structure
+// import './OrderSummaryPage.scss'; // Import styles as needed
+// import { toast } from 'react-toastify';
+// import PagesHistory from '../../Shared/MiniComponents/PagesHistory/PagesHistory';
+// import { Link } from '@mui/material';
+// import { useTranslation } from "react-i18next";
+
+// const OrderSummaryPage = () => {
+//   const { userId } = useParams();
+//   const [orders, setOrders] = useState([]);
+//   const [selectedOrderProducts, setSelectedOrderProducts] = useState(null);
+//   const [popupOpen, setPopupOpen] = useState(false);
+//   const { loginInfo } = useSelector((state) => state.user);
+//   const { t } = useTranslation();
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     const fetchOrders = async () => {
+//       try {
+//         const response = await axios.get(`http://localhost:8000/api/order/${userId}`);
+//         setOrders(response.data); // Assuming response.data is an array of orders
+//       } catch (error) {
+//         console.error('Failed to fetch orders:', error);
+//       }
+//     };
+
+//     fetchOrders();
+//   }, [userId]);
+
+//   const updateOrderStatus = async (orderId, newStatus) => {
+//     try {
+//       const response = await axios.put(`http://localhost:8000/api/orders/${orderId}/status`, { status: newStatus });
+//       const updatedOrders = orders.map(order => order._id === orderId ? { ...order, status: newStatus } : order);
+//       setOrders(updatedOrders);
+//     } catch (error) {
+//       console.error('Failed to update order status:', error);
+//     }
+//   };
+
+//   const handleProductClick = (orderedProducts) => {
+//     setSelectedOrderProducts(orderedProducts);
+//     setPopupOpen(true);
+//   };
+
+//   const handleCloseDetails = () => {
+//     setSelectedOrderProducts(null);
+//     setPopupOpen(false);
+//   };
+
+//   useEffect(() => {
+//     // Example of setting login data on page load (assuming you have a token or credentials)
+//     if (!loginInfo.userId && localStorage.getItem('userSliceData')) {
+//       const storedUserData = JSON.parse(localStorage.getItem('userSliceData')).loginInfo;
+//       dispatch(setLoginData(storedUserData));
+//     }
+//   }, [dispatch, loginInfo.userId]);
+
+//   return (
+//     <div className="orderDetails">
+      // <div className='wrapper'>
+      //   <PagesHistory history={["/", t("nav.profile")]} />
+
+      //   <p className='welcomeMessage'>
+      //     {t("common.welcome")}{"! "}
+      //     <Link to="/profile">{loginInfo.username}</Link>
+      //   </p>
+      // </div>
+//       <h2>Order Summary</h2>
+//       <div className="productDetails">
+//         {orders.map(order => (
+//           <div key={order._id} className="order">
+//             <div className="product">
+//               <img
+//                 src={order.orderedProducts.length > 0 ? order.orderedProducts[0].img : 'placeholder_image_url'}
+//                 alt={order.orderedProducts.length > 0 ? order.orderedProducts[0].name : 'Product'}
+//                 onClick={() => handleProductClick(order.orderedProducts)}
+//                 style={{ cursor: 'pointer' }}
+//               />
+//               <div className="productInfo">
+//                 <h4><span>Order ID:</span> {order._id}</h4>
+//                 <p><span>Total Bill Amount: Rs.</span>  {order.totalBillAmount}</p>
+//                 <p><span>Total Products:</span> {order.totalProducts}</p>
+//                 <p><span>Delivery Method:</span> {order.deliveryMethod}</p>
+//                 <p><span>Payment Method:</span> {order.paymentMethod}</p>
+//                 {order.status !== 'Delivered' && (
+//                   <>
+//                     <button onClick={() => updateOrderStatus(order._id, 'Shipped')}>Mark as Shipped</button>
+//                     <button onClick={() => updateOrderStatus(order._id, 'Delivered')}>Mark as Delivered</button>
+//                   </>
+//                 )}
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//       {popupOpen && selectedOrderProducts && (
+//         <div className="popup">
+//           <div className="productDetails">
+//             {selectedOrderProducts.map(product => (
+//               <div key={product._id} className="product">
+//                 <img src={product.img} alt={product.name} />
+//                 <div className="productInfo">
+//                   <h4>{product.name}</h4>
+//                   <p><span>Price: Rs.</span> {product.price} </p>
+//                   <p><span>Quantity:</span> {product.quantity}</p>
+//                   <p><span>Color:</span> {product.colors.length > 0 ? product.colors[0].name : 'N/A'}</p>
+//                 </div>
+//               </div>
+//             ))}
+//             <div className="closeBtn" onClick={handleCloseDetails}>
+//               <svg
+//                 xmlns="http://www.w3.org/2000/svg"
+//                 viewBox="0 0 24 24"
+//                 fill="none"
+//                 stroke="currentColor"
+//                 strokeWidth="2"
+//                 strokeLinecap="round"
+//                 strokeLinejoin="round"
+//                 className="feather feather-x"
+//               >
+//                 <line x1="18" y1="6" x2="6" y2="18" />
+//                 <line x1="6" y1="6" x2="18" y2="18" />
+//               </svg>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default OrderSummaryPage;
 
 
 
-// OrderSummaryPage.jsx
+// import React, { useEffect, useState } from 'react';
+// import { useParams } from 'react-router-dom';
+// import axios from 'axios';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { setLoginData } from '../../../Features/userSlice'; // Update path as per your folder structure
+// import './OrderSummaryPage.scss'; // Import styles as needed
+// import { toast } from 'react-toastify';
+// import PagesHistory from '../../Shared/MiniComponents/PagesHistory/PagesHistory';
+// import { Link } from '@mui/material';
+// import { useTranslation } from "react-i18next";
+
+// const OrderSummaryPage = () => {
+//   const { userId } = useParams();
+//   const [orders, setOrders] = useState([]);
+//   const { loginInfo } = useSelector((state) => state.user);
+//   const { t } = useTranslation();
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     const fetchOrders = async () => {
+//       try {
+//         const response = await axios.get(`http://localhost:8000/api/order/${userId}`);
+//         setOrders(response.data); // Assuming response.data is an array of orders
+//         console.error('fetch orders:', setOrders);
+//       } catch (error) {
+//         console.error('Failed to fetch orders:', error);
+//       }
+//     };
+
+//     fetchOrders();
+//   }, [userId]);
+
+//   const updateOrderStatus = async (orderId, newStatus) => {
+//     try {
+//       const response = await axios.put(`http://localhost:8000/api/orders/${orderId}/status`, { status: newStatus });
+//       const updatedOrders = orders.map(order => order._id === orderId ? { ...order, status: newStatus } : order);
+//       setOrders(updatedOrders);
+//     } catch (error) {
+//       console.error('Failed to update order status:', error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     // Example of setting login data on page load (assuming you have a token or credentials)
+//     if (!loginInfo.userId && localStorage.getItem('userSliceData')) {
+//       const storedUserData = JSON.parse(localStorage.getItem('userSliceData')).loginInfo;
+//       dispatch(setLoginData(storedUserData));
+//     }
+//   }, [dispatch, loginInfo.userId]);
+
+//   return (
+//     <div className="orderDetails">
+//       <div className='wrapper'>
+//         <PagesHistory history={["/", t("nav.profile")]} />
+
+//         <p className='welcomeMessage'>
+//           {t("common.welcome")}{"! "}
+//           <Link to="/profile">{loginInfo.username}</Link>
+//         </p>
+//       </div>
+//       <h2>Order Summary</h2>
+//       <div className="productDetails">
+//         {orders.map(order => (
+//           <div key={order._id} className="order">
+//             {/* <div className="product">
+//               <img
+//                 src={order.orderedProducts.length > 0 ? order.orderedProducts[0].img : 'placeholder_image_url'}
+//                 alt={order.orderedProducts.length > 0 ? order.orderedProducts[0].name : 'Product'}
+//                 style={{ cursor: 'pointer' }}
+//               />
+//               <div className="productInfo">
+//                 <h4><span>Order ID:</span> {order._id}</h4>
+//                 <p><span>Total Bill Amount: Rs.</span>  {order.totalBillAmount}</p>
+//                 <p><span>Total Products:</span> {order.totalProducts}</p>
+//                 <p><span>Delivery Method:</span> {order.deliveryMethod}</p>
+//                 <p><span>Payment Method:</span> {order.paymentMethod}</p>
+//                 {order.status !== 'Delivered' && (
+//                   <>
+//                     <button onClick={() => updateOrderStatus(order._id, 'Shipped')}>Mark as Shipped</button>
+//                     <button onClick={() => updateOrderStatus(order._id, 'Delivered')}>Mark as Delivered</button>
+//                   </>
+//                 )}
+//               </div>
+//             </div> */}
+//             <div className="orderedProducts">
+//               {order.orderedProducts.map(product => (
+//                 <div key={product._id} className="product">
+//                   <img src={product.img} alt={product.name} />
+//                   <div className="productInfo">
+//                     <h4>{product.name}</h4>
+//                     {/* <p><span>Price: Rs.</span> {product.price} </p> */}
+//                     <p><span>Order ID:</span> {order._id}</p>
+//                     {/* <p><span>Quantity:</span> {product.quantity}</p> */}
+//                     <p><span>Payment Method:</span> {order.paymentMethod}</p>
+//                     <p><Link to={`/orders/${order._id}`}>View Order Details</Link></p>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default OrderSummaryPage;
+
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import './OrderSummaryPage.scss'; // Make sure to use styles as required
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import PagesHistory from '../../Shared/MiniComponents/PagesHistory/PagesHistory';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import styles from './OrderSummaryPage.module.scss'; // Importing CSS Modules
 
 const OrderSummaryPage = () => {
-  const { userId } = useParams();
+  const { loginInfo } = useSelector((state) => state.user);
+  const { t } = useTranslation();
   const [orders, setOrders] = useState([]);
-  const [selectedOrderProducts, setSelectedOrderProducts] = useState(null); // State to manage selected order products
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/order/${userId}`);
-        setOrders(response.data); // Assuming response.data is an array of orders
+        if (!loginInfo.userId) {
+          console.error('No userId found in loginInfo');
+          return;
+        }
+
+        const response = await axios.get(`http://localhost:8000/api/order/${loginInfo.userId}`);
+        setOrders(response.data); // Set the fetched orders into state
+        console.log('Fetched orders:', response.data); // Optional: Log the fetched orders
       } catch (error) {
         console.error('Failed to fetch orders:', error);
+        toast.error('Failed to fetch orders');
       }
     };
 
-    fetchOrders();
-  }, [userId]);
-
-  const updateOrderStatus = async (orderId, newStatus) => {
-    try {
-      const response = await axios.put(`http://localhost:8000/api/orders/${orderId}/status`, { status: newStatus });
-      // Assuming response.data contains the updated order with new status
-      const updatedOrders = orders.map(order => {
-        if (order._id === orderId) {
-          return { ...order, status: newStatus }; // Update the status of the specific order
-        }
-        return order;
-      });
-      setOrders(updatedOrders); // Update the orders state with the updated order
-    } catch (error) {
-      console.error('Failed to update order status:', error);
+    if (loginInfo.userId) {
+      fetchOrders();
+    } else {
+      console.log('User not logged in');
+      // Handle the case where user is not logged in, maybe redirect or show a message
     }
-  };
-
-  const handleProductClick = (orderedProducts) => {
-    // Set selected order products to display details
-    setSelectedOrderProducts(orderedProducts);
-  };
-
-  const handleCloseDetails = () => {
-    // Close product details view
-    setSelectedOrderProducts(null);
-  };
+  }, [loginInfo.userId]);
 
   return (
-    <div className="orderDetails">
-      <h2>Order Summary</h2>
-      <div className="productDetails">
-        {orders.map(order => (
-          <div key={order._id} className="order">
-            <div className="product">
-              <img
-                src={order.orderedProducts.length > 0 ? order.orderedProducts[0].img : 'placeholder_image_url'}
-                alt={order.orderedProducts.length > 0 ? order.orderedProducts[0].name : 'Product'}
-                onClick={() => handleProductClick(order.orderedProducts)}
-                style={{ cursor: 'pointer' }}
-              />
-              <div className="productInfo">
-                <h4><span>Order ID:</span> {order._id}</h4>
-                <p><span>Total Bill Amount: Rs.</span>  {order.totalBillAmount}</p>
-                <p><span>Total Products:</span> {order.totalProducts}</p>
-                <p><span>Delivery Method:</span> {order.deliveryMethod}</p>
-                <p><span>Payment Method:</span> {order.paymentMethod}</p>
-                {order.status !== 'Delivered' && (
-                  <>
-                    <button onClick={() => updateOrderStatus(order._id, 'Shipped')}>Mark as Shipped</button>
-                    <button onClick={() => updateOrderStatus(order._id, 'Delivered')}>Mark as Delivered</button>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
+    <div className={styles.orderDetails}>
+      <div className={styles.wrapper}>
+        <PagesHistory history={['/', t('nav.profile')]} />
+
+        <p className={styles.welcomeMessage}>
+          {t('common.welcome')}{'! '}
+          <Link to="/profile">{loginInfo.username}</Link>
+        </p>
       </div>
-      {selectedOrderProducts && (
-        <div className="productDetails">
-          {selectedOrderProducts.map(product => (
-            <div key={product._id} className="product">
-              <img src={product.img} alt={product.name} />
-              <div className="productInfo">
-                <h4>{product.name}</h4>
-                <p><span>Price: Rs.</span> {product.price} </p>
-                <p><span>Quantity:</span> {product.quantity}</p>
-                <p><span>Color:</span> {product.colors.length > 0 ? product.colors[0].name : 'N/A'}</p>
+      <h2>Order Summary</h2>
+      <div className={styles.productDetails}>
+        {orders.length > 0 ? (
+          orders.map(order => (
+            <div key={order._id} className={styles.order}>
+              <div className={styles.orderedProducts}>
+                {order.orderedProducts.map(product => (
+                  <div key={product.id} className={styles.product}>
+                    <img
+                      src={
+                        order.orderedProducts.length > 0
+                          ? order.orderedProducts[0].img
+                          : 'placeholder_image_url'
+                      }
+                      alt={
+                        order.orderedProducts.length > 0
+                          ? order.orderedProducts[0].name
+                          : 'Product'
+                      }
+                      style={{ cursor: 'pointer' }}
+                    />
+                    <div className={styles.productInfo}>
+                      <h4>{product.name}</h4>
+                      <p>
+                        <span>{t('OrderID')}:</span> {order._id}
+                      </p>
+                      <p>
+                        <span>{t('Status')}:</span> {order.status}
+                      </p>
+                      <p>
+                        <span>{t('Delivery Date')}:</span> {order.orderDate}
+                      </p>
+                      <p>
+                        <Link className={styles.view} to={`/orders/${order._id}`}>
+                          {t('View Order Details')}
+                        </Link>
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-          <button onClick={handleCloseDetails}>Close Details</button>
-        </div>
-      )}
+          ))
+        ) : (
+          <p>{t('orderSummary.noOrdersFound')}</p>
+        )}
+      </div>
     </div>
   );
 };

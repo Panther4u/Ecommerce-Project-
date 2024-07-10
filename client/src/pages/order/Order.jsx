@@ -1,33 +1,34 @@
-// OrderDatatable.js
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Order.scss';
+import { useSelector } from 'react-redux';
 
 const OrderDatatable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { _id: userId } = useSelector((state) => state.user.loginInfo); // Get userId from Redux store
+  const { _id: userId } = useSelector((state) => state.user.loginInfo);
 
   useEffect(() => {
     fetchOrderData();
-  }, [userId]);
+  }, []);
 
   const fetchOrderData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:8000/api/orders', {
-        params: { userId },
+      const response = await axios.get(`http://localhost:8000/api/orders/all`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
-      console.log('Fetched orders:', response.data); // Log fetched data
+      console.log('Fetched orders:', response.data);
       const ordersWithId = response.data.map((order) => ({
         ...order,
-        id: order._id, // Use _id for DataGrid
+        id: order._id,
       }));
       setData(ordersWithId);
       setLoading(false);
@@ -41,8 +42,12 @@ const OrderDatatable = () => {
 
   const handleDelete = async (orderId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/orders/${orderId}`);
-      setData(data.filter((item) => item._id !== orderId)); // Update state after delete
+      await axios.delete(`http://localhost:8000/api/orders/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      setData(data.filter((item) => item._id !== orderId));
       toast.success('Order deleted successfully!');
     } catch (error) {
       toast.error('Error deleting order. Please try again.');
@@ -134,22 +139,31 @@ const OrderDatatable = () => {
       )
     },
     {
-      field: 'createdAt',
-      headerName: 'Created At',
+      field: 'status',
+      headerName: 'Status',
       width: 200,
       renderCell: params => {
-        const date = params.value ? new Date(params.value) : null;
-        return (
-          <span>
-            {date
-              ? date.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })
-              : '-'}
-          </span>
-        );
+        let statusColor = '';
+
+        switch (params.value) {
+          case 'Pending':
+            statusColor = 'pending';
+            break;
+          case 'Processing':
+            statusColor = 'processing';
+            break;
+          case 'Shipped':
+            statusColor = 'shipped';
+            break;
+          case 'Delivered':
+            statusColor = 'delivered';
+            break;
+          default:
+            statusColor = 'default';
+            break;
+        }
+
+        return <span className={`status ${statusColor}`}>{params.value || '-'}</span>;
       }
     },
     {

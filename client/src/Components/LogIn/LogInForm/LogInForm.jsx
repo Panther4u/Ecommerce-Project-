@@ -79,17 +79,16 @@
 // };
 // export default LogInForm;
 
-
-import { useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { newSignUp } from "src/Features/userSlice";
-import { simpleValidationCheck } from "src/Functions/componentsFunctions";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import s from "./LogInForm.module.scss";
+import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { newSignUp } from '../../../Features/userSlice'; // Adjust path based on your project structure
+import { simpleValidationCheck } from '../../../Functions/componentsFunctions'; // Adjust path based on your project structure
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import s from './LogInForm.module.scss'; // Adjust path based on your project structure
 
 const LogInForm = () => {
   const navigateTo = useNavigate();
@@ -102,12 +101,12 @@ const LogInForm = () => {
   async function login(e) {
     e.preventDefault();
 
-    const inputs = e.target.querySelectorAll("input");
+    const inputs = e.target.querySelectorAll('input');
     const isFormValid = simpleValidationCheck(inputs);
     if (!isFormValid) return;
 
     try {
-      const response = await axios.post("http://localhost:8000/auth/login", {
+      const response = await axios.post('http://localhost:8000/auth/login', {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       });
@@ -116,10 +115,10 @@ const LogInForm = () => {
       localStorage.setItem('token', response.data.token);
 
       // Determine redirect based on user role
-      if (response.data.user.role === "admin") {
-        navigateTo("/dashboard", { replace: true });
+      if (response.data.user.role === 'admin') {
+        navigateTo('/dashboard', { replace: true });
       } else {
-        navigateTo("/", { replace: true });
+        navigateTo('/', { replace: true });
       }
 
       // Construct welcome message with username
@@ -128,30 +127,29 @@ const LogInForm = () => {
 
       // Hide loading animation and show custom success message
       toast.success(welcomeMessage);
-
     } catch (error) {
-      console.error("Error:", error); // Log the error for debugging
-      setError(error.response?.data.message || "Error logging in. Please try again.");
-      toast.error("Error logging in. Please try again.");
+      console.error('Error:', error); // Log the error for debugging
+      setError(error.response?.data.message || 'Error logging in. Please try again.');
+      toast.error('Error logging in. Please try again.');
     }
   }
 
   return (
     <form className={s.form} onSubmit={login}>
-      <h2>{t("loginSignUpPage.login")}</h2>
-      <p>{t("loginSignUpPage.enterDetails")}</p>
+      <h2>{t('loginSignUpPage.login')}</h2>
+      <p>{t('loginSignUpPage.enterDetails')}</p>
 
       <div className={s.inputs}>
         <input
           type="text"
           name="email"
-          placeholder={t("Enter Your Email")}
+          placeholder={t('Enter Your Email')}
           ref={emailRef}
         />
         <input
           type="password"
           name="password"
-          placeholder={t("inputsPlaceholders.password")}
+          placeholder={t('inputsPlaceholders.password')}
           ref={passwordRef}
         />
       </div>
@@ -160,9 +158,9 @@ const LogInForm = () => {
 
       <div className={s.buttons}>
         <button type="submit" className={s.loginBtn}>
-          {t("buttons.login")}
+          {t('buttons.login')}
         </button>
-        <Link to="/forgotpassword">{t("loginSignUpPage.forgotPassword")}</Link>
+        <Link to="/forgotpassword">{t('loginSignUpPage.forgotPassword')}</Link>
       </div>
     </form>
   );

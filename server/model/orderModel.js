@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  userId: { type: String },
+  userId: { type: String, required: true },
   orderedProducts: [{
     addedDate: { type: String },
     afterDiscount: { type: String },
@@ -36,7 +36,12 @@ const orderSchema = new mongoose.Schema({
   transactionId: { type: String },
   createdAt: { type: Date, default: Date.now },
   price: { type: Number }, // Assuming this is related to individual product price, not directly used in the schema
-  orderDate: { type: Date, default: Date.now }
+  orderDate: { type: Date, default: Date.now },
+  status: {
+    type: String,
+    enum: ['Pending', 'Shipped', 'Delivered'],
+    default: 'Pending'
+  }
 });
 
 const Order = mongoose.model('Order', orderSchema);
