@@ -91,3 +91,67 @@ const ProductsSlider = ({ filterFun = () => productsData, customization }) => {
 };
 
 export default ProductsSlider;
+
+
+
+// import React, { useEffect, useState } from "react";
+// import Slider from "react-slick";
+// import axios from "axios";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
+// import s from "./ProductsSlider.module.scss"; // Adjust path as needed
+// import ProductCard from "../../ProductsCards/ProductCard/ProductCard";
+
+// const ProductsSlider = ({ filterFun, customization }) => {
+//   const [products, setProducts] = useState([]);
+
+//   useEffect(() => {
+//     const fetchProducts = async () => {
+//       try {
+//         const response = await axios.get('http://localhost:8000/api/products/flash-sales');
+//         setProducts(response.data);
+//       } catch (error) {
+//         console.error('Error fetching products:', error);
+//       }
+//     };
+
+//     fetchProducts();
+//   }, []);
+
+//   const filteredProducts = filterFun ? filterFun(products) : products;
+
+//   const settings = {
+//     dots: true,
+//     infinite: true,
+//     speed: 500,
+//     slidesToShow: 6,
+//     slidesToScroll: 1,
+//     autoplay: true,
+//     autoplaySpeed: 3000,
+//     pauseOnHover: true,
+//     pauseOnFocus: true,
+//     swipeToSlide: true,
+//     draggable: true,
+//     responsive: [
+//       { breakpoint: 2560, settings: { slidesToShow: 6 } },
+//       { breakpoint: 1440, settings: { slidesToShow: 4 } },
+//       { breakpoint: 1130, settings: { slidesToShow: 3 } },
+//       { breakpoint: 768, settings: { slidesToShow: 2 } },
+//       { breakpoint: 600, settings: { slidesToShow: 2 } },
+//     ],
+//   };
+
+//   return (
+//     <div className={s.productsSlider}>
+//       <Slider {...settings}>
+//         {filteredProducts.map((product) => (
+//           <div key={product.id} className={s.slideItem}>
+//             <ProductCard product={product} customization={customization} />
+//           </div>
+//         ))}
+//       </Slider>
+//     </div>
+//   );
+// };
+
+// export default ProductsSlider;

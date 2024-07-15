@@ -18,9 +18,8 @@ const fs = require('fs');
 const { User, Coupon } = require('./model/User'); 
 const Order = require('./model/orderModel');
 const Admin = require('./model/Admin');
-const isAdmin = require('./Middleware/isAdmin');
-
-
+const Cart = require('./model/CartProduct'); 
+const auth = require('./Middleware/auth'); 
 // Create Express app
 const app = express();
 
@@ -33,15 +32,61 @@ app.use(cors({
 
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/Public', express.static(path.join(__dirname, 'Public')));
 
 
+// // Routes for product operations
+// app.get('/api/products', productController.getProducts); // Fetch all products
+// app.post('/api/products/import', productController.importProducts); // Import sample products
+// app.get('/api/products/flash-sales', productController.getFlashSalesProducts); // Fetch flash sales products
 
-// Connect to MongoDB
+
+// // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch(error => console.error("MongoDB connection error:", error));
 
 
+// const mongoURI = process.env.MONGO_URI; // Fetch MongoDB URI from environment variables
+
+// mongoose.connect(mongoURI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+
+//   const db = mongoose.connection;
+
+// // Event listener for MongoDB connection open
+// db.once('open', async () => {
+//   try {
+//     console.log('Connected to MongoDB');
+
+//     // Delete existing products to avoid duplicates (for testing purposes)
+//     await Product.deleteMany();
+
+//     // Map productsData to include MongoDB ObjectId as ID and convert price to number
+//     const sampleProducts = productsData.map((product) => ({
+//       ...product,
+//       price: parseFloat(product.price.replace(',', '')), // Convert string to float and remove commas
+//       _id: new mongoose.Types.ObjectId(), // Generate a new MongoDB ObjectId
+//     }));
+
+//     // Insert sampleProducts into the Product collection
+//     await Product.insertMany(sampleProducts);
+
+//     console.log('Data imported successfully');
+//   } catch (error) {
+//     console.error('Error importing products:', error);
+//   } finally {
+//     // Close the database connection after import (whether success or failure)
+//     mongoose.connection.close();
+//   }
+// });
+
+// // Event listener for MongoDB connection error
+// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+// Start the Express server
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
@@ -68,7 +113,6 @@ app.post('/upload', upload.single('profileImage'), async (req, res) => {
 
   res.json(user);
 });
-
 
 // const generateCouponCode = () => {
 //   return `WELCOME-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
@@ -314,84 +358,72 @@ app.post('/api/user/save-billing', async (req, res) => {
 });
 
 
-// // POST /api/user/save-billing
-// app.post('/api/user/save-billing', async (req, res) => {
-//   const { userId, firstName, streetAddress, townCity, apartment, pincode, mobileNumber } = req.body;
+
+
+// // Route to add or update a product in the cart
+// app.post('/api/cart/add', async (req, res) => {
+//   const { userId, id, img, name, shortName, afterDiscount, quantity } = req.body;
 
 //   try {
-//     // Validate userId is a valid ObjectId
-//     if (!mongoose.Types.ObjectId.isValid(userId)) {
-//       return res.status(400).json({ error: 'Invalid userId format' });
+//     let cart = await Cart.findOne({ userId });
+
+//     if (!cart) {
+//       // Create new cart for user if not exists
+//       cart = new Cart({
+//         userId,
+//         products: [{ id, img, name, shortName, afterDiscount, quantity }]
+//       });
+
+//       await cart.save();
+//     } else {
+//       // Check if product already exists in the cart
+//       const existingProduct = cart.products.find(prod => prod.id === id);
+
+//       if (existingProduct) {
+//         // Update quantity if product already exists in cart
+//         existingProduct.quantity += quantity;
+//       } else {
+//         // Add new product to cart
+//         cart.products.push({ id, img, name, shortName, afterDiscount, quantity });
+//       }
+
+//       await cart.save();
 //     }
 
-//     // Check if the user exists in both User and Admin collections
-//     let user = await User.findById(userId);
-//     let admin = await Admin.findById(userId);
-
-//     if (!user && !admin) {
-//       return res.status(404).json({ error: 'User or admin not found' });
-//     }
-
-//     // Determine whether the entity is a user or admin
-//     let entity = user || admin;
-
-//     // Update user/admin's billing information
-//     entity.firstName = firstName;
-//     entity.streetAddress = streetAddress;
-//     entity.townCity = townCity;
-//     entity.apartment = apartment;
-//     entity.pincode = pincode;
-//     entity.mobileNumber = mobileNumber;
-
-//     // Save updated entity (either user or admin)
-//     await entity.save();
-
-//     // Respond with success message
-//     res.status(200).json({ message: 'Billing information saved successfully' });
+//     res.json({ message: 'Product added to cart successfully', cartItems: cart.products });
 //   } catch (error) {
-//     console.error('Error saving billing information:', error);
-//     res.status(500).json({ message: 'Error saving billing information' });
+//     console.error(error.message);
+//     res.status(500).json({ message: 'Server Error' });
 //   }
 // });
 
-// // POST /api/checkout
-// app.post('/api/checkout', async (req, res) => {
-//   const { userId, cartProducts, billingDetails, deliveryMethod, totalBillAmount } = req.body;
 
-//   // Validate incoming data
-//   if (!userId || !Array.isArray(cartProducts) || cartProducts.length === 0 || !billingDetails || !deliveryMethod || !totalBillAmount) {
-//     return res.status(400).json({ message: 'Invalid request data' });
-//   }
+// // Route to remove a product from the cart by productId
+// app.delete('/api/cart/remove/products/:productId', async (req, res) => {
+//   const { productId } = req.params;
+//   const { userId } = req.body;
 
 //   try {
-//     // Check if the user or admin exists
-//     const user = await User.findById(userId);
-//     const admin = await Admin.findById(userId); // Assuming admin has separate model/schema
+//     let cart = await Cart.findOne({ userId });
 
-//     if (!user && !admin) {
-//       return res.status(404).json({ message: 'User or admin not found' });
+//     if (!cart) {
+//       return res.status(404).json({ message: "Cart not found" });
 //     }
 
-//     // Create a new order instance
-//     const newOrder = new Order({
-//       userId,
-//       orderedProducts: cartProducts,
-//       billingInfo: billingDetails,
-//       totalProducts: cartProducts.length,
-//       deliveryMethod,
-//       totalBillAmount,
-//       paymentMethod: 'Credit Card', // Assuming a payment method, adjust as needed
-//     });
+//     // Filter out the product to be removed
+//     cart.products = cart.products.filter(product => product.id !== productId);
 
-//     // Save the new order to the database
-//     const savedOrder = await newOrder.save();
+//     await cart.save();
 
-//     res.status(201).json({ orderId: savedOrder._id, message: 'Order created successfully' });
+//     res.json({ message: "Product removed from cart successfully", cartItems: cart.products });
 //   } catch (error) {
-//     console.error('Error creating order:', error);
-//     res.status(500).json({ message: 'Internal server error' });
+//     console.error("Error removing product from cart:", error);
+//     res.status(500).json({ message: "Server Error" });
 //   }
 // });
+
+
+
 
 // POST /api/checkout
 app.post('/api/checkout', async (req, res) => {

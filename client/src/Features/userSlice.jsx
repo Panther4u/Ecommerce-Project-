@@ -326,9 +326,283 @@
 
 // export default userSlice.reducer;
 
+// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+// import axios from 'axios';
+// import { toast } from 'react-toastify';
+
+// // Function to retrieve user data from localStorage
+// const getUserDataFromLocalStorage = () => {
+//   const userData = localStorage.getItem('userSliceData');
+//   if (userData) {
+//     try {
+//       return JSON.parse(userData);
+//     } catch (error) {
+//       console.error('Error parsing user data from localStorage:', error);
+//     }
+//   }
+//   return null;
+// };
+
+// // Initial state management from localStorage or default state
+// const initialState = getUserDataFromLocalStorage() || {
+//   loginInfo: {
+//     userId: '',
+//     username: '',
+//     email: '',
+//     mobileNumber: '',
+//     streetAddress: '',
+//     townCity: '',
+//     pincode: '',
+//     profileImage: '',
+//     lastLogin: null,
+//     role: '',
+//     isSignIn: false, // Track user sign-in status
+//   },
+//   signedUpUsers: [],
+//   status: 'idle',
+//   error: null,
+// };
+
+// // Async thunk for user login
+// export const loginUser = createAsyncThunk(
+//   'user/loginUser',
+//   async ({ email, password, role }, { rejectWithValue, dispatch }) => {
+//     try {
+//       const endpoint = role === 'admin' ? 'admin/login' : 'auth/login';
+//       const response = await axios.post(`http://localhost:8000/${endpoint}`, { email, password });
+//       const userData = response.data.user;
+//       dispatch(setLoginData(userData)); // Dispatch action to set login data
+//       return userData;
+//     } catch (error) {
+//       return rejectWithValue(error.response?.data?.message || 'Login failed');
+//     }
+//   }
+// );
+
+// // Async thunk for user sign-up
+// export const signUpUser = createAsyncThunk(
+//   'user/signUpUser',
+//   async ({ formData }, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.post('http://localhost:8000/auth/signup', formData, {
+//         headers: { 'Content-Type': 'multipart/form-data' },
+//       });
+//       const userData = response.data.user;
+//       return userData;
+//     } catch (error) {
+//       return rejectWithValue(error.response?.data?.message || 'Failed to sign up');
+//     }
+//   }
+// );
+
+// // Async thunk for updating user profile
+// export const updateProfile = createAsyncThunk(
+//   'user/updateProfile',
+//   async (formData, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.put('http://localhost:8000/api/user', formData, {
+//         headers: {
+//           'Content-Type': 'multipart/form-data',
+//         },
+//       });
+//       return response.data.entity;
+//     } catch (error) {
+//       return rejectWithValue(error.response?.data?.message || 'Failed to update profile');
+//     }
+//   }
+// );
+
+// // Async thunk for deleting user account
+// export const deleteAccount = createAsyncThunk(
+//   'user/deleteAccount',
+//   async (userId, { rejectWithValue, dispatch }) => {
+//     try {
+//       await axios.delete(`http://localhost:8000/api/user/${userId}`);
+
+//       // Clear all user data from state and localStorage
+//       dispatch(clearUserData());
+
+//       toast.success('Account deleted successfully');
+//     } catch (error) {
+//       console.error('Failed to delete account:', error);
+//       toast.error('Failed to delete account. Please try again.');
+//       return rejectWithValue(error.response?.data?.message || 'Failed to delete account');
+//     }
+//   }
+// );
+
+// // Async thunk for saving billing information
+// export const saveBillingInfo = createAsyncThunk(
+//   'user/saveBillingInfo',
+//   async ({ _id, ...billingInfo }, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.post('http://localhost:8000/api/user/save-billing', { _id, ...billingInfo });
+//       toast.success('Billing information saved successfully');
+//       return response.data; // Assuming your backend sends back meaningful data upon successful save
+//     } catch (error) {
+//       toast.error('Error saving billing information');
+//       return rejectWithValue(error.response?.data?.message || 'Error saving billing information');
+//     }
+//   }
+// );
+
+// // Action to clear all user data
+// export const clearUserData = () => {
+//   localStorage.removeItem('userSliceData');
+//   return { type: 'user/clearUserData' };
+// };
+
+// // Define user slice with reducers
+// const userSlice = createSlice({
+//   name: 'user',
+//   initialState,
+//   reducers: {
+//     newSignUp: (state, { payload }) => {
+//       state.signedUpUsers.push(payload);
+//       state.loginInfo = { ...state.loginInfo, ...payload, isSignIn: true };
+//       localStorage.setItem('userSliceData', JSON.stringify(state));
+//     },
+//     setLoginData: (state, { payload }) => {
+//       state.loginInfo = { ...payload, isSignIn: true };
+//       state.loginInfo.lastLogin = payload.lastLogin;
+//       localStorage.setItem('userSliceData', JSON.stringify(state));
+//     },
+//     signOut: (state) => {
+//       state.loginInfo = {
+//         userId: '',
+//         username: '',
+//         email: '',
+//         mobileNumber: '',
+//         streetAddress: '',
+//         townCity: '',
+//         pincode: '',
+//         profileImage: '',
+//         lastLogin: null,
+//         role: '',
+//         isSignIn: false,
+//       };
+//       state.signedUpUsers = [];
+//       localStorage.removeItem('userSliceData');
+//     },
+//     updateUserData: (state, { payload }) => {
+//       state.loginInfo = { ...state.loginInfo, ...payload.loginInfo };
+//       state.signedUpUsers = payload.signedUpUsers || state.signedUpUsers;
+//       localStorage.setItem('userSliceData', JSON.stringify(state));
+//     },
+//     updatePassword: (state, { payload }) => {
+//       state.loginInfo.password = payload.password;
+//       localStorage.setItem('userSliceData', JSON.stringify(state));
+//     },
+//     clearError: (state) => {
+//       state.error = null;
+//     },
+//     clearStatus: (state) => {
+//       state.status = 'idle';
+//     },
+//   },
+//   extraReducers: (builder) => {
+//     builder
+//       .addCase(loginUser.pending, (state) => {
+//         state.status = 'loading';
+//         state.error = null;
+//       })
+//       .addCase(loginUser.fulfilled, (state, action) => {
+//         state.status = 'succeeded';
+//         state.loginInfo = { ...state.loginInfo, ...action.payload, isSignIn: true };
+//         state.loginInfo.lastLogin = action.payload.lastLogin;
+//         localStorage.setItem('userSliceData', JSON.stringify(state));
+//       })
+//       .addCase(loginUser.rejected, (state, action) => {
+//         state.status = 'failed';
+//         state.error = action.payload.message || 'Failed to log in';
+//       })
+//       .addCase(signUpUser.pending, (state) => {
+//         state.status = 'loading';
+//         state.error = null;
+//       })
+//       .addCase(signUpUser.fulfilled, (state, action) => {
+//         state.status = 'succeeded';
+//         state.loginInfo = { ...state.loginInfo, ...action.payload, isSignIn: true };
+//         state.loginInfo.lastLogin = action.payload.lastLogin;
+//         state.signedUpUsers.push(action.payload);
+//         localStorage.setItem('userSliceData', JSON.stringify(state));
+//       })
+//       .addCase(signUpUser.rejected, (state, action) => {
+//         state.status = 'failed';
+//         state.error = action.payload || 'Failed to sign up';
+//       })
+//       .addCase(updateProfile.pending, (state) => {
+//         state.status = 'loading';
+//         state.error = null;
+//       })
+//       .addCase(updateProfile.fulfilled, (state, action) => {
+//         state.status = 'succeeded';
+//         state.loginInfo = { ...state.loginInfo, ...action.payload };
+//         localStorage.setItem('userSliceData', JSON.stringify(state)); // Update localStorage
+//       })
+//       .addCase(updateProfile.rejected, (state, action) => {
+//         state.status = 'failed';
+//         state.error = action.payload || 'Failed to update profile';
+//       })
+//       .addCase(deleteAccount.pending, (state) => {
+//         state.status = 'loading';
+//         state.error = null;
+//       })
+//       .addCase(deleteAccount.fulfilled, (state) => {
+//         state.status = 'succeeded';
+//         state.loginInfo = {
+//           userId: '',
+//           username: '',
+//           email: '',
+//           mobileNumber: '',
+//           streetAddress: '',
+//           townCity: '',
+//           pincode: '',
+//           profileImage: '',
+//           lastLogin: null,
+//           role: '',
+//           isSignIn: false,
+//         };
+//         state.signedUpUsers = [];
+//         localStorage.removeItem('userSliceData');
+//       })
+//       .addCase(deleteAccount.rejected, (state, action) => {
+//         state.status = 'failed';
+//         state.error = action.payload || 'Failed to delete account';
+//       })
+//       .addCase(saveBillingInfo.pending, (state) => {
+//         state.status = 'loading';
+//         state.error = null;
+//       })
+//       .addCase(saveBillingInfo.fulfilled, (state) => {
+//         state.status = 'succeeded';
+//         // Optionally handle any specific state update after saving billing info
+//       })
+//       .addCase(saveBillingInfo.rejected, (state, action) => {
+//         state.status = 'failed';
+//         state.error = action.payload || 'Failed to save billing information';
+//       });
+//   },
+// });
+
+// // Export actions and reducer
+// export const {
+//   newSignUp,
+//   setLoginData,
+//   signOut,
+//   updateUserData,
+//   updatePassword,
+//   clearError,
+//   clearStatus,
+// } = userSlice.actions;
+
+// export default userSlice.reducer;
+
+// userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { updateCartFromBackend } from './cartSlice'; // Import cartSlice actions
 
 // Function to retrieve user data from localStorage
 const getUserDataFromLocalStorage = () => {
@@ -359,6 +633,10 @@ const initialState = getUserDataFromLocalStorage() || {
     isSignIn: false, // Track user sign-in status
   },
   signedUpUsers: [],
+  cart: {
+    products: [], // Array to hold cart products
+    couponDiscount: 0, // Initial state of coupon discount
+  },
   status: 'idle',
   error: null,
 };
@@ -372,6 +650,7 @@ export const loginUser = createAsyncThunk(
       const response = await axios.post(`http://localhost:8000/${endpoint}`, { email, password });
       const userData = response.data.user;
       dispatch(setLoginData(userData)); // Dispatch action to set login data
+      dispatch(updateCartFromBackend(userData.cart.products)); // Update cart from backend after login
       return userData;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
@@ -465,6 +744,7 @@ const userSlice = createSlice({
     setLoginData: (state, { payload }) => {
       state.loginInfo = { ...payload, isSignIn: true };
       state.loginInfo.lastLogin = payload.lastLogin;
+      state.cart = { products: payload.cart.products, couponDiscount: payload.cart.couponDiscount };
       localStorage.setItem('userSliceData', JSON.stringify(state));
     },
     signOut: (state) => {
@@ -482,6 +762,7 @@ const userSlice = createSlice({
         isSignIn: false,
       };
       state.signedUpUsers = [];
+      state.cart = { products: [], couponDiscount: 0 };
       localStorage.removeItem('userSliceData');
     },
     updateUserData: (state, { payload }) => {
@@ -510,26 +791,14 @@ const userSlice = createSlice({
         state.status = 'succeeded';
         state.loginInfo = { ...state.loginInfo, ...action.payload, isSignIn: true };
         state.loginInfo.lastLogin = action.payload.lastLogin;
+        state.cart = { products: action.payload.cart.products, couponDiscount: action.payload.cart.couponDiscount };
         localStorage.setItem('userSliceData', JSON.stringify(state));
+        // Example: Update cart after login
+        dispatch(updateCartFromBackend(action.payload.cart.products)); // Dispatch action to update cart from backend
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload.message || 'Failed to log in';
-      })
-      .addCase(signUpUser.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
-      })
-      .addCase(signUpUser.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.loginInfo = { ...state.loginInfo, ...action.payload, isSignIn: true };
-        state.loginInfo.lastLogin = action.payload.lastLogin;
-        state.signedUpUsers.push(action.payload);
-        localStorage.setItem('userSliceData', JSON.stringify(state));
-      })
-      .addCase(signUpUser.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload || 'Failed to sign up';
       })
       .addCase(updateProfile.pending, (state) => {
         state.status = 'loading';
@@ -564,6 +833,7 @@ const userSlice = createSlice({
           isSignIn: false,
         };
         state.signedUpUsers = [];
+        state.cart = { products: [], couponDiscount: 0 };
         localStorage.removeItem('userSliceData');
       })
       .addCase(deleteAccount.rejected, (state, action) => {

@@ -7,7 +7,7 @@ import s from "./NavTools.module.scss";
 
 const NavTools = ({ showHeart = true, showCart = true, showUser = true }) => {
   const { t } = useTranslation();
-  const { cartProducts, favoritesProducts } = useSelector(
+  const { cartProducts = [], favoritesProducts = [] } = useSelector(
     (state) => state.products
   );
 

@@ -34,37 +34,34 @@ const TodaySection = () => {
 export default TodaySection;
 
 
-
-
-// import { useTranslation } from "react-i18next";
-// import { Link } from "react-router-dom";
-// import { useState, useEffect } from "react";
-// import axios from "axios"; // Import axios for making HTTP requests
+// import { useEffect, useState } from 'react';
+// import { useTranslation } from 'react-i18next';
+// import { Link } from 'react-router-dom';
+// import axios from 'axios';
 // import ProductsSlider from "../../Shared/MidComponents/ProductsSlider/ProductsSlider";
 // import SectionTitle from "../../Shared/MiniComponents/SectionTitle/SectionTitle";
 // import EventCounter from "./EventCounter";
 // import s from "./TodaySection.module.scss";
 
 // const TodaySection = () => {
+//   const [flashSalesProducts, setFlashSalesProducts] = useState([]);
 //   const todaysSection = "sectionTitles.todaysSection";
 //   const { t } = useTranslation();
-//   const [flashSalesProducts, setFlashSalesProducts] = useState([]);
-
-//   // Function to fetch flash sales products from backend
-//   const fetchFlashSalesProducts = async () => {
-//     try {
-//       const response = await axios.get("http://localhost:5000/api/products");
-//       const data = response.data;
-//       const filteredProducts = data.filter((product) => product.sold > 100);
-//       setFlashSalesProducts(filteredProducts);
-//     } catch (error) {
-//       console.error("Error fetching flash sales products:", error);
-//     }
-//   };
 
 //   useEffect(() => {
+//     const fetchFlashSalesProducts = async () => {
+//       try {
+//         const response = await axios.get('http://localhost:8000/api/products/flash-sales');
+//         setFlashSalesProducts(response.data);
+//         console.log('fetching flash sales products:',response.data);
+//       } catch (error) {
+//         console.error('Error fetching flash sales products:', error);
+//         // Handle error gracefully in your application
+//       }
+//     };
+
 //     fetchFlashSalesProducts();
-//   }, []); // Fetch products on component mount
+//   }, []);
 
 //   return (
 //     <section className={s.todaysSection} id="todays-section">

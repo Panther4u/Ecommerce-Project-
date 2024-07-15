@@ -47,6 +47,84 @@
 // } = productsSlice.actions;
 // export default productsSlice.reducer;
 
+// import { createSlice } from "@reduxjs/toolkit";
+
+// // Initial state setup from localStorage or default values
+// const productsDataLocal = localStorage.getItem("productsSliceData");
+
+// let initialState;
+
+// if (productsDataLocal && productsDataLocal !== "undefined") {
+//   try {
+//     initialState = JSON.parse(productsDataLocal);
+//   } catch (e) {
+//     console.error("Failed to parse productsSliceData from localStorage:", e);
+//     initialState = getDefaultInitialState();
+//   }
+// } else {
+//   initialState = getDefaultInitialState();
+// }
+
+// function getDefaultInitialState() {
+//   return {
+//     cartProducts: [],
+//     discount: 0,
+//     appliedCoupon: null,
+    
+//   };
+// }
+
+// // Create a slice for managing products state
+// const productsSlice = createSlice({
+//   name: "products",
+//   initialState,
+//   reducers: {
+//     updateProductsState: (state, { payload: { key, value } }) => {
+//       state[key] = value;
+//       localStorage.setItem("productsSliceData", JSON.stringify(state));
+//     },
+//     addToArray: (state, { payload: { key, value } }) => {
+//       state[key].push(value);
+//       localStorage.setItem("productsSliceData", JSON.stringify(state));
+//     },
+//     removeById: (state, { payload: { key, id } }) => {
+//       state[key] = state[key].filter((item) => item.id !== id);
+//       localStorage.setItem("productsSliceData", JSON.stringify(state));
+//     },
+//     removeByKeyName: (state, { payload: { dataKey, itemKey, keyValue } }) => {
+//       state[dataKey] = state[dataKey].filter(
+//         (item) => item[itemKey] !== keyValue
+//       );
+//       localStorage.setItem("productsSliceData", JSON.stringify(state));
+//     },
+//     setEmptyArrays: (state, { payload: { keys } }) => {
+//       keys.forEach((key) => {
+//         state[key] = [];
+//       });
+//       localStorage.setItem("productsSliceData", JSON.stringify(state));
+//     },
+//     applyCoupon: (state, { payload: { couponCode, discount } }) => {
+//       state.appliedCoupon = couponCode;
+//       state.discount = discount;
+//       localStorage.setItem("productsSliceData", JSON.stringify(state));
+//     },
+//   },
+// });
+
+// // Export actions and reducer
+// export const {
+//   updateProductsState,
+//   addToArray,
+//   removeById,
+//   removeByKeyName,
+//   setEmptyArrays,
+//   applyCoupon,
+// } = productsSlice.actions;
+
+// export default productsSlice.reducer;
+
+
+
 import { createSlice } from "@reduxjs/toolkit";
 
 // Initial state setup from localStorage or default values
@@ -68,19 +146,21 @@ if (productsDataLocal && productsDataLocal !== "undefined") {
 function getDefaultInitialState() {
   return {
     cartProducts: [],
+    favoritesProducts: [], // Ensure this is initialized
     discount: 0,
     appliedCoupon: null,
-    
+    wishList: [],
   };
 }
+
 
 // Create a slice for managing products state
 const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    updateProductsState: (state, { payload: { key, value } }) => {
-      state[key] = value;
+    updateProductsState: (state, { payload }) => {
+      Object.assign(state, payload); // Merge payload object into state
       localStorage.setItem("productsSliceData", JSON.stringify(state));
     },
     addToArray: (state, { payload: { key, value } }) => {

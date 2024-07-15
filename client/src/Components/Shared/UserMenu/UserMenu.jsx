@@ -7,9 +7,10 @@ import s from "./UserMenu.module.scss";
 import UserMenuItemWithCount from "./UserMenuItemWithCount";
 
 const UserMenu = ({ isActive, toggler }) => {
-  const { wishList } = useSelector((state) => state.products);
+  const { wishList = [] } = useSelector((state) => state.products);
   const { role } = useSelector((state) => state.user.loginInfo);
-  const wishListLength = wishList.length;
+  const wishListLength = wishList.length; // This line could cause an error if wishList is undefined
+
   const navigateTo = useNavigate();
   const signOut = useSignOut();
 
@@ -52,7 +53,7 @@ const UserMenu = ({ isActive, toggler }) => {
           props={{
             iconName: "save",
             title: "Wishlist",
-            countLength: wishListLength,
+            countLength: wishListLength, // Ensure wishListLength is safely accessed
           }}
         />
       </NavLink>
@@ -66,4 +67,3 @@ const UserMenu = ({ isActive, toggler }) => {
 };
 
 export default UserMenu;
-

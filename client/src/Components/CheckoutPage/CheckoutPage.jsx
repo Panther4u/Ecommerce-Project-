@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useId } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -41,7 +41,6 @@ const CheckoutPage = () => {
   const handleSaveBillingInfo = async () => {
     try {
       await dispatch(saveBillingInfo({ userId, ...billingValues })).unwrap();
-      console.log('Billing information saved successfully');
       toast.success('Billing information saved successfully');
     } catch (error) {
       console.error('Error saving billing information:', error);
@@ -79,21 +78,21 @@ const CheckoutPage = () => {
       });
 
       const { orderId } = orderResponse.data;
-
-      console.log('Order placed successfully:', orderResponse.data);
-
       localStorage.setItem('orderId', orderId);
 
+      // Clear local storage for billing info after successful order placement
       localStorage.removeItem('billingInfo');
 
+      // Update Redux slices for cart and order
       dispatch(setOrderedProductsInCart([]));
       dispatch(setOrderedProductsInOrderSlice(cartProducts));
 
       toast.success('Order placed successfully');
+      
+      // Navigate to order summary page after a delay
       setTimeout(() => {
-        navigate(`/order/${userId}`); // Navigate to order summary with user ID
-        // navigate(`/order-summary`); // Navigate to order summary with user ID
-      }, 5000);
+        navigate(`/order/${userId}`);
+      }, 5000); // 5 seconds delay before navigating
     } catch (error) {
       console.error("Error placing order:", error);
       toast.error("Error placing order");
@@ -102,6 +101,7 @@ const CheckoutPage = () => {
 
   const handleApplyCoupon = (couponValue) => {
     console.log('Applying coupon:', couponValue);
+    // Logic for applying coupon code
   };
 
   const handleSubmitPayment = async (e) => {
@@ -113,6 +113,7 @@ const CheckoutPage = () => {
     }
   };
 
+  // History for breadcrumbs or navigation history
   const pageHistory = ['Account', 'Checkout'];
   const historyPaths = [{ index: 0, path: '/profile' }];
 
@@ -144,6 +145,7 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
+
 
 
 
