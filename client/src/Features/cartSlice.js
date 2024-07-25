@@ -74,9 +74,9 @@
 //       state.couponDiscount = 0;
 //       // No need to set orderedProducts here directly, handle that in orderSlice
 //     },
-//     updateCartFromBackend: (state, action) => {
-//       state.cartItems = action.payload;
-//     },
+    // updateCartFromBackend: (state, action) => {
+    //   state.cartItems = action.payload;
+    // },
 //   },
 // });
 
@@ -95,13 +95,16 @@
 // cartSlice.js
 
 
-
+// src/features/cart/cartSlice.js
 
 import { createSlice } from '@reduxjs/toolkit';
 
+// Load cart items from local storage if available
+const savedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
 const initialState = {
-  cartItems: [],      // Initial state of cart items
-  couponDiscount: 0,  // Initial state of coupon discount
+  cartItems: [],
+  couponDiscount: 0,
 };
 
 const cartSlice = createSlice({
@@ -109,16 +112,19 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      // Check if the product is already in cart, and if so, update its quantity instead of adding a duplicate
       const existingIndex = state.cartItems.findIndex(item => item.id === action.payload.id);
       if (existingIndex !== -1) {
         state.cartItems[existingIndex].quantity += action.payload.quantity;
       } else {
         state.cartItems.push(action.payload);
       }
+      // Update local storage with new cart items
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
     removeFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter(item => item.id !== action.payload.id);
+      // Update local storage with updated cart items
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
     applyCoupon: (state, action) => {
       state.couponDiscount = action.payload;
@@ -126,14 +132,22 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.cartItems = [];
       state.couponDiscount = 0;
+      // Clear local storage
+      localStorage.removeItem('cartItems');
     },
     setOrderedProducts: (state) => {
       state.cartItems = [];
       state.couponDiscount = 0;
-      // No need to set orderedProducts here directly, handle that in orderSlice
+      // Clear local storage on order placement
+      localStorage.removeItem('cartItems');
+    },
+    updateCartItems: (state, action) => {
+      state.cartItems = action.payload;
+      // Update local storage with updated cart items
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
     updateCartFromBackend: (state, action) => {
-      state.cartItems = action.payload; // Ensure this correctly sets the cart items array
+      state.cartItems = action.payload;
     },
   },
 });
@@ -144,7 +158,8 @@ export const {
   applyCoupon,
   clearCart,
   setOrderedProducts,
-  updateCartFromBackend
+  updateCartItems,
+  updateCartFromBackend,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

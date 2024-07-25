@@ -30,27 +30,63 @@
 // export default PaymentProducts;
 
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import s from "./PaymentProducts.module.scss";
+import { removeProductFromCart } from 'src/Features/productsSlice';
+import CustomNumberInput from "../../Shared/MiniComponents/CustomNumberInput/CustomNumberInput";
 
 const PaymentProducts = () => {
   const { cartProducts } = useSelector((state) => state.products);
+  const dispatch = useDispatch();
 
   return (
     <div className={s.products}>
-      {cartProducts.map(({ img, name, shortName, afterDiscount, id }) => (
-        <Link to={`/details?product=${name}`} key={id} className={s.product}>
-          <div className={s.wrapper}>
-            <img src={img} alt={shortName} />
-            <span>{shortName}</span>
-          </div>
-          <span className={s.price}>Rs.{afterDiscount}</span>
-        </Link>
-      ))}
+      {cartProducts.map(({ img, name, shortName = '', discount = 0, quantity = 0, id, price = 0 }) => {
+        const validQuantity = !isNaN(quantity) && quantity > 0 ? parseInt(quantity, 10) : 0;
+        const priceNumber = parseFloat(price) || 0;
+        const afterDiscount = discount > 0 ? priceNumber - (priceNumber * discount) / 100 : priceNumber;
+        const priceAfterDiscount = typeof afterDiscount === 'string' ? parseFloat(afterDiscount.replace(/,/g, "")) : afterDiscount;
+        const subTotal = parseFloat((validQuantity * priceAfterDiscount).toFixed(2));
+
+        const removeProduct = () => {
+          dispatch(removeProductFromCart({ key: 'cartProducts', id }));
+        };
+
+        if (validQuantity === 0) {
+          return null;
+        }
+
+        return (
+          // <Link to={`/details?product=${name}`} key={id} className={s.product}>
+          //   <div className={s.wrapper}>
+          //     <img src={`http://localhost:8000/${img}`} alt={shortName} />
+          //     <span>{shortName}</span>
+          //   </div>
+          //   <span className={s.price}>Rs. {subTotal}</span>
+          // </Link>
+          <>
+              <div className={s.productContainer}>
+      <img src={`http://localhost:8000/${img}`} alt={shortName || name} className={s.productImage} />
+      <div className={s.productDetails}>
+        <p className={s.productName}>{shortName || name}</p>
+        <p className={s.price}>Rs. {subTotal.toFixed(2)}</p>
+        <p className={s.sizeAndQuantity}>
+          Qty: {quantity}
+        </p>
+        <div className={s.sellerInfo}>
+          <span>Free Delivery</span>
+        </div>
+      </div>
+    </div>
+          </>
+        );
+      })}
     </div>
   );
 };
 
 export default PaymentProducts;
+
+
 

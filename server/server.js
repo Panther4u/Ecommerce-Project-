@@ -18,8 +18,13 @@ const fs = require('fs');
 const { User, Coupon } = require('./model/User'); 
 const Order = require('./model/orderModel');
 const Admin = require('./model/Admin');
-const Cart = require('./model/CartProduct'); 
+const Cart = require('./model/Cart'); 
 const auth = require('./Middleware/auth'); 
+const Product = require('./model/Product'); 
+const Wishlist = require('./model/Wishlist');
+// const productRoutes = require('./routes/productRoutes');
+const productsData = require('./scripts/productsData');
+
 // Create Express app
 const app = express();
 
@@ -31,12 +36,12 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/Public', express.static(path.join(__dirname, 'Public')));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
 
 
 // // Routes for product operations
-// app.get('/api/products', productController.getProducts); // Fetch all products
+// app.use('/api/products', productRoutes);
 // app.post('/api/products/import', productController.importProducts); // Import sample products
 // app.get('/api/products/flash-sales', productController.getFlashSalesProducts); // Fetch flash sales products
 
@@ -87,6 +92,50 @@ mongoose.connect(process.env.MONGO_URI)
 // db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // Start the Express server
+
+
+// Serve static files (images)
+app.use('/uploads', express.static('uploads'));
+
+// Example route to fetch products
+app.get('/api/products', async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post('/api/products/import', async (req, res) => {
+  try {
+    await Product.deleteMany();
+    const sampleProducts = productsData.map((product) => ({
+      ...product,
+      id: uuid(),
+    }));
+    await Product.insertMany(sampleProducts);
+    res.status(201).json({ message: 'Data imported successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// app.get('/api/products/flash-sales', async (req, res) => {
+//   try {
+//     const products = await Product.find({});
+//     res.json(products);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
+
+
+
+
+
+
+
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
@@ -358,69 +407,250 @@ app.post('/api/user/save-billing', async (req, res) => {
 });
 
 
+app.post('/api/wishlist/add', async (req, res) => {
+  const { userId, product } = req.body;
+
+  // Validate input
+  if (!userId || !product || !product.id || !product.name || !product.category || !product.price || !product.description || !product.img || !product.shortName) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+    // Find the user's wishlist
+    let wishlist = await Wishlist.findOne({ userId });
+
+    if (!wishlist) {
+      // Create a new wishlist if none exists
+      wishlist = new Wishlist({
+        userId,
+        products: [{
+          id: product.id,
+          name: product.name,
+          category: product.category,
+          price: product.price,
+          description: product.description,
+          img: product.img,
+          discount: product.discount,
+          shortName: product.shortName
+        }]
+      });
+      await wishlist.save();
+      return res.status(201).json(wishlist);
+    }
+
+    // Check if the product is already in the wishlist
+    const productExists = wishlist.products.some(p => p.id === product.id);
+
+    if (productExists) {
+      return res.status(400).json({ message: 'Product already in wishlist' });
+    }
+
+    // Add the product to the wishlist
+    wishlist.products.push({
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      price: product.price,
+      description: product.description,
+      img: product.img,
+      discount: product.discount,
+      shortName: product.shortName
+    });
+    await wishlist.save();
+    res.status(200).json(wishlist);
+  } catch (error) {
+    console.error('Error adding product to wishlist:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
 
 
-// // Route to add or update a product in the cart
-// app.post('/api/cart/add', async (req, res) => {
-//   const { userId, id, img, name, shortName, afterDiscount, quantity } = req.body;
-
-//   try {
-//     let cart = await Cart.findOne({ userId });
-
-//     if (!cart) {
-//       // Create new cart for user if not exists
-//       cart = new Cart({
-//         userId,
-//         products: [{ id, img, name, shortName, afterDiscount, quantity }]
-//       });
-
-//       await cart.save();
-//     } else {
-//       // Check if product already exists in the cart
-//       const existingProduct = cart.products.find(prod => prod.id === id);
-
-//       if (existingProduct) {
-//         // Update quantity if product already exists in cart
-//         existingProduct.quantity += quantity;
-//       } else {
-//         // Add new product to cart
-//         cart.products.push({ id, img, name, shortName, afterDiscount, quantity });
-//       }
-
-//       await cart.save();
-//     }
-
-//     res.json({ message: 'Product added to cart successfully', cartItems: cart.products });
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).json({ message: 'Server Error' });
-//   }
-// });
 
 
-// // Route to remove a product from the cart by productId
-// app.delete('/api/cart/remove/products/:productId', async (req, res) => {
-//   const { productId } = req.params;
-//   const { userId } = req.body;
 
-//   try {
-//     let cart = await Cart.findOne({ userId });
 
-//     if (!cart) {
-//       return res.status(404).json({ message: "Cart not found" });
-//     }
+// Fetch wishlist by userId
+app.get('/api/wishlist/:userId', async (req, res) => {
+  const { userId } = req.params;
 
-//     // Filter out the product to be removed
-//     cart.products = cart.products.filter(product => product.id !== productId);
+  try {
+    const wishlist = await Wishlist.findOne({ userId });
 
-//     await cart.save();
+    if (!wishlist) {
+      return res.status(404).json({ message: 'Wishlist not found' });
+    }
 
-//     res.json({ message: "Product removed from cart successfully", cartItems: cart.products });
-//   } catch (error) {
-//     console.error("Error removing product from cart:", error);
-//     res.status(500).json({ message: "Server Error" });
-//   }
-// });
+    res.status(200).json(wishlist);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
+
+// Remove product from wishlist
+app.delete('/api/wishlist/remove/:userId/:productId', async (req, res) => {
+  const { userId, productId } = req.params;
+
+  try {
+    // Find the user's wishlist
+    let wishlist = await Wishlist.findOne({ userId });
+
+    if (!wishlist) {
+      return res.status(404).json({ message: 'Wishlist not found' });
+    }
+
+    // Check if the product exists in the wishlist
+    const productExists = wishlist.products.some(p => p.id === productId);
+
+    if (!productExists) {
+      return res.status(400).json({ message: 'Product not found in wishlist' });
+    }
+
+    // Remove the product from the wishlist
+    wishlist.products = wishlist.products.filter(p => p.id !== productId);
+    await wishlist.save();
+
+    res.status(200).json(wishlist);
+  } catch (error) {
+    console.error('Error removing product from wishlist:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+app.post('/api/cart', async (req, res) => {
+  try {
+    const { userId, product } = req.body;
+
+    if (!userId || !product || !product.id || !product.name || !product.category || !product.price || !product.description || !product.img || !product.shortName) {
+      return res.status(400).json({ error: 'UserId and all product fields are required' });
+    }
+
+    // Default quantity to 1 if not provided or invalid
+    const quantity = isNaN(product.quantity) || product.quantity <= 0 ? 1 : product.quantity;
+
+    let cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      cart = new Cart({
+        userId,
+        products: [{
+          id: product.id,
+          name: product.name,
+          category: product.category,
+          price: product.price,
+          description: product.description,
+          img: product.img,
+          discount: product.discount,
+          shortName: product.shortName,
+          quantity
+        }]
+      });
+    } else {
+      const existingProductIndex = cart.products.findIndex(p => p.id === product.id);
+      if (existingProductIndex !== -1) {
+        // Update quantity if product exists
+        cart.products[existingProductIndex].quantity = quantity;
+      } else {
+        // Add new product
+        cart.products.push({
+          id: product.id,
+          name: product.name,
+          category: product.category,
+          price: product.price,
+          description: product.description,
+          img: product.img,
+          shortName: product.shortName,
+          discount: product.discount,
+          quantity
+        });
+      }
+    }
+
+    await cart.save();
+
+    res.status(200).json({ message: 'Product added to cart successfully', cart });
+  } catch (error) {
+    console.error('Error adding product to cart:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
+
+
+
+app.get('/api/cart/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+
+    res.status(200).json(cart);
+  } catch (error) {
+    console.error('Error fetching cart products:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
+// Update product quantity in cart
+app.put('/api/cart/:userId/:productId', async (req, res) => {
+  try {
+    const { userId, productId } = req.params;
+    const { quantity } = req.body;
+
+    let cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+
+    const product = cart.products.find(p => p.id === productId);
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found in cart' });
+    }
+
+    product.quantity = quantity;
+
+    await cart.save();
+
+    res.status(200).json({ message: 'Product quantity updated successfully', cart });
+  } catch (error) {
+    console.error('Error updating product quantity in cart:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/api/cart/:userId/:productId', async (req, res) => {
+  try {
+    const { userId, productId } = req.params;
+
+    // Find the cart for the user
+    let cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+
+    // Remove the product with the given ID from the cart
+    cart.products = cart.products.filter(p => p.id !== productId);
+
+    // Save the updated cart
+    await cart.save();
+
+    res.status(200).json({ message: 'Product removed from cart successfully', cart });
+  } catch (error) {
+    console.error('Error removing product from cart:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 

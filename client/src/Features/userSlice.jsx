@@ -866,4 +866,6 @@ export const {
   clearStatus,
 } = userSlice.actions;
 
+export const selectUserId = (state) => state.user.loginInfo.userId; // Adjust path as per your actual state structure
+
 export default userSlice.reducer;

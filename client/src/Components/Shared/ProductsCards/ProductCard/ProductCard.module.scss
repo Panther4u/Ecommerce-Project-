@@ -109,7 +109,7 @@
   border: none;
   width: 34px;
   height: 34px;
-  background: var(--white);
+  background: var(--white); // Background stays white
   color: var(--black);
   border-radius: 50%;
   @include center-x-y;
@@ -129,54 +129,33 @@
   transition: fill .2s;
   width: 16px;
   height: 16px;
+  fill: var(--black); // Default fill color
 }
 
 .iconHolder:focus-visible svg {
-  fill: var(--yellow);
+  fill: var(--yellow); // Fill color on focus
 }
 
-.favIcon {
-  --heart-color: var(--tomato);
-
-  &:focus-visible {
-    --heart-color: var(--yellow);
-  }
+// Wishlist icon specific styles
+.wishListIcon svg {
+  fill: var(--black); // Default fill color
 }
 
-.favIcon.active {
-  fill: var(--tomato);
-
-  & .heartBackground {
-    opacity: 1;
-  }
+.wishListIcon:not(:focus-visible):hover svg {
+  fill: #6f6f6f; // Fill color on hover
 }
 
-.favIcon .heartBackground {
-  position: absolute;
-  top: 17px;
-  border-style: solid;
-  border-color: var(--heart-color) transparent transparent transparent;
-  border-width: 7px;
-  opacity: 0;
+.wishListIcon.active {
+  background: var(--tomato); // Background remains white when active
 }
 
-.favIcon .heartBackground::before,
-.favIcon .heartBackground::after {
-  content: '';
-  position: absolute;
-  top: -12px;
-  background-color: var(--heart-color);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+.wishListIcon.active svg {
+  fill: var(--white); // Fill color when active
 }
 
-.favIcon .heartBackground::before {
-  left: -7.5px;
-}
-
-.favIcon .heartBackground::after {
-  right: -7px;
+.wishListIcon.active svg path {
+  fill-rule: nonzero;
+  fill: var(--tomato); // Ensure the fill is white when active
 }
 
 .detailsIcon:not(:focus-visible):hover svg {
@@ -185,18 +164,6 @@
 
 :where(.favIcon, .removeIcon):hover svg {
   fill: var(--tomato);
-}
-
-.wishListIcon svg {
-  fill: var(--black);
-}
-
-.wishListIcon:not(:focus-visible):hover svg {
-  fill: #6f6f6f;
-}
-
-.wishListIcon.active svg path {
-  fill-rule: nonzero;
 }
 
 .card:hover [data-add-to-cart-button],
@@ -208,8 +175,6 @@
 [lang=ar] .layerContent {
   direction: ltr;
 }
-
-
 
 @media (max-width: 600px) {
   .productImg {

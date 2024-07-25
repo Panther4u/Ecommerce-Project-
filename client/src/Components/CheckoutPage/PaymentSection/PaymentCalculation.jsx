@@ -34,14 +34,14 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { getSubTotal } from 'src/Functions/helper'; // Assuming helper function for subtotal calculation
+import { getSubTotal } from 'src/Functions/helper';
 import s from './PaymentCalculation.module.scss';
 
 const PaymentCalculation = ({ setTotalAmount }) => {
   const { cartProducts } = useSelector((state) => state.products);
   const { couponDiscount } = useSelector((state) => state.cart);
 
-  const subTotal = getSubTotal(cartProducts);
+  const subTotal = parseFloat(getSubTotal(cartProducts));
   const discountAmount = (subTotal * couponDiscount) / 100;
   const total = subTotal - discountAmount;
 
@@ -56,15 +56,15 @@ const PaymentCalculation = ({ setTotalAmount }) => {
     if (typeof value === 'number') {
       return value.toFixed(2);
     }
-    return value;
+    return '0.00';
   };
 
   return (
     <div className={s.calculationInfo}>
-      <div className={s.item}>
+      {/* <div className={s.item}>
         <span>{t(`${cartInfo}.subTotal`)}:</span>
         <span>RS.{formatCurrency(subTotal)}</span>
-      </div>
+      </div> */}
 
       <div className={s.item}>
         <span>Total Products:</span>
@@ -81,10 +81,10 @@ const PaymentCalculation = ({ setTotalAmount }) => {
         <span>RS.{formatCurrency(total)}</span>
       </div>
 
-      <div className={s.item}>
+      {/* <div className={s.item}>
         <span>Delivery Method:</span>
         <span>Express Delivery</span>
-      </div>
+      </div> */}
     </div>
   );
 };

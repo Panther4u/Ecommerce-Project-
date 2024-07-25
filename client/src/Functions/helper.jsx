@@ -192,16 +192,58 @@ export function setFormattedPrice(product) {
   product.price = formattedPrice;
 }
 
-export function getSubTotal(cartProducts, key = "quantity") {
-  const total = cartProducts?.reduce((acc, product) => {
-    const priceAfterDiscount = +product?.afterDiscount.replaceAll(",", "");
-    const quantity = +product?.[key];
+// export function getSubTotal(cartProducts, key = "quantity") {
+//   const total = cartProducts?.reduce((acc, product) => {
+//     const priceAfterDiscount = +product?.afterDiscount.replaceAll(",", "");
+//     const quantity = +product?.[key];
+//     const quantityPrice = quantity * priceAfterDiscount;
+//     return (acc += quantityPrice);
+//   }, 0);
+
+//   return total.toFixed(2);
+// }
+export const getSubTotal = (cartProducts, key = "quantity") => {
+  // Ensure cartProducts is an array
+  if (!Array.isArray(cartProducts)) return 0;
+
+  // Calculate the subtotal
+  const total = cartProducts.reduce((acc, product) => {
+    // Handle cases where afterDiscount may not be present or may be invalid
+    const priceAfterDiscount = parseFloat(product?.price - (product?.price * (product?.discount || 0) / 100)) || 0;
+    const quantity = parseInt(product?.[key]) || 0;
+
+    // Calculate quantity price and add it to the accumulator
     const quantityPrice = quantity * priceAfterDiscount;
-    return (acc += quantityPrice);
+    return acc + quantityPrice;
   }, 0);
 
+  // Return the total as a string with 2 decimal places
   return total.toFixed(2);
-}
+};
+
+
+
+
+
+// export function getSubTotal(cartProducts, key = "quantity") {
+//   // Ensure cartProducts is defined and is an array
+//   if (!Array.isArray(cartProducts)) {
+//     console.error('cartProducts should be an array.');
+//     return '0.00';
+//   }
+
+//   // Calculate the subtotal
+//   const total = cartProducts.reduce((acc, product) => {
+//     // Ensure product and product.afterDiscount are defined before accessing
+//     const priceAfterDiscount = product?.afterDiscount ? +product.afterDiscount.replaceAll(",", "") : 0;
+//     const quantity = +product?.[key] || 0; // Default to 0 if quantity is undefined
+//     const quantityPrice = quantity * priceAfterDiscount;
+//     return acc + quantityPrice;
+//   }, 0);
+
+//   // Return total with 2 decimal places
+//   return total.toFixed(2);
+// }
 
 export function isQueryContainedInItem(query, item) {
   const formattedQuery = query?.trim().toLowerCase();
@@ -222,9 +264,16 @@ export function random(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function isItemFound(data, getItem, key) {
-  return data.find((item) => item[key] === getItem[key]);
-}
+// export function isItemFound(data, getItem, key) {
+//   return data.find((item) => item[key] === getItem[key]);
+// }
+
+export const isItemFound = (data, product, key) => {
+  const productsArray = Array.isArray(data?.products) ? data.products : [];
+  return productsArray.find((item) => item[key] === product[key]);
+};
+
+
 
 export function getUniqueArrayByObjectKey({ arr, newArr, key }) {
   const updatedArr = [...arr];

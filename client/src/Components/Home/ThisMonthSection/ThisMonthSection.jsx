@@ -1,16 +1,64 @@
+// import { useTranslation } from "react-i18next";
+// import { Link } from "react-router-dom";
+// import { productsData } from "src/Data/productsData";
+// import ProductsSlider from "../../Shared/MidComponents/ProductsSlider/ProductsSlider";
+// import SectionTitle from "../../Shared/MiniComponents/SectionTitle/SectionTitle";
+// import s from "./ThisMonthSection.module.scss";
+
+// const ThisMonthSection = () => {
+//   const { t } = useTranslation();
+//   const thisMonthSection = "sectionTitles.thisMonthSection";
+
+//   function filterThisMonthProducts() {
+//     const filteredProducts = productsData.filter(
+//       (productData) => productData.sold > 1000
+//     );
+
+//     return filteredProducts;
+//   }
+
+//   return (
+//     <section className={s.thisMonthSection}>
+//       <div className={s.wrapper}>
+//         <SectionTitle
+//           eventName={t(`${thisMonthSection}.title`)}
+//           sectionName={t(`${thisMonthSection}.bestSelling`)}
+//         />
+
+//         <Link to="/products" className={s.viewAllBtn}>
+//           {t("buttons.viewAll")}
+//         </Link>
+//       </div>
+
+//       <ProductsSlider filterFun={filterThisMonthProducts} />
+//     </section>
+//   );
+// };
+// export default ThisMonthSection;
+
+
+
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { productsData } from "src/Data/productsData";
+import { fetchProducts } from "../../../Features/productsSlice";
 import ProductsSlider from "../../Shared/MidComponents/ProductsSlider/ProductsSlider";
 import SectionTitle from "../../Shared/MiniComponents/SectionTitle/SectionTitle";
 import s from "./ThisMonthSection.module.scss";
 
 const ThisMonthSection = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products.products);
   const thisMonthSection = "sectionTitles.thisMonthSection";
 
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   function filterThisMonthProducts() {
-    const filteredProducts = productsData.filter(
+    const filteredProducts = products.filter(
       (productData) => productData.sold > 1000
     );
 
@@ -34,4 +82,5 @@ const ThisMonthSection = () => {
     </section>
   );
 };
+
 export default ThisMonthSection;

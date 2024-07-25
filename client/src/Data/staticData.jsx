@@ -315,12 +315,12 @@ export const mobileNavData = [
     icon: "bag",
     requiteSignIn: true,
   },
-  {
-    name: "Favorite",
-    link: "/favorites",
-    icon: "heart",
-    requiteSignIn: true,
-  },
+  // {
+  //   name: "Favorite",
+  //   link: "/favorites",
+  //   icon: "heart",
+  //   requiteSignIn: true,
+  // },
   {
     name: "wishlist",
     link: "/wishlist",

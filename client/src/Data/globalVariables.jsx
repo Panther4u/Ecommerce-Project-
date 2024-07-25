@@ -13,7 +13,7 @@ export const UN_BUILT_PAGES = [
   "privacy",
 ];
 export const pagesRequireSignIn = [
-  "/favorites",
+  // "/favorites",
   "/checkout",
   "/profile",
   "/wishlist",

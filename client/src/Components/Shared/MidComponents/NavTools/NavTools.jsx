@@ -7,7 +7,7 @@ import s from "./NavTools.module.scss";
 
 const NavTools = ({ showHeart = true, showCart = true, showUser = true }) => {
   const { t } = useTranslation();
-  const { cartProducts = [], favoritesProducts = [] } = useSelector(
+  const { cartProducts = [], wishList = [] } = useSelector(
     (state) => state.products
   );
 
@@ -20,8 +20,8 @@ const NavTools = ({ showHeart = true, showCart = true, showUser = true }) => {
           props={{
             visibility: showHeart,
             iconName: "heart",
-            routePath: "/favorites",
-            countLength: favoritesProducts.length,
+            routePath: "/wishlist",
+            countLength: wishList.length,
             title: t("navTools.favorite"),
           }}
         />

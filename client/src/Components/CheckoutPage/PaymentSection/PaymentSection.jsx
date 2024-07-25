@@ -76,16 +76,16 @@ const PaymentSection = ({ handlePlaceOrder, handleApplyCoupon, setTotalAmount })
       <h2>{t('Order Summary')}</h2>
       <PaymentProducts products={products} />
       <PaymentCalculation products={products} handleApplyCoupon={handleApplyCoupon} setTotalAmount={setTotalAmount} />
-      <PaymentOptionsSelection />
+      {/* <PaymentOptionsSelection /> */}
 
-      <PlaceOrderButton
+      {/* <PlaceOrderButton
         type="button"
         className={s.submitPaymentButton}
         onClick={placeOrderFrontend} // Use the frontend function here
         disabled={loading}
       >
         {loading ? t('buttons.placingOrder') : t('buttons.placeOrder')}
-      </PlaceOrderButton>
+      </PlaceOrderButton> */}
 
       {error && <p className={s.errorMessage}>{error}</p>}
     </section>

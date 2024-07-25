@@ -1,22 +1,103 @@
-@import "src/Styles/mixins";
+// // @import "src/Styles/mixins";
+
+// .cartPage {
+//   margin: var(--page-margin);
+//   margin: 1.3rem;
+//   padding-top: 5px;
+//   height: auto;
+  
+// }
+
+// .pageComponents {
+//   margin-top: 20px;
+//   display: flex;
+//   justify-content: space-between;
+// }
+
+// .wrapper {
+  // display: flex;
+  // justify-content: space-between;
+  // gap: 40px;
+// }
+
+// @media (max-width: 768px) {
+  // .wrapper {
+  //   flex-direction: column;
+  //   align-items: center;
+  // }
+//   .cartPage {
+//     margin: var(--page-margin);
+//     margin: 5px;
+//     padding-top: 15px;
+//   }
+// }
+
+
 
 .cartPage {
   margin: var(--page-margin);
+  padding-top: 5px;
+  height: auto;
+  margin: 1.3rem;
 }
 
 .pageComponents {
-  margin-top: 60px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 70% 30%;
+  gap: 20px; // Optional: Add space between the two columns
 }
 
 .wrapper {
   display: flex;
-  justify-content: space-between;
-  gap: 40px;
+  flex-direction: column;
+  gap: 20px; // Optional: Add space between the child components
+  margin-right: 20px;
 }
 
-@media (max-width: 600px) {
-  .wrapper {
-    flex-direction: column;
-    align-items: center;
+@media (max-width: 768px) {
+  .pageComponents {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: 20px; // Optional: Add space between the two columns
   }
+  .wrapper {
+    margin-right: 20px;
+  }
+
+
 }
+@media (max-width: 678px) {
+  .pageComponents {
+    grid-template-columns: 1fr; // Full width for each component in smaller screens
+  }
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    gap: 20px; // Optional: Add space between the two columns
+    margin: 0px;
+  }
+  .cartPage {
+    margin: var(--page-margin);
+    padding-top: 15px;
+  }
+  
+}
+@media (max-width: 500px) {
+
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin: 0px;
+  }
+  .cartPage {
+    margin: var(--page-margin);
+    margin: 5px;
+    padding-top: 15px;
+  }
+  
+}
+

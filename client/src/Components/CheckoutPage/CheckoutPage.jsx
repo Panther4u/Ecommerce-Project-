@@ -128,14 +128,14 @@ const CheckoutPage = () => {
           <PagesHistory history={pageHistory} historyPaths={historyPaths} />
 
           <form className={s.checkoutPageContent} onSubmit={handleSubmitPayment}>
-            <BillingDetails
-              billingValues={billingValues}
-              setBillingValues={setBillingValues}
-            />
-            <PaymentSection
+          <PaymentSection
               handlePlaceOrder={handlePlaceOrder}
               handleApplyCoupon={handleApplyCoupon}
               setTotalAmount={setTotalAmount}
+            />
+            <BillingDetails
+              billingValues={billingValues}
+              setBillingValues={setBillingValues}
             />
           </form>
         </main>

@@ -1,43 +1,231 @@
-.products {
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+// .products {
+//   margin-bottom: 30px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+// }
 
-.product {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  outline-color: var(--black);
-  outline-offset: 3px;
+// .product {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   outline-color: var(--black);
+//   outline-offset: 3px;
 
-  &:focus {
-    transition: outline-color .2s .1s, outline-offset .2s ease;
-    outline-color: var(--orange-degree2);
-    outline-offset: 8px;
+//   &:focus {
+//     transition: outline-color .2s .1s, outline-offset .2s ease;
+//     outline-color: var(--orange-degree2);
+//     outline-offset: 8px;
+//   }
+// }
+
+// .wrapper {
+//   display: flex;
+//   align-items: center;
+//   gap: 30px;
+// }
+
+// .wrapper>img {
+//   width: 54px;
+//   height: 54px;
+//   user-select: none;
+//   object-fit: contain;
+// }
+
+// .product span {
+//   color: var(--black);
+// }
+
+// .discountInfo {
+//   margin-top: 20px;
+//   font-weight: bold;
+//   color: var(--discount-color); // Define this color in your variables or use any color you prefer
+// }
+
+
+
+@import "src/Styles/mixins";
+
+.productContainer {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  gap: 35px;
+  padding: 15px;
+  border: 1px solid rgb(225, 221, 221);
+  border-radius: 5px;
+  background-color: white;
+  margin-bottom: 10px;
+
+  img {
+    height: 120px;
+    width: 120px;
+    padding: 5px;
+    border: 2px solid rgb(225, 221, 221);
+    border-radius: 5px;
+    object-fit: cover;
+  }
+
+  .productDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+
+    .productName {
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      color: rgb(101, 101, 101);
+      font-size: 16px;
+    }
+
+    .price {
+      color: rgb(101, 101, 101);
+      font-size: 13px;
+    }
+
+    .returnPolicy {
+      color: rgb(101, 101, 101);
+      font-size: 10px;
+    }
+
+    .sizeAndQuantity {
+      display: flex;
+      align-items: center;
+      color: rgb(101, 101, 101);
+      font-size: 12px;
+
+      .dot {
+        font-size: 14px;
+        color: rgb(159, 155, 155);
+      }
+    }
+
+    .remove {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      color: rgb(101, 101, 101);
+      cursor: pointer;
+      font-size: 14px;
+
+      .removeIcon {
+        font-size: 18px;
+        color: rgb(159, 32, 137);
+      }
+    }
+
+    .sellerInfo {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-top: 1px solid rgb(225, 221, 221);
+      font-size: 14px;
+      color: rgb(101, 101, 101);
+    }
   }
 }
 
-.wrapper {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
+// @include small {
+//   .productContainer {
+  
+//     img {
+//       height: 80px;
+//       width: 80px;
+//     }
 
-.wrapper>img {
-  width: 54px;
-  height: 54px;
-  user-select: none;
-  object-fit: contain;
-}
+//     .productDetails {
+//       .productName {
+//         font-size: 14px;
+//       }
+//     }
 
-.product span {
-  color: var(--black);
-}
+//     .productDetails {
+//       gap: 4px;
+//     }
 
-.discountInfo {
-  margin-top: 20px;
-  font-weight: bold;
-  color: var(--discount-color); // Define this color in your variables or use any color you prefer
+//     .sellerInfo {
+//       font-size: 8px;
+//     }
+//     .price {
+//       color: rgb(101, 101, 101);
+//       font-size: 12px;
+//     }
+
+//     .returnPolicy {
+//       color: rgb(101, 101, 101);
+//       font-size: 10px;
+//     }
+//   }
+// }
+
+@media (max-width: 500px) {
+  .productContainer {
+    img {
+      height: 80px;
+      width: 80px;
+    }
+
+    .productDetails {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+  
+      .productName {
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        color: rgb(101, 101, 101);
+        font-size: 16px;
+      }
+  
+      .price {
+        color: rgb(101, 101, 101);
+        font-size: 12px;
+      }
+  
+      .returnPolicy {
+        color: rgb(101, 101, 101);
+        font-size: 10px;
+      }
+  
+      .sizeAndQuantity {
+        display: flex;
+        align-items: center;
+        color: rgb(101, 101, 101);
+  
+        .dot {
+          font-size: 10px;
+          color: rgb(159, 155, 155);
+        }
+      }
+  
+      .remove {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        color: rgb(101, 101, 101);
+        cursor: pointer;
+        font-size: 12px;
+  
+        .removeIcon {
+          font-size: 18px;
+          color: rgb(159, 32, 137);
+        }
+      }
+  
+      .sellerInfo {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-top: 1px solid rgb(225, 221, 221);
+        font-size: 10px;
+        color: rgb(101, 101, 101);
+      }
+    }
+  }
+
 }

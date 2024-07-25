@@ -158,13 +158,13 @@ const WhatsAppIcon = () => (
 );
 
 const ProductDealingControls = ({ data }) => {
-  const { favoritesProducts } = useSelector((state) => state.products);
-  const { loginInfo } = useSelector((state) => state.user);
+  const { favoritesProducts } = useSelector((state) => state.products) || []; // Provide default value if favoritesProducts is undefined
+  const { loginInfo } = useSelector((state) => state.user) || {}; // Provide default value if loginInfo is undefined
   const navigateTo = useNavigate();
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const { t } = useTranslation();
-  const isFavoriteProduct = favoritesProducts.some(
+  const isFavoriteProduct = favoritesProducts && favoritesProducts.some(
     (product) => product.shortName === data.shortName
   );
 

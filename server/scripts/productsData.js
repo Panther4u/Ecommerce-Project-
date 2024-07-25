@@ -10,12 +10,12 @@ const productsData = [
     discount: 40,
     description: "PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.",
     addedDate: "2024/2/2",
-    img: 'Public/Assets/Products/ps5-gamepad/ps5-gamepad.webp',
+    img: 'uploads/image/ps5-gamepad/ps5-gamepad.webp',
     otherImages: [
-      'Public/Assets/Products/ps5-gamepad/ps5-gamepad.webp',
-      'Public/Assets/Products/ps5-gamepad/ps5-gamepad-thum1.webp',
-      'Public/Assets/Products/ps5-gamepad/ps5-gamepad-thum2.webp',
-      'Public/Assets/Products/ps5-gamepad/ps5-gamepad-thum3.webp'
+      'uploads/image/ps5-gamepad/ps5-gamepad.webp',
+      'uploads/image/ps5-gamepad/ps5-gamepad-thum1.webp',
+      'uploads/image/ps5-gamepad/ps5-gamepad-thum2.webp',
+      'uploads/image/ps5-gamepad/ps5-gamepad-thum3.webp'
     ],
     colors: [
       { name: "ice blue", color: "#dcdfea" },
@@ -35,12 +35,12 @@ const productsData = [
     discount: 35,
     description: "Elevate your gaming experience with the AK-900 Wired Keyboard. Designed for precision and durability, this keyboard boasts high responsiveness and tactile feedback. Its sleek design and customizable RGB lighting make it a stylish addition to any gaming setup. Whether you're gaming competitively or typing up reports, the AK-900 ensures peak performance with every keystroke.",
     addedDate: "2024/2/7",
-    img: 'Public/Assets/Products/wired-keyboard/wired-keyboard.webp',
+    img: 'uploads/image/wired-keyboard/wired-keyboard.webp',
     otherImages: [
-      'Public/Assets/Products/wired-keyboard/wired-keyboard.webp',
-      'Public/Assets/Products/wired-keyboard/wired-keyboard-thum1.webp',
-      'Public/Assets/Products/wired-keyboard/wired-keyboard-thum2.webp',
-      'Public/Assets/Products/wired-keyboard/wired-keyboard-thum3.webp'
+      'uploads/image/wired-keyboard/wired-keyboard.webp',
+      'uploads/image/wired-keyboard/wired-keyboard-thum1.webp',
+      'uploads/image/wired-keyboard/wired-keyboard-thum2.webp',
+      'uploads/image/wired-keyboard/wired-keyboard-thum3.webp'
     ],
     colors: [
       { name: "white", color: "#e4e4e4" },
@@ -60,12 +60,12 @@ const productsData = [
     discount: 30,
     description: "Immerse yourself in the world of gaming with the IPS LCD Gaming Monitor. Featuring stunning visuals and ultra-smooth gameplay, this monitor delivers an unparalleled gaming experience. With its high refresh rate and low input lag, you'll never miss a frame. Whether you're battling foes or exploring vast worlds, the IPS LCD Gaming Monitor brings every detail to life with vibrant colors and crisp clarity.",
     addedDate: "2024/3/15",
-    img: 'Public/Assets/Products/gaming-monitor/gaming-monitor.webp',
+    img: 'uploads/image/gaming-monitor/gaming-monitor.webp',
     otherImages: [
-      'Public/Assets/Products/gaming-monitor/gaming-monitor.webp',
-      'Public/Assets/Products/gaming-monitor/gaming-monitor-thum1.webp',
-      'Public/Assets/Products/gaming-monitor/gaming-monitor-thum2.webp',
-      'Public/Assets/Products/gaming-monitor/gaming-monitor-thum3.webp'
+      'uploads/image/gaming-monitor/gaming-monitor.webp',
+      'uploads/image/gaming-monitor/gaming-monitor-thum1.webp',
+      'uploads/image/gaming-monitor/gaming-monitor-thum2.webp',
+      'uploads/image/gaming-monitor/gaming-monitor-thum3.webp'
     ],
     colors: [
       { name: "black", color: "#151515" }
@@ -84,12 +84,12 @@ const productsData = [
     discount: 25,
     description: "Experience comfort like never before with the S-Series Comfort Chair. Crafted with plush padding and ergonomic design, this chair provides exceptional support during long gaming sessions or work hours. Its sleek and modern aesthetic adds a touch of sophistication to any space. Say goodbye to discomfort and hello to relaxation with the S-Series Comfort Chair.",
     addedDate: "2024/1/1",
-    img: 'Public/Assets/Products/comfort-chair/comfort-chair.webp',
+    img: 'uploads/image/comfort-chair/comfort-chair.webp',
     otherImages: [
-      'Public/Assets/Products/comfort-chair/comfort-chair.webp',
-      'Public/Assets/Products/comfort-chair/comfort-chair-thum1.webp',
-      'Public/Assets/Products/comfort-chair/comfort-chair-thum2.webp',
-      'Public/Assets/Products/comfort-chair/comfort-chair-thum3.webp'
+      'uploads/image/comfort-chair/comfort-chair.webp',
+      'uploads/image/comfort-chair/comfort-chair-thum1.webp',
+      'uploads/image/comfort-chair/comfort-chair-thum2.webp',
+      'uploads/image/comfort-chair/comfort-chair-thum3.webp'
     ],
     colors: [
       { name: "ice blue", color: "#d3d7dc" },
@@ -104,19 +104,19 @@ const productsData = [
     id: uuid()
   },
   {
-    shortName: "The North Coat",
-    name: "The North Coat",
+    shortName: "North Coat",
+    name: "The north coat",
     category: "clothes",
     price: 89.99,
     discount: 40,
     description: "Stay warm and stylish with The North Coat. Made from premium materials and expert craftsmanship, this coat is designed to withstand the elements while keeping you cozy. Its timeless design and versatile color make it a wardrobe essential for any season. Whether you're braving the outdoors or running errands in the city, The North Coat is sure to turn heads wherever you go.",
     addedDate: "2024/3/7",
-    img: 'Public/Assets/Products/north-coat/north-coat.webp',
+    img: 'uploads/image/north-coat/north-coat.webp',
     otherImages: [
-      'Public/Assets/Products/north-coat/north-coat.webp',
-      'Public/Assets/Products/north-coat/north-coat-thum1.webp',
-      'Public/Assets/Products/north-coat/north-coat-thum2.webp',
-      'Public/Assets/Products/north-coat/north-coat-thum3.webp'
+      'uploads/image/north-coat/north-coat.webp',
+      'uploads/image/north-coat/north-coat-thum1.webp',
+      'uploads/image/north-coat/north-coat-thum2.webp',
+      'uploads/image/north-coat/north-coat-thum3.webp'
     ],
     colors: [
       { name: "pink", color: "#fa6a96" },
@@ -130,19 +130,19 @@ const productsData = [
     id: uuid()
   },
   {
-    shortName: "Gucci Duffle Bag",
-    name: "Gucci Duffle Bag",
+    shortName: "Gucci Bag",
+    name: "Gucci duffle bag",
     category: "backpack",
     price: 2980,
     discount: 10,
     description: "Make a statement with the Gucci Duffle Bag. Crafted from luxurious materials and adorned with iconic branding, this bag exudes sophistication and style. With its spacious interior and multiple compartments, it's perfect for storing all your essentials in organized fashion. Whether you're traveling in first-class or hitting the gym, the Gucci Duffle Bag is the epitome of luxury and functionality.",
     addedDate: "2022/9/15",
-    img: 'Public/Assets/Products/gucci-duffle-bag/gucci-duffle-bag.webp',
+    img: 'uploads/image/gucci-duffle-bag/gucci-duffle-bag.webp',
     otherImages: [
-      'Public/Assets/Products/gucci-duffle-bag/gucci-duffle-bag.webp',
-      'Public/Assets/Products/gucci-duffle-bag/gucci-duffle-bag-thum2.webp',
-      'Public/Assets/Products/gucci-duffle-bag/gucci-duffle-bag-thum3.webp',
-      'Public/Assets/Products/gucci-duffle-bag/gucci-duffle-bag-thum4.webp'
+      'uploads/image/gucci-duffle-bag/gucci-duffle-bag.webp',
+      'uploads/image/gucci-duffle-bag/gucci-duffle-bag-thum2.webp',
+      'uploads/image/gucci-duffle-bag/gucci-duffle-bag-thum3.webp',
+      'uploads/image/gucci-duffle-bag/gucci-duffle-bag-thum4.webp'
     ],
     colors: [
       { name: "Tan", color: "#ae9c89" },
@@ -156,19 +156,19 @@ const productsData = [
     id: uuid()
   },
   {
-    shortName: "RGB Liquid CPU Cooler",
-    name: "RGB Liquid CPU Cooler",
+    shortName: "CPU Cooler",
+    name: "RGB liquid CPU Cooler",
     category: "gaming",
     price: 139,
     discount: 30,
     description: "Keep your CPU cool and your system running smoothly with the RGB Liquid CPU Cooler. Featuring a sleek design and customizable RGB lighting, this cooler not only enhances your PC's performance but also adds a touch of style to your gaming setup. With its efficient cooling technology and quiet operation, you can overclock with confidence and push your rig to the limit. Elevate your gaming experience with the RGB Liquid CPU Cooler.",
     addedDate: "2024/4/20",
-    img: 'Public/Assets/Products/rgb-cpu-cooler/rgb-cpu-cooler.webp',
+    img: 'uploads/image/rgb-liquid-cpu-cooler/rgb-liquid-cpu-cooler.webp',
     otherImages: [
-      'Public/Assets/Products/rgb-cpu-cooler/rgb-cpu-cooler.webp',
-      'Public/Assets/Products/rgb-cpu-cooler/rgb-cpu-cooler-thum1.webp',
-      'Public/Assets/Products/rgb-cpu-cooler/rgb-cpu-cooler-thum2.webp',
-      'Public/Assets/Products/rgb-cpu-cooler/rgb-cpu-cooler-thum3.webp'
+      'uploads/image/rgb-liquid-cpu-cooler/rgb-liquid-cpu-cooler.webp',
+      'uploads/image/rgb-liquid-cpu-cooler/rgb-liquid-cpu-cooler.webp-thum1.webp',
+      'uploads/image/rgb-liquid-cpu-cooler/rgb-liquid-cpu-cooler.webp-thum2.webp',
+      'uploads/image/rgb-liquid-cpu-cooler/rgb-liquid-cpu-cooler.webp-thum3.webp'
     ],
     colors: [
       { name: "black", color: "#0d0d0d" }
@@ -180,208 +180,324 @@ const productsData = [
     id: uuid()
   },
   {
-    shortName: "Smart Thermostat",
-    name: "Smart Thermostat",
-    category: "smart-home",
-    price: 199.99,
+    shortName: "BookShelf",
+    name: "Small BookShelf",
+    category: "furniture",
+    price: 45.99,
     discount: 15,
-    description: "Take control of your home's climate with the Smart Thermostat. Compatible with most HVAC systems, this thermostat allows you to adjust temperatures remotely from your smartphone or tablet. Its intuitive interface and energy-saving features help reduce utility bills without sacrificing comfort. Whether you're at home or on the go, the Smart Thermostat ensures your space is always at the perfect temperature.",
+    description: `
+    Organize your library in style with the Small Bookshelf. Crafted from durable materials and featuring
+    a compact design, this bookshelf maximizes storage space without sacrificing aesthetics. Whether you're
+    displaying your favorite novels or showcasing decorative items, its minimalist design seamlessly blends
+    with any décor. Say goodbye to clutter and hello to sophistication with the Small Bookshelf.`,
     addedDate: "2024/5/10",
-    img: 'Public/Assets/Products/smart-thermostat/smart-thermostat.webp',
+    img: 'uploads/image/small-bookshelf/small-bookshelf.webp',
     otherImages: [
-      'Public/Assets/Products/smart-thermostat/smart-thermostat.webp',
-      'Public/Assets/Products/smart-thermostat/smart-thermostat-thum1.webp',
-      'Public/Assets/Products/smart-thermostat/smart-thermostat-thum2.webp',
-      'Public/Assets/Products/smart-thermostat/smart-thermostat-thum3.webp'
+      'uploads/image/small-bookshelf/small-bookshelf.webp',
+      'uploads/image/small-bookshelf/small-bookshelf-thum1.webp',
+      'uploads/image/small-bookshelf/small-bookshelf-thum2.webp',
+      'uploads/image/small-bookshelf/small-bookshelf-thum3.webp'
     ],
     colors: [
-      { name: "white", color: "#ffffff" }
+      {
+        name: "tan",
+        color: "#c08e56",
+      },
+      {
+        name: "light yellow",
+        color: "#ffdd9e",
+      },
     ],
-    rate: 4,
-    votes: 88,
+    rate: 5,
+    votes: 201,
     quantity: 1,
-    sold: 310,
-    id: uuid()
+    sold: 1602,
+    id: uuid(),
   },
   {
-    shortName: "Wireless Earbuds",
-    name: "Wireless Earbuds",
-    category: "electronics",
-    price: 99.99,
-    discount: 20,
-    description: "Enjoy wireless freedom with the Wireless Earbuds. Featuring advanced Bluetooth technology and noise-cancelling capabilities, these earbuds deliver crystal-clear audio without the hassle of wires. With ergonomic design and long-lasting battery life, they're perfect for workouts, commuting, or simply relaxing at home. Elevate your listening experience with the Wireless Earbuds.",
-    addedDate: "2024/6/5",
-    img: 'Public/Assets/Products/wireless-earbuds/wireless-earbuds.webp',
+    shortName: "Dog Food",
+    name: "Breed Dry Dog Food",
+    category: "animal",
+    price: 17.99,
+    discount: 0,
+    description: `
+    Treat your furry friend to the best with Breed Dry Dog Food. Formulated with premium ingredients and essential
+    nutrients, this dog food provides complete and balanced nutrition for dogs of all ages and breeds. Its delicious
+    flavor and crunchy texture will have your dog begging for more. Say goodbye to mealtime struggles and hello to
+    happy, healthy dogs with Breed Dry Dog Food.`,
+    addedDate: "2024/3/7",
+    img: 'uploads/image/breed-dry-dog-food/breed-dry-dog-food.webp',
     otherImages: [
-      'Public/Assets/Products/wireless-earbuds/wireless-earbuds.webp',
-      'Public/Assets/Products/wireless-earbuds/wireless-earbuds-thum1.webp',
-      'Public/Assets/Products/wireless-earbuds/wireless-earbuds-thum2.webp',
-      'Public/Assets/Products/wireless-earbuds/wireless-earbuds-thum3.webp'
+      'uploads/image/breed-dry-dog-food/breed-dry-dog-food.webp',
+      'uploads/image/breed-dry-dog-food/breed-dry-dog-food-thum1.webp',
+      'uploads/image/breed-dry-dog-food/breed-dry-dog-food-thum2.webp',
+      'uploads/image/breed-dry-dog-food/breed-dry-dog-food-thum3.webp'
     ],
     colors: [
-      { name: "black", color: "#000000" },
-      { name: "white", color: "#ffffff" },
-      { name: "red", color: "#ff0000" }
+      {
+        name: "purple",
+        color: "#c212ad",
+      },
+      {
+        name: "yellow",
+        color: "#f59501",
+      },
+      {
+        name: "red",
+        color: "#d61421",
+      },
+    ],
+    rate: 3,
+    votes: 35,
+    quantity: 1,
+    sold: 59,
+    id: uuid(),
+  },
+  {
+    shortName: "Cannon Camera",
+    name: "CANON EOS DSLR Camera",
+    category: "camera",
+    price: 6499,
+    discount: 0,
+    description: `
+    Capture life's precious moments with the CANON EOS DSLR Camera. Whether you're a professional photographer or an
+    amateur enthusiast, this camera delivers stunning image quality and performance. With its advanced features and
+    intuitive controls, you can unleash your creativity and take your photography to the next level. Say goodbye to
+    blurry shots and hello to crystal-clear images with the CANON EOS DSLR Camera.`,
+    addedDate: "2024/3/7",
+    img: 'uploads/image/canon-camera/canon-camera.webp',
+    otherImages: [
+      'uploads/image/canon-camera/canon-camera.webp',
+      'uploads/image/canon-camera/canon-camera-thum1.webp',
+      'uploads/image/canon-camera/canon-camera-thum2.webp',
+      'uploads/image/canon-camera/canon-camera-thum3.webp'
+    ],
+    colors: [
+      {
+        name: "black",
+        color: "#000201",
+      },
+    ],
+    rate: 4,
+    votes: 94,
+    quantity: 1,
+    sold: 83,
+    id: uuid(),
+  },
+  {
+    shortName: "FHD Laptop",
+    name: "ASUS FHD Gaming Laptop",
+    category: "computers",
+    price: 767.99,
+    discount: 5,
+    description: `
+    Experience unparalleled gaming performance with the ASUS FHD Gaming Laptop. Powered by cutting-edge hardware and
+    featuring a stunning Full HD display, this laptop is built to handle even the most demanding games with ease.
+    Its sleek design and lightweight construction make it the perfect companion for gaming on the go. Say goodbye
+    to lag and hello to smooth gameplay with the ASUS FHD Gaming Laptop.`,
+    addedDate: "2024/3/7",
+    img: 'uploads/image/gaming-laptop/gaming-laptop.webp',
+    otherImages: [
+      'uploads/image/gaming-laptop/gaming-laptop.webp',
+      'uploads/image/gaming-laptop/gaming-laptop-thum1.webp',
+      'uploads/image/gaming-laptop/gaming-laptop-thum2.webp',
+      'uploads/image/gaming-laptop/gaming-laptop-thum3.webp'
+    ],
+    colors: [
+      {
+        name: "black",
+        color: "#0c0c0c",
+      },
     ],
     rate: 4.5,
-    votes: 112,
+    votes: 1049,
     quantity: 1,
-    sold: 1567,
-    id: uuid()
+    sold: 1792,
+    id: uuid(),
   },
   {
-    shortName: "Desk Lamp",
-    name: "Desk Lamp",
-    category: "home-decor",
-    price: 29.99,
-    discount: 20,
-    description: "Illuminate your workspace with the Desk Lamp. Featuring adjustable brightness levels and a sleek modern design, this lamp provides optimal lighting for reading, studying, or working on projects. Its compact size and flexible neck make it easy to position wherever you need extra light. Enhance your productivity and create a stylish ambiance with the Desk Lamp.",
-    addedDate: "2024/7/1",
-    img: 'Public/Assets/Products/desk-lamp/desk-lamp.webp',
+    shortName: "Curology",
+    name: "Curology Product Set",
+    category: "makeup",
+    price: 24.99,
+    discount: 0,
+    description: `
+    Transform your skincare routine with the Curology Product Set. Formulated by dermatologists and tailored to
+    your unique skin needs, this set includes everything you need to achieve clear, radiant skin. From cleansers
+    to serums, each product is designed to target specific concerns and deliver visible results. Say goodbye to
+    dull, uneven skin and hello to a complexion that glows with health and vitality with the Curology Product Set.`,
+    addedDate: "2024/3/7",
+    img: 'uploads/image/curology-product-set/curology-product-set.webp',
     otherImages: [
-      'Public/Assets/Products/desk-lamp/desk-lamp.webp',
-      'Public/Assets/Products/desk-lamp/desk-lamp-thum1.webp',
-      'Public/Assets/Products/desk-lamp/desk-lamp-thum2.webp',
-      'Public/Assets/Products/desk-lamp/desk-lamp-thum3.webp'
+      'uploads/image/curology-product-set/curology-product-set.webp',
+      'uploads/image/curology-product-set/curology-product-set-thum1.webp',
+      'uploads/image/curology-product-set/curology-product-set-thum2.webp',
+      'uploads/image/curology-product-set/curology-product-set-thum3.webp'
     ],
     colors: [
-      { name: "white", color: "#ffffff" },
-      { name: "black", color: "#000000" },
-      { name: "silver", color: "#c0c0c0" }
+      {
+        name: "dark blue",
+        color: "#000a2d",
+      },
+      {
+        name: "white",
+        color: "#def1f8",
+      },
+    ],
+    rate: 5,
+    votes: 325,
+    quantity: 1,
+    sold: 100,
+    id: uuid(),
+  },
+  {
+    shortName: "Electric Car",
+    name: "Kids Electric Car",
+    category: "gaming",
+    price: 399.99,
+    discount: 0,
+    description: `
+    Spark your child's imagination with the Kids Electric Car. Designed for fun and excitement, this car features
+    realistic details and effortless controls that make every ride an adventure. Whether they're cruising around
+    the neighborhood or exploring the backyard, the Kids Electric Car provides hours of entertainment for children
+    of all ages. Say goodbye to boredom and hello to endless fun with the Kids Electric Car.`,
+    addedDate: "2024/3/7",
+    img: 'uploads/image/kids-electric-car/kids-electric-car.webp',
+    otherImages: [
+      'uploads/image/kids-electric-car/kids-electric-car.webp',
+      'uploads/image/kids-electric-car/kids-electric-car-thum1.webp',
+      'uploads/image/kids-electric-car/kids-electric-car-thum2.webp',
+      'uploads/image/kids-electric-car/kids-electric-car-thum3.webp'
+    ],
+    colors: [
+      {
+        name: "red",
+        color: "#ff6066",
+      },
+      {
+        name: "black",
+        color: "#000201",
+      },
+      {
+        name: "white",
+        color: "#dcdcdc",
+      },
+    ],
+    rate: 3,
+    votes: 22,
+    quantity: 1,
+    sold: 100,
+    id: uuid(),
+  },
+  {
+    shortName: "Soccer Cleats",
+    name: "Jr. Zoom Soccer Cleats",
+    category: "clothes",
+    price: 44.99,
+    discount: 0,
+    description: `
+    Take your game to the next level with Jr. Zoom Soccer Cleats. Engineered for speed and agility, these cleats
+    deliver exceptional traction and stability on the field. With their lightweight design and responsive cushioning,
+    you'll feel unstoppable from kickoff to the final whistle. Say goodbye to slips and slides and hello to peak
+    performance with Jr. Zoom Soccer Cleats.`,
+    addedDate: "2024/3/7",
+    img: 'uploads/image/zoom-soccer-cleats/zoom-soccer-cleats.webp',
+    otherImages: [
+      'uploads/image/zoom-soccer-cleats/zoom-soccer-cleats.webp',
+      'uploads/image/zoom-soccer-cleats/zoom-soccer-cleats-thum1.webp',
+      'uploads/image/zoom-soccer-cleats/zoom-soccer-cleats-thum2.webp',
+      'uploads/image/zoom-soccer-cleats/zoom-soccer-cleats-thum3.webp'
+    ],
+    colors: [
+      {
+        name: "yellow",
+        color: "#edfe7c",
+      },
+      {
+        name: "black",
+        color: "#131615",
+      },
     ],
     rate: 4,
+    votes: 145,
+    quantity: 1,
+    sold: 100,
+    id: uuid(),
+  },
+  {
+    shortName: "GP11 Gamepad",
+    name: "GP11 Shooter USB Gamepad",
+    category: "gaming",
+    price: 13.86,
+    discount: 0,
+    description: `
+    Dominate the competition with the GP11 Shooter USB Gamepad. Designed for precision and comfort, this gamepad
+    delivers an immersive gaming experience with every press and swipe. Whether you're battling enemies or racing
+    against the clock, its ergonomic design and responsive controls give you the competitive edge you need to come
+    out on top. Say goodbye to laggy inputs and hello to smooth, seamless gameplay with the GP11 Shooter USB Gamepad.`,
+    addedDate: "2024/3/7",
+    img: 'uploads/image/usb-gamepad/usb-gamepad.webp',
+    otherImages: [
+      'uploads/image/usb-gamepad/usb-gamepad.webp',
+      'uploads/image/usb-gamepad/usb-gamepad-thum1.webp',
+      'uploads/image/usb-gamepad/usb-gamepad-thum2.webp',
+      'uploads/image/usb-gamepad/usb-gamepad-thum3.webp'
+    ],
+    colors: [
+      {
+        name: "black",
+        color: "#242424",
+      },
+    ],
+    rate: 5,
+    votes: 64,
+    quantity: 1,
+    sold: 100,
+    id: uuid(),
+  },
+  {
+    shortName: "Satin Jacket",
+    name: "Quilted Satin Jacket",
+    category: "clothes",
+    price: 105,
+    discount: 0,
+    description: `
+    Elevate your outerwear collection with the Quilted Satin Jacket. Crafted from premium satin fabric and featuring a
+    quilted design, this jacket combines style and functionality with ease. Whether you're braving the elements or
+    hitting the town, its luxurious texture and sleek silhouette make it a versatile addition to any wardrobe. Say
+    goodbye to boring outerwear and hello to effortless style with the Quilted Satin Jacket.`,
+    addedDate: "2024/3/7",
+    img: 'uploads/image/quilted-satin-jacket/quilted-satin-jacket.webp',
+    otherImages: [
+      'uploads/image/quilted-satin-jacket/quilted-satin-jacket.webp',
+      'uploads/image/quilted-satin-jacket/quilted-satin-jacket-thum1.webp',
+      'uploads/image/quilted-satin-jacket/quilted-satin-jacket-thum2.webp',
+      'uploads/image/quilted-satin-jacket/quilted-satin-jacket-thum3.webp'
+    ],
+    colors: [
+      {
+        name: "blue gray",
+        color: "#4a5274",
+      },
+      {
+        name: "black",
+        color: "#272429",
+      },
+      {
+        name: "brown",
+        color: "#6b6957",
+      },
+      {
+        name: "dark green",
+        color: "#203734",
+      },
+    ],
+    rate: 4.5,
     votes: 55,
     quantity: 1,
-    sold: 987,
-    id: uuid()
+    sold: 100,
+    id: uuid(),
   },
-  {
-    shortName: "Portable Power Bank",
-    name: "Portable Power Bank",
-    category: "electronics",
-    price: 39.99,
-    discount: 25,
-    description: "Stay charged on the go with the Portable Power Bank. Featuring a compact design and high-capacity battery, this power bank provides multiple charges for your devices. With fast charging technology and built-in safety features, it's perfect for travel, outdoor activities, or emergencies. Keep your devices powered and stay connected with the Portable Power Bank.",
-    addedDate: "2024/8/15",
-    img: 'Public/Assets/Products/power-bank/power-bank.webp',
-    otherImages: [
-      'Public/Assets/Products/power-bank/power-bank.webp',
-      'Public/Assets/Products/power-bank/power-bank-thum1.webp',
-      'Public/Assets/Products/power-bank/power-bank-thum2.webp',
-      'Public/Assets/Products/power-bank/power-bank-thum3.webp'
-    ],
-    colors: [
-      { name: "black", color: "#000000" },
-      { name: "blue", color: "#0000ff" },
-      { name: "red", color: "#ff0000" }
-    ],
-    rate: 4.5,
-    votes: 123,
-    quantity: 1,
-    sold: 1245,
-    id: uuid()
-  },
-  {
-    shortName: "Smart Security Camera",
-    name: "Smart Security Camera",
-    category: "smart-home",
-    price: 149.99,
-    discount: 20,
-    description: "Protect your home with the Smart Security Camera. Featuring advanced motion detection and night vision technology, this camera keeps watch over your property day and night. With two-way audio and remote viewing capabilities, you can monitor your home from anywhere using your smartphone. Whether you're at work or on vacation, the Smart Security Camera provides peace of mind knowing your home is secure.",
-    addedDate: "2024/9/20",
-    img: 'Public/Assets/Products/security-camera/security-camera.webp',
-    otherImages: [
-      'Public/Assets/Products/security-camera/security-camera.webp',
-      'Public/Assets/Products/security-camera/security-camera-thum1.webp',
-      'Public/Assets/Products/security-camera/security-camera-thum2.webp',
-      'Public/Assets/Products/security-camera/security-camera-thum3.webp'
-    ],
-    colors: [
-      { name: "white", color: "#ffffff" },
-      { name: "black", color: "#000000" }
-    ],
-    rate: 4,
-    votes: 77,
-    quantity: 1,
-    sold: 890,
-    id: uuid()
-  },
-  {
-    shortName: "Air Purifier",
-    name: "Air Purifier",
-    category: "home-appliances",
-    price: 179.99,
-    discount: 15,
-    description: "Breathe easier with the Air Purifier. Featuring HEPA filtration and whisper-quiet operation, this purifier removes allergens, dust, and odors from your home. With smart sensors and auto mode, it adjusts settings based on air quality for optimal purification. Whether you suffer from allergies or simply want cleaner air, the Air Purifier creates a healthier environment for you and your family.",
-    addedDate: "2024/10/5",
-    img: 'Public/Assets/Products/air-purifier/air-purifier.webp',
-    otherImages: [
-      'Public/Assets/Products/air-purifier/air-purifier.webp',
-      'Public/Assets/Products/air-purifier/air-purifier-thum1.webp',
-      'Public/Assets/Products/air-purifier/air-purifier-thum2.webp',
-      'Public/Assets/Products/air-purifier/air-purifier-thum3.webp'
-    ],
-    colors: [
-      { name: "white", color: "#ffffff" },
-      { name: "black", color: "#000000" }
-    ],
-    rate: 4.5,
-    votes: 88,
-    quantity: 1,
-    sold: 435,
-    id: uuid()
-  },
-  {
-    shortName: "Smart Door Lock",
-    name: "Smart Door Lock",
-    category: "smart-home",
-    price: 249.99,
-    discount: 10,
-    description: "Enhance your home security with the Smart Door Lock. Featuring keyless entry and remote access, this lock allows you to control access to your home from anywhere. With customizable user codes and activity logs, you can monitor who enters and exits your property at all times. Whether you're at home or away, the Smart Door Lock provides peace of mind and convenience.",
-    addedDate: "2024/11/12",
-    img: 'Public/Assets/Products/smart-door-lock/smart-door-lock.webp',
-    otherImages: [
-      'Public/Assets/Products/smart-door-lock/smart-door-lock.webp',
-      'Public/Assets/Products/smart-door-lock/smart-door-lock-thum1.webp',
-      'Public/Assets/Products/smart-door-lock/smart-door-lock-thum2.webp',
-      'Public/Assets/Products/smart-door-lock/smart-door-lock-thum3.webp'
-    ],
-    colors: [
-      { name: "black", color: "#000000" },
-      { name: "silver", color: "#c0c0c0" }
-    ],
-    rate: 4,
-    votes: 66,
-    quantity: 1,
-    sold: 567,
-    id: uuid()
-  },
-  {
-    shortName: "Portable Bluetooth Speaker",
-    name: "Portable Bluetooth Speaker",
-    category: "electronics",
-    price: 79.99,
-    discount: 20,
-    description: "Take your music anywhere with the Portable Bluetooth Speaker. Featuring immersive sound and compact design, this speaker delivers powerful audio performance wherever you go. With Bluetooth connectivity and long battery life, it's perfect for parties, outdoor adventures, or relaxing at home. Elevate your listening experience with the Portable Bluetooth Speaker.",
-    addedDate: "2024/12/18",
-    img: 'Public/Assets/Products/bluetooth-speaker/bluetooth-speaker.webp',
-    otherImages: [
-      'Public/Assets/Products/bluetooth-speaker/bluetooth-speaker.webp',
-      'Public/Assets/Products/bluetooth-speaker/bluetooth-speaker-thum1.webp',
-      'Public/Assets/Products/bluetooth-speaker/bluetooth-speaker-thum2.webp',
-      'Public/Assets/Products/bluetooth-speaker/bluetooth-speaker-thum3.webp'
-    ],
-    colors: [
-      { name: "black", color: "#000000" },
-      { name: "gray", color: "#808080" },
-      { name: "red", color: "#ff0000" }
-    ],
-    rate: 4.5,
-    votes: 112,
-    quantity: 1,
-    sold: 890,
-    id: uuid()
-  }
 ];
 // Function to set after discount price
 function setAfterDiscountKey(product) {

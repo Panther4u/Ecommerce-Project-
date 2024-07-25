@@ -4,19 +4,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 0 100px;
+  margin: 20px 0 60px;
 }
 
 .buttons>:where(a, button) {
   outline: none;
-  padding: 16px 48px;
+  height: 40px;
+  padding: 12px 10px;
   border-radius: 4px;
   color: var(--black);
   background-color: transparent;
   border: 1px solid #00000080;
   outline: 2px solid transparent;
   outline-offset: -2px;
-  font-size: 1rem;
+  font-size: 12px;
   font-weight: 500;
   transition: background-color .1s, color .1s;
 

@@ -1,23 +1,216 @@
-@import "src/Styles/mixins";
+// @import "src/Styles/mixins";
+
+// .menu {
+//   border: 1px solid rgb(225, 221, 221);
+//   width: 470px;
+//   max-width: 470px;
+//   min-width: 300px;
+//   border-radius: 4px;
+//   padding: 30px 20px;
+// }
+
+// @media (max-width: 650px) {
+//   .menu {
+//     width: 100%;
+//   }
+// }
+
+// .menu>b {
+//   font-weight: 500;
+//   font-weight: 1.25rem;
+// }
+
+// .content {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 30px;
+//   margin: 20px 0;
+// }
+
+// .content .item {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   position: relative;
+// }
+
+// .content .item:not(:last-child)::before {
+//   content: '';
+//   position: absolute;
+//   left: 0;
+//   bottom: -15px;
+//   width: 100%;
+//   border: 1px solid rgb(225, 221, 221);
+// }
+
+// .menu>a {
+//   display: block;
+//   border: none;
+//   outline: none;
+//   padding: 16px 48px;
+//   border-radius: 4px;
+//   font-weight: 500;
+//   background: var(--dark-tomato);
+//   color: var(--white);
+//   width: fit-content;
+//   margin: 0 auto;
+//   outline: solid 2px transparent;
+//   outline-offset: -2px;
+//   transition: background .2s;
+
+//   &:focus-visible {
+//     transition: var(--outline-transition);
+//     outline-color: var(--tomato);
+//     color: var(--very-dark-gray);
+//     background: transparent;
+//     color: var(--tomato);
+//   }
+
+//   &:not(:focus-visible):hover {
+//     background: var(--tomato);
+//   }
+
+//   &:active {
+//     scale: var(--button-active-scale);
+//   }
+// }
+
+// @include small {
+//   .menu>button {
+//     font-size: .8rem;
+//     padding: 12px 20px;
+//   }
+// }
+
+
+// .couponContainer{
+//   display: flex;
+//   margin-top: 40px;
+//   margin-bottom: 20px;
+//   align-items: center;
+//   justify-content: space-around;
+//   gap: 20px;
+// }
+
+// .couponContainer>input {
+//   display: block;
+//   height: 48px;
+//   padding: 12px 20px;
+//   border-radius: 4px;
+//   outline: 1px solid var(--black);
+//   border: 1px solid rgb(225, 221, 221);
+//   transition: border-color .1s, background-color .1s .05s;
+
+//   &:focus {
+//     outline-color: #ff7b00;
+//     background-color: rgba(255, 166, 0, .08);
+//   }
+// }
+
+// @include large {
+//   .couponContainer>input {
+//     width: 100%;
+//   }
+//   .successMessage {
+//     margin-left: -90px; /* Adjust margin from input field */
+//     font-size: 12px; /* Adjust font size */
+//     color: green; /* Example success message color */
+//     margin-top: 0px;
+//     text-align: start;
+//   }
+// }
+
+// @include small {
+//   .couponContainer>input {
+//     font-size: .7rem;
+//     height: 30px;
+//     width: 100%;
+//   }
+//   .menu {
+//     border: 1px solid rgb(225, 221, 221);
+//     width: 100%;
+//     border-radius: 4px;
+//     padding: 30px 20px;
+//     font-size: 13px;
+//   }
+// }
+
+// .couponContainer>input::placeholder {
+//   color: var(--dark-gray);
+// }
+
+// .couponContainer>button {
+//   border: none;
+//   outline: none;
+//   padding: 16px 28px;
+//   border-radius: 4px;
+//   font-weight: 500;
+//   font-size: 1rem;
+//   color: var(--white);
+//   background: var(--dark-tomato);
+//   outline: solid 2px transparent;
+//   outline-offset: -2px;
+//   transition: background .2s;
+
+//   &:focus-visible {
+//     transition: var(--outline-transition);
+//     outline-color: var(--tomato);
+//     color: var(--very-dark-gray);
+//     background: transparent;
+//     color: var(--tomato);
+//   }
+
+//   &:not(:focus-visible):hover {
+//     background: var(--tomato);
+//   }
+
+//   &:active {
+//     scale: var(--button-active-scale);
+//   }
+// }
+
+// @include large {
+//   .couponContainer>button {
+//     width: 100%;
+//   }
+// }
+
+// @include small {
+//   .couponContainer>button {
+//     font-size: .8rem;
+//     padding: 12px 10px;
+//   }
+//   .successMessage {
+//     margin-left: -90px; /* Adjust margin from input field */
+//     font-size: 12px; /* Adjust font size */
+//     color: green; /* Example success message color */
+//     margin-top: 0px;
+//     text-align: start;
+//   }
+// }
+
+// .successMessage {
+//   text-align: center; /* Adjust margin from input field */
+//   font-size: 12px; /* Adjust font size */
+//   color: green; /* Example success message color */
+//   margin-top: -15px;
+// }
+
+
+
+
+@import 'src/Styles/mixins';
 
 .menu {
-  border: 1px solid var(--black);
-  width: 470px;
-  max-width: 470px;
-  min-width: 300px;
+  border: 1px solid rgb(225, 221, 221);
+  width: auto;
   border-radius: 4px;
   padding: 30px 20px;
-}
 
-@media (max-width: 650px) {
-  .menu {
-    width: 100%;
+  & > b {
+    font-weight: 500;
+    font-size: 1.25rem;
   }
-}
-
-.menu>b {
-  font-weight: 500;
-  font-weight: 1.25rem;
 }
 
 .content {
@@ -25,29 +218,31 @@
   flex-direction: column;
   gap: 30px;
   margin: 20px 0;
+  font-size: 12px;
+
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    &:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -15px;
+      width: 100%;
+      border: 1px solid rgb(225, 221, 221);
+    }
+  }
 }
 
-.content .item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
-
-.content .item:not(:last-child)::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -15px;
-  width: 100%;
-  border-bottom: solid 1px var(--regular-light-gray);
-}
-
-.menu>a {
+.checkoutLink {
   display: block;
   border: none;
   outline: none;
-  padding: 16px 48px;
+  height: 40px;
+  padding: 12px 30px;
   border-radius: 4px;
   font-weight: 500;
   background: var(--dark-tomato);
@@ -57,6 +252,7 @@
   outline: solid 2px transparent;
   outline-offset: -2px;
   transition: background .2s;
+  font-size: 12px;
 
   &:focus-visible {
     transition: var(--outline-transition);
@@ -75,123 +271,96 @@
   }
 }
 
-@include small {
-  .menu>button {
+@media (max-width: 650px) {
+  .menu {
+    width: 100%;
+  }
+
+  .couponContainer > input {
+    font-size: .7rem;
+    height: 30px;
+    width: 100%;
+  }
+
+  .menu {
+    padding: 30px 20px;
+    font-size: 13px;
+  }
+
+  .couponContainer > button {
     font-size: .8rem;
-    padding: 12px 20px;
+    padding: 12px 10px;
+  }
+
+  .successMessage {
+    font-size: 12px;
+    color: green;
+    margin-top: 0;
+    text-align: start;
   }
 }
 
-
-.couponContainer{
+.couponContainer {
   display: flex;
   margin-top: 40px;
   margin-bottom: 20px;
   align-items: center;
   justify-content: space-around;
   gap: 20px;
-}
 
-.couponContainer>input {
-  display: block;
-  height: 48px;
-  padding: 12px 20px;
-  border-radius: 4px;
-  outline: 1px solid var(--black);
-  border: 6px solid var(--website-bg);
-  transition: border-color .1s, background-color .1s .05s;
-
-  &:focus {
-    outline-color: #ff7b00;
-    background-color: rgba(255, 166, 0, .08);
-  }
-}
-
-@include large {
-  .couponContainer>input {
-    width: 100%;
-  }
-  .successMessage {
-    margin-left: -90px; /* Adjust margin from input field */
-    font-size: 12px; /* Adjust font size */
-    color: green; /* Example success message color */
-    margin-top: 0px;
-    text-align: start;
-  }
-}
-
-@include small {
-  .couponContainer>input {
-    font-size: .7rem;
-    height: 30px;
-    width: 100%;
-  }
-  .menu {
-    border: 1px solid var(--black);
-    width: 100%;
+  > input {
+    display: block;
+    height: 48px;
+    padding: 12px 20px;
     border-radius: 4px;
-    padding: 30px 20px;
-    font-size: 13px;
-  }
-}
+    outline: 1px solid var(--black);
+    border: 1px solid rgb(225, 221, 221);
+    transition: border-color .1s, background-color .1s .05s;
 
-.couponContainer>input::placeholder {
-  color: var(--dark-gray);
-}
+    &:focus {
+      outline-color: #ff7b00;
+      background-color: rgba(255, 166, 0, .08);
+    }
 
-.couponContainer>button {
-  border: none;
-  outline: none;
-  padding: 16px 28px;
-  border-radius: 4px;
-  font-weight: 500;
-  font-size: 1rem;
-  color: var(--white);
-  background: var(--dark-tomato);
-  outline: solid 2px transparent;
-  outline-offset: -2px;
-  transition: background .2s;
-
-  &:focus-visible {
-    transition: var(--outline-transition);
-    outline-color: var(--tomato);
-    color: var(--very-dark-gray);
-    background: transparent;
-    color: var(--tomato);
+    &::placeholder {
+      color: var(--dark-gray);
+    }
   }
 
-  &:not(:focus-visible):hover {
-    background: var(--tomato);
-  }
+  > button {
+    border: none;
+    outline: none;
+    padding: 16px 28px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--white);
+    background: var(--dark-tomato);
+    outline: solid 2px transparent;
+    outline-offset: -2px;
+    transition: background .2s;
 
-  &:active {
-    scale: var(--button-active-scale);
-  }
-}
+    &:focus-visible {
+      transition: var(--outline-transition);
+      outline-color: var(--tomato);
+      color: var(--very-dark-gray);
+      background: transparent;
+      color: var(--tomato);
+    }
 
-@include large {
-  .couponContainer>button {
-    width: 100%;
-  }
-}
+    &:not(:focus-visible):hover {
+      background: var(--tomato);
+    }
 
-@include small {
-  .couponContainer>button {
-    font-size: .8rem;
-    padding: 12px 10px;
-  }
-  .successMessage {
-    margin-left: -90px; /* Adjust margin from input field */
-    font-size: 12px; /* Adjust font size */
-    color: green; /* Example success message color */
-    margin-top: 0px;
-    text-align: start;
+    &:active {
+      scale: var(--button-active-scale);
+    }
   }
 }
 
 .successMessage {
-  text-align: center; /* Adjust margin from input field */
-  font-size: 12px; /* Adjust font size */
-  color: green; /* Example success message color */
+  text-align: center;
+  font-size: 12px;
+  color: green;
   margin-top: -15px;
 }
