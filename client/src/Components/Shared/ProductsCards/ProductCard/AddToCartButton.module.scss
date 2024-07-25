@@ -37,6 +37,7 @@
   transition: fill .2s .05s;
 }
 
+.addToCartBtn:hover,
 .addToCartBtn:hover>svg,
 .addToCartBtn:focus-visible>svg {
   fill: var(--yellow);

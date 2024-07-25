@@ -91,12 +91,12 @@
 //       state[key] = state[key].filter((item) => item.id !== id);
 //       localStorage.setItem("productsSliceData", JSON.stringify(state));
 //     },
-//     removeByKeyName: (state, { payload: { dataKey, itemKey, keyValue } }) => {
-//       state[dataKey] = state[dataKey].filter(
-//         (item) => item[itemKey] !== keyValue
-//       );
-//       localStorage.setItem("productsSliceData", JSON.stringify(state));
-//     },
+    // removeByKeyName: (state, { payload: { dataKey, itemKey, keyValue } }) => {
+    //   state[dataKey] = state[dataKey].filter(
+    //     (item) => item[itemKey] !== keyValue
+    //   );
+    //   localStorage.setItem("productsSliceData", JSON.stringify(state));
+    // },
 //     setEmptyArrays: (state, { payload: { keys } }) => {
 //       keys.forEach((key) => {
 //         state[key] = [];
@@ -465,7 +465,7 @@ const productsSlice = createSlice({
       state[dataKey] = state[dataKey].filter(
         (item) => item[itemKey] !== keyValue
       );
-      saveToLocalStorage(state);
+      localStorage.setItem("productsSliceData", JSON.stringify(state));
     },
     setEmptyArrays: (state, { payload: { keys } }) => {
       keys.forEach((key) => {
@@ -654,6 +654,18 @@ export const {
 } = productsSlice.actions;
 
 
+const saveToLocalStorage = (state) => {
+  localStorage.setItem('productsSliceData', JSON.stringify({
+    cartProducts: state.cartProducts,
+    favoritesProducts: state.favoritesProducts,
+    discount: state.discount,
+    appliedCoupon: state.appliedCoupon,
+    wishList: state.wishList,
+    products: state.products,
+    searchProducts: state.searchProducts,
+    userId: state.userId,
+  }));
+};
 
 
 

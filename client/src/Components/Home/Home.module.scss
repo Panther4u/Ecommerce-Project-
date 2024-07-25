@@ -8,8 +8,13 @@
 @include small {
   .container {
     width: var(--container-mobile-width);
+    margin: 0;
+    width: 100%;
+    padding: 8px;
+    padding-top: 0px;
   }
 }
+
 
 .introductionContainer {
   display: flex;

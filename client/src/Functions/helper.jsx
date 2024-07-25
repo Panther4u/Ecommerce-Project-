@@ -202,27 +202,37 @@ export function setFormattedPrice(product) {
 
 //   return total.toFixed(2);
 // }
-export const getSubTotal = (cartProducts, key = "quantity") => {
-  // Ensure cartProducts is an array
-  if (!Array.isArray(cartProducts)) return 0;
+// export const getSubTotal = (cartProducts, key = "quantity") => {
+//   // Ensure cartProducts is an array
+//   if (!Array.isArray(cartProducts)) return 0;
 
-  // Calculate the subtotal
-  const total = cartProducts.reduce((acc, product) => {
-    // Handle cases where afterDiscount may not be present or may be invalid
-    const priceAfterDiscount = parseFloat(product?.price - (product?.price * (product?.discount || 0) / 100)) || 0;
-    const quantity = parseInt(product?.[key]) || 0;
+//   // Calculate the subtotal
+//   const total = cartProducts.reduce((acc, product) => {
+//     // Handle cases where afterDiscount may not be present or may be invalid
+//     const priceAfterDiscount = parseFloat(product?.price - (product?.price * (product?.discount || 0) / 100)) || 0;
+//     const quantity = parseInt(product?.[key]) || 0;
 
-    // Calculate quantity price and add it to the accumulator
-    const quantityPrice = quantity * priceAfterDiscount;
-    return acc + quantityPrice;
+//     // Calculate quantity price and add it to the accumulator
+//     const quantityPrice = quantity * priceAfterDiscount;
+//     return acc + quantityPrice;
+//   }, 0);
+
+//   // Return the total as a string with 2 decimal places
+//   return total.toFixed(2);
+// };
+
+
+
+// src/Functions/helper.js
+export const getSubTotal = (cartProducts) => {
+  if (!Array.isArray(cartProducts) || cartProducts.length === 0) return 0;
+  return cartProducts.reduce((total, product) => {
+    const { price, quantity } = product;
+    const priceNumber = parseFloat(price) || 0;
+    const qty = parseInt(quantity, 10) || 0;
+    return total + (priceNumber * qty);
   }, 0);
-
-  // Return the total as a string with 2 decimal places
-  return total.toFixed(2);
 };
-
-
-
 
 
 // export function getSubTotal(cartProducts, key = "quantity") {
@@ -264,14 +274,14 @@ export function random(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// export function isItemFound(data, getItem, key) {
-//   return data.find((item) => item[key] === getItem[key]);
-// }
+export function isItemFound(data, getItem, key) {
+  return data.find((item) => item[key] === getItem[key]);
+}
 
-export const isItemFound = (data, product, key) => {
-  const productsArray = Array.isArray(data?.products) ? data.products : [];
-  return productsArray.find((item) => item[key] === product[key]);
-};
+// export const isItemFound = (data, product, key) => {
+//   const productsArray = Array.isArray(data?.products) ? data.products : [];
+//   return productsArray.find((item) => item[key] === product[key]);
+// };
 
 
 
@@ -292,3 +302,17 @@ export function isMobileDevice() {
   const isMobileDevice = window.matchMedia(mobileMediaQuery).matches;
   return isMobileDevice;
 }
+
+
+
+// src/Functions/helper.js
+
+export const calculateTotalDiscount = (cartProducts) => {
+  return cartProducts.reduce((totalDiscount, product) => {
+    const { discount, price, quantity } = product;
+    const priceNumber = parseFloat(price) || 0;
+    const afterDiscount = discount > 0 ? priceNumber - (priceNumber * discount) / 100 : priceNumber;
+    const discountAmount = (priceNumber - afterDiscount) * quantity;
+    return totalDiscount + discountAmount;
+  }, 0);
+};

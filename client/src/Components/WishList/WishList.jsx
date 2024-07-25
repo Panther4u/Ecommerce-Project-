@@ -72,7 +72,6 @@
 
 
 
-
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -85,6 +84,7 @@ import ForYouProducts from './ForYouProducts/ForYouProducts';
 import s from './WishList.module.scss';
 import WishProducts from './WishProducts/WishProducts';
 import { selectUserId } from 'src/Features/userSlice';
+import emptyCartImage from 'src/Assets/Images/empty-cart.png';
 
 const WishList = () => {
   const dispatch = useDispatch();
@@ -106,7 +106,7 @@ const WishList = () => {
         dispatch(fetchWishlist(userId)).finally(() => {
           setShowLoader(false); // Hide loader when fetch is done
         });
-      }, 500); // Simulate a delay of 300ms
+      }, 500); // Simulate a delay of 500ms
       return () => clearTimeout(timer); // Clean up the timer if the component unmounts
     }
   }, [dispatch, userId]);
@@ -122,6 +122,9 @@ const WishList = () => {
     dispatch(updateProductsState({ key: 'cartProducts', value: uniqueCartProducts }));
     dispatch(updateProductsState({ key: 'wishList', value: [] }));
   };
+
+  // Check if wishlist is empty
+  const isEmptyWishlist = status !== 'loading' && numberOfWishlist === 0;
 
   return (
     <>
@@ -142,8 +145,11 @@ const WishList = () => {
             <div className={s.loaderWrapper}>
               <div className={s.spinner}></div>
             </div>
-          ) : status === 'failed' ? (
-            <p>Error: {error}</p>
+          ) : isEmptyWishlist ? (
+            <div className={s.emptyCart}>
+              <img src={emptyCartImage} alt={t('emptyWishlistAlt')} />
+              <p>{t('Your Wishlist Is Empty')}</p>
+            </div>
           ) : (
             <WishProducts />
           )}

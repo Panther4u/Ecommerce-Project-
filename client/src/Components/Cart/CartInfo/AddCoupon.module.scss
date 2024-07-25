@@ -120,7 +120,6 @@
   
 // }
 
-
 @import "src/Styles/mixins";
 
 .couponContainer {
@@ -161,12 +160,16 @@
 
   @include large {
     width: 100%;
+    font-size: .8rem;
+  }
+  @include medium {
+    width: 100%;
+    font-size: .6rem;
   }
 
   @include small {
-    font-size: .8rem;
-    padding: 12px 20px;
-    height: 45px;
+    width: 100%;
+    font-size: .6rem;
   }
 }
 
@@ -203,47 +206,18 @@
 
   @include large {
     width: 100%;
+    font-size: .6rem;
+    padding: 12px 30px;
   }
-
-  @include small {
-    font-size: .8rem;
-    padding: 12px 20px;
-  }
-}
-
-.successMessage {
-  text-align: center;
-  font-size: 12px;
-  color: green;
-  margin-top: -15px;
-
-  @include large {
-    margin-left: -90px; /* Adjust margin from input field */
-    text-align: start;
-  }
-
-  @include small {
-    font-size: 12px;
-    margin-top: 0;
-    text-align: start;
-  }
-}
-
-@media (max-width: 678px) {
-  .couponContainer {
-      height: 20px;
-    }
-  }
-
-
-@media (max-width: 500px) {
-  .couponContainer {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  @include medium {
     width: 100%;
-    flex-direction: row;
-  }
+    font-size: .6rem;
+    padding: 10px 20px;
   }
 
-
+  @include small {
+    width: 100%;
+    font-size: .6rem;
+    padding: 12px 30px;
+  }
+}

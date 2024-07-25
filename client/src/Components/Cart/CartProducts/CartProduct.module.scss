@@ -79,12 +79,13 @@
   border-radius: 5px;
   background-color: white;
   margin-bottom: 10px;
+  padding-bottom: 0;
 
   img {
     height: 120px;
     width: 120px;
     padding: 5px;
-    border: 2px solid #dcdcdc; // Updated border color to gray
+    border: 0.5px solid #dcdcdc; // Updated border color to gray
     border-radius: 5px;
     object-fit: cover;
   }
@@ -94,6 +95,7 @@
     flex-direction: column;
     gap: 8px;
     width: 100%;
+    position: relative;
 
     .productName {
       font-weight: bold;
@@ -103,6 +105,16 @@
       font-size: 16px;
     }
 
+    .discountBadge {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      background-color: green;
+      color: white;
+      padding: 4px 14px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
     .price {
       color: rgb(101, 101, 101);
       font-size: 13px;
@@ -221,6 +233,14 @@
           color: rgb(159, 32, 137); // Adjust color as needed
           margin-right: 5px;
         }
+      }
+
+
+      .discountBadge {
+        font-size: 8px;
+        padding: 4px 8px;
+        top: 0px;
+        right: 0px;
       }
 
       .moveToWishlist {

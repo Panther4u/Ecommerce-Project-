@@ -239,6 +239,8 @@
 // };
 
 // export default CartProduct;import React from 'react';
+
+
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -268,7 +270,6 @@ const CartProduct = ({ data }) => {
   };
 
   const moveToWishlist = async () => {
-    // Check if userId is present
     if (!userId) {
       console.error('User ID is missing');
       return;
@@ -278,6 +279,7 @@ const CartProduct = ({ data }) => {
 
     if (!productExists) {
       try {
+        await dispatch(removeProductFromCart({ userId, productId: id })).unwrap();
         await dispatch(addProductToWishlist({
           userId,
           product: {
@@ -291,23 +293,12 @@ const CartProduct = ({ data }) => {
             shortName,
             quantity: validQuantity || 1
           }
-        }));
-        console.log('Product successfully added to wishlist.');
+        })).unwrap();
+        console.log('Product successfully added to wishlist and removed from cart.');
       } catch (error) {
-        console.error('Error adding product to wishlist:', error.message);
-        if (error.response) {
-          console.error('Response data:', error.response.data);
-          console.error('Response status:', error.response.status);
-          console.error('Response headers:', error.response.headers);
-        } else if (error.request) {
-          console.error('No response received:', error.request);
-        } else {
-          console.error('Error setting up request:', error.message);
-        }
+        console.error('Error moving product to wishlist:', error.message);
       }
     }
-
-    dispatch(removeByid({ key: 'cartProducts', id }));
   };
 
   const translateProduct = (key, uppercase, dynamicData = {}) => {
@@ -323,8 +314,15 @@ const CartProduct = ({ data }) => {
 
   return (
     <div className={s.productContainer}>
-      <img src={`http://localhost:8000/${img}`} alt={shortName || name} className={s.productImage} />
+      <div className={s.imageContainer}>
+        <img src={`http://localhost:8000/${img}`} alt={shortName || name} className={s.productImage} onError={(e) => e.target.src = '/path/to/fallback-image.jpg'} />
+      </div>
       <div className={s.productDetails}>
+      {discount > 0 && (
+          <div className={s.discountBadge}>
+            {discount}%
+          </div>
+        )}
         <p className={s.productName}>{shortName || name}</p>
         <p className={s.price}>Rs. {subTotal.toFixed(2)}</p>
         <p className={s.sizeAndQuantity}>
@@ -336,8 +334,9 @@ const CartProduct = ({ data }) => {
           <p onClick={removeProduct} className={s.remove}>
             <MdDelete className={s.deleteIcon} /> {t('remove')}
           </p>
+          |
           <p onClick={moveToWishlist} className={s.moveToWishlist}>
-            <FaHeart className={s.wishlistIcon} /> {t('moveToWishlist')}
+            <FaHeart className={s.wishlistIcon} /> {t('MoveToWishlist')}
           </p>
         </div>
       </div>

@@ -196,27 +196,26 @@
 //   margin-top: -15px;
 // }
 
-
-
-
 @import 'src/Styles/mixins';
 
+// General Styles
 .menu {
   border: 1px solid rgb(225, 221, 221);
   width: auto;
   border-radius: 4px;
-  padding: 30px 20px;
+  padding: 15px 15px;
+  font-size: 1rem; // Standard font size
 
   & > b {
     font-weight: 500;
-    font-size: 1.25rem;
+    font-size: 1rem; // Heading size
   }
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 15px;
   margin: 20px 0;
   font-size: 12px;
 
@@ -224,7 +223,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &.discount {
+      .value {
+        color: green; // Green color for discount value
+      }
+    }
+  }
+  
+  .items {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: relative;
+    border-top: 1px solid rgb(225, 221, 221);
 
     &:not(:last-child)::before {
       content: '';
@@ -232,8 +244,20 @@
       left: 0;
       bottom: -15px;
       width: 100%;
-      border: 1px solid rgb(225, 221, 221);
+      border-top: 1px solid rgb(225, 221, 221);
     }
+  }
+
+  @include large {
+    font-size: .8rem;
+  }
+  
+  @include medium {
+    font-size: .7rem;
+  }
+
+  @include small {
+    font-size: .6rem;
   }
 }
 
@@ -251,7 +275,7 @@
   margin: 0 auto;
   outline: solid 2px transparent;
   outline-offset: -2px;
-  transition: background .2s;
+  transition: background 0.2s;
   font-size: 12px;
 
   &:focus-visible {
@@ -267,100 +291,21 @@
   }
 
   &:active {
-    scale: var(--button-active-scale);
-  }
-}
-
-@media (max-width: 650px) {
-  .menu {
-    width: 100%;
+    transform: scale(var(--button-active-scale)); // Using transform for scaling
   }
 
-  .couponContainer > input {
-    font-size: .7rem;
-    height: 30px;
-    width: 100%;
-  }
-
-  .menu {
-    padding: 30px 20px;
-    font-size: 13px;
-  }
-
-  .couponContainer > button {
+  @include large {
     font-size: .8rem;
-    padding: 12px 10px;
+    padding: 12px 30px;
   }
-
-  .successMessage {
-    font-size: 12px;
-    color: green;
-    margin-top: 0;
-    text-align: start;
-  }
-}
-
-.couponContainer {
-  display: flex;
-  margin-top: 40px;
-  margin-bottom: 20px;
-  align-items: center;
-  justify-content: space-around;
-  gap: 20px;
-
-  > input {
-    display: block;
-    height: 48px;
+  
+  @include medium {
+    font-size: .7rem;
     padding: 12px 20px;
-    border-radius: 4px;
-    outline: 1px solid var(--black);
-    border: 1px solid rgb(225, 221, 221);
-    transition: border-color .1s, background-color .1s .05s;
-
-    &:focus {
-      outline-color: #ff7b00;
-      background-color: rgba(255, 166, 0, .08);
-    }
-
-    &::placeholder {
-      color: var(--dark-gray);
-    }
   }
 
-  > button {
-    border: none;
-    outline: none;
-    padding: 16px 28px;
-    border-radius: 4px;
-    font-weight: 500;
-    font-size: 1rem;
-    color: var(--white);
-    background: var(--dark-tomato);
-    outline: solid 2px transparent;
-    outline-offset: -2px;
-    transition: background .2s;
-
-    &:focus-visible {
-      transition: var(--outline-transition);
-      outline-color: var(--tomato);
-      color: var(--very-dark-gray);
-      background: transparent;
-      color: var(--tomato);
-    }
-
-    &:not(:focus-visible):hover {
-      background: var(--tomato);
-    }
-
-    &:active {
-      scale: var(--button-active-scale);
-    }
+  @include small {
+    font-size: .6rem;
+    padding: 12px 30px;
   }
-}
-
-.successMessage {
-  text-align: center;
-  font-size: 12px;
-  color: green;
-  margin-top: -15px;
 }

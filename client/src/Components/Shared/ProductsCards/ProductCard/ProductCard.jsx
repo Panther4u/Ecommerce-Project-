@@ -98,16 +98,16 @@
 //     navigateTo(`/details?product=${name.toLowerCase()}`);
 //   }
 
-//   function addProductToWishList() {
-//     const isProductAlreadyExist = isItemFound(wishList, product, "id");
-//     if (!loginInfo.isSignIn) navigateTo("/signup");
-//     if (isProductAlreadyExist) {
-//       dispatch(removeById({ key: "wishList", id: product.id }));
-//       return;
-//     }
+  // function addProductToWishList() {
+  //   const isProductAlreadyExist = isItemFound(wishList, product, "id");
+  //   if (!loginInfo.isSignIn) navigateTo("/signup");
+  //   if (isProductAlreadyExist) {
+  //     dispatch(removeById({ key: "wishList", id: product.id }));
+  //     return;
+  //   }
 
-//     dispatch(addToArray({ key: "wishList", value: product }));
-//   }
+  //   dispatch(addToArray({ key: "wishList", value: product }));
+  // }
 
 //   return (
 //     <div className={`${s.card} ${noHoverClass}`}>
@@ -315,18 +315,32 @@ const ProductCard = ({
     navigateTo(`/details?product=${name.toLowerCase()}`);
   }
 
+
+  // function addProductToWishList() {
+  //   const isProductAlreadyExist = isItemFound(wishList, product, "id");
+  //   if (!loginInfo.isSignIn) navigateTo("/signup");
+  //   if (isProductAlreadyExist) {
+  //     dispatch(removeById({ key: "wishList", id: product.id }));
+  //     return;
+  //   }
+
+  //   dispatch(addToArray({ key: "wishList", value: product }));
+  // }
+
+
   // Handle adding/removing product to/from wishlist
   const handleWishlistClick = async () => {
     if (!userId) {
       navigateTo('/signup');
       return;
     }
-
+  
     try {
       const productExists = wishList.some(item => item.id === product.id);
-
+  
       if (productExists) {
         await dispatch(removeProductFromWishlist({ userId, productId: product.id })).unwrap();
+        console.log('Product removed from wishlist.');
       } else {
         await dispatch(addProductToWishlist({
           userId,
@@ -342,9 +356,11 @@ const ProductCard = ({
             quantity: product.quantity || 1
           }
         })).unwrap();
+        console.log('Product added to wishlist.');
       }
-
-      console.log('Wishlist updated successfully.');
+  
+      // Optionally, you can verify the state change here
+      console.log('Updated wishlist:', wishList);
     } catch (error) {
       console.error('Error updating wishlist:', error.message);
       if (error.response) {
@@ -358,6 +374,7 @@ const ProductCard = ({
       }
     }
   };
+  
 
   // Handle image loading error
   const handleImageError = (event) => {

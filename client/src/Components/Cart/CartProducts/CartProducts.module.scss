@@ -102,9 +102,10 @@
 
 .cartProducts {
   width: 100%;
-  min-height: 370px;
-  margin-bottom: 40px; /* Added margin bottom for spacing */
+  // min-height: 370px;
+  // margin-bottom: 40px; /* Added margin bottom for spacing */
 
+  
   &Table {
     width: 100%;
   }
@@ -144,6 +145,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  width: 96vw;
   text-align: center;
 }
 
@@ -177,8 +179,13 @@
 
 /* Empty cart styles */
 .emptyCart {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
   text-align: center;
   padding: 2rem;
+  width: 97vw;
 
   img {
     width: 80%; /* Adjust width to a percentage of the container */
@@ -190,10 +197,10 @@
   p {
     font-size: 1rem;
     color: #666;
+    margin: 0; /* Remove default margin */
   }
 }
 
-/* Media queries for responsive adjustments */
 @media (max-width: 768px) {
   .emptyCart {
     padding: 1.5rem;
