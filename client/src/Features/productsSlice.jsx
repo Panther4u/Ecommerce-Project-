@@ -551,13 +551,14 @@ const productsSlice = createSlice({
       .addCase(addProductToCart.fulfilled, (state, action) => {
         state.status = 'succeeded';
         const existingIndex = state.cartProducts.findIndex(item => item.id === action.payload.id);
+        
         if (existingIndex !== -1) {
-          state.cartProducts[existingIndex].quantity += action.payload.quantity;
+          state.cartProducts[existingIndex].quantity = action.payload.quantity;
         } else {
           state.cartProducts.push(action.payload);
         }
         saveToLocalStorage(state);
-      })
+      })      
       .addCase(addProductToCart.rejected, (state, { error }) => {
         state.status = 'failed';
         state.error = error.message;

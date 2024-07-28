@@ -1,22 +1,66 @@
-.calculationInfo {
+@import 'src/Styles/mixins';
+
+// General Styles
+.menu {
+  border: 1px solid rgb(225, 221, 221);
+  width: auto;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 1rem;
+  padding-top: 0;
+  
+
+  & > b {
+    font-weight: 500;
+    font-size: 1rem; // Heading size
+  }
+}
+
+.content {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  margin: 20px 0 30px;
-}
+  gap: 15px;
+  margin: 20px 0;
+  font-size: 12px;
 
-.calculationInfo .item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-.calculationInfo .item:not(:last-child)::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -15px;
-  width: 100%;
-  border-bottom: solid 1px var(--regular-light-gray);
+    &.discount {
+      .value {
+        color: green; // Green color for discount value
+      }
+    }
+  }
+  
+  .items {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    border-top: 1px solid rgb(225, 221, 221);
+
+    &:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -15px;
+      width: 100%;
+      border-top: 1px solid rgb(225, 221, 221);
+    }
+  }
+
+  @include large {
+    font-size: .9rem;
+  }
+  
+  @include medium {
+    font-size: .7rem;
+  }
+
+  @include small {
+    font-size: .6rem;
+  }
 }

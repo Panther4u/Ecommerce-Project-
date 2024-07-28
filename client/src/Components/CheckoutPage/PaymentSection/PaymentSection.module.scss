@@ -1,19 +1,20 @@
 @import "src/Styles/mixins";
 
 .paymentSection {
-  max-width: 483px;
+  width: 100%;
   flex: 1;
 }
+
 
 h2{
   margin-bottom: 20px;
 }
 
 @include medium {
-  .paymentSection {
-    max-width: 80vw;
-    width: 80vw;
-  }
+  // .paymentSection {
+  //   max-width: 80vw;
+  //   width: 80vw;
+  // }
 }
 
 @include small {
@@ -22,6 +23,7 @@ h2{
     width: 100%;
   }
 }
+
 
 .submitPaymentButton {
   border: none;

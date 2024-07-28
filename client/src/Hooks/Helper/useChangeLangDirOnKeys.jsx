@@ -20,6 +20,7 @@
 
 
 
+import { useEffect } from "react";
 import i18next from "i18next";
 import useFunctionOnKey from "./useFunctionOnKey";
 
@@ -30,11 +31,13 @@ const useChangeLangDirOnKeys = () => {
     i18next.changeLanguage(lang);
   }
 
-  // Default language set to English
-  i18next.changeLanguage("en");
+  useEffect(() => {
+    // Default language set to English
+    i18next.changeLanguage("en");
+  }, []); // Empty dependency array means this effect runs once when the component mounts
 
-  // Hook to change language to English when 'KeyE' is pressed
   useFunctionOnKey(() => changeLang("en"), ["KeyE"], delay);
 };
 
 export default useChangeLangDirOnKeys;
+

@@ -244,26 +244,36 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeProductFromCart, addProductToWishlist } from 'src/Features/productsSlice';
+import { removeProductFromCart, addProductToWishlist, updateProductQuantity } from 'src/Features/productsSlice';
 import s from './CartProduct.module.scss';
 import CustomNumberInput from '../../Shared/MiniComponents/CustomNumberInput/CustomNumberInput';
-import { FaHeart } from 'react-icons/fa'; // Wishlist icon
-import { MdDelete } from 'react-icons/md'; // Delete icon
+import { FaHeart } from 'react-icons/fa';
+import { MdDelete } from 'react-icons/md';
 import { selectUserId } from 'src/Features/userSlice';
 
 const CartProduct = ({ data }) => {
   const { img, name, shortName = '', discount = 0, quantity = 0, id, price = 0 } = data;
-
-  const validQuantity = !isNaN(quantity) && quantity > 0 ? parseInt(quantity, 10) : 0;
-  const priceNumber = parseFloat(price) || 0;
-  const afterDiscount = discount > 0 ? priceNumber - (priceNumber * discount) / 100 : priceNumber;
-  const priceAfterDiscount = typeof afterDiscount === 'string' ? parseFloat(afterDiscount.replace(/,/g, "")) : afterDiscount;
-  const subTotal = parseFloat((validQuantity * priceAfterDiscount).toFixed(2));
-
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
-  const wishList = useSelector((state) => state.products.wishList); // Fetch wishList from state
+  const wishList = useSelector((state) => state.products.wishList);
+  const { t } = useTranslation();
+  const priceNumber = parseFloat(price) || 0;
+
+  // Function to calculate the discounted price based on quantity
+  const calculateDiscountedPrice = (price, discount, quantity) => {
+    const afterDiscount = discount > 0 ? price - (price * discount) / 100 : price;
+    return afterDiscount * quantity;
+  };
+
+  // Function to handle quantity change
+  const handleQuantityChange = (newQuantity) => {
+    if (newQuantity <= 0) {
+      removeProduct();
+    } else {
+      const discountedPrice = calculateDiscountedPrice(priceNumber, discount, newQuantity);
+      dispatch(updateProductQuantity({ userId, productId: id, quantity: newQuantity, discountedPrice }));
+    }
+  };
 
   const removeProduct = () => {
     dispatch(removeProductFromCart({ userId, productId: id }));
@@ -280,6 +290,7 @@ const CartProduct = ({ data }) => {
     if (!productExists) {
       try {
         await dispatch(removeProductFromCart({ userId, productId: id })).unwrap();
+        const validQuantity = quantity > 0 ? quantity : 1;
         await dispatch(addProductToWishlist({
           userId,
           product: {
@@ -291,10 +302,10 @@ const CartProduct = ({ data }) => {
             description: data.description,
             img,
             shortName,
-            quantity: validQuantity || 1
+            quantity: validQuantity
           }
         })).unwrap();
-        console.log('Product successfully added to wishlist and removed from cart.');
+        // console.log('Product successfully added to wishlist and removed from cart.');
       } catch (error) {
         console.error('Error moving product to wishlist:', error.message);
       }
@@ -308,25 +319,42 @@ const CartProduct = ({ data }) => {
     return uppercase ? translateText.toUpperCase() : translateText;
   };
 
-  if (validQuantity === 0) {
+  // Calculate the total discounted price based on current quantity
+  const discountedPrice = calculateDiscountedPrice(priceNumber, discount, quantity);
+
+  if (quantity <= 0) {
     return null;
   }
 
   return (
     <div className={s.productContainer}>
       <div className={s.imageContainer}>
-        <img src={`http://localhost:8000/${img}`} alt={shortName || name} className={s.productImage} onError={(e) => e.target.src = '/path/to/fallback-image.jpg'} />
+        <img 
+          src={`http://localhost:8000/${img}`} 
+          alt={shortName || name} 
+          className={s.productImage} 
+          onError={(e) => e.target.src = '/path/to/fallback-image.jpg'} 
+        />
       </div>
       <div className={s.productDetails}>
-      {discount > 0 && (
+        {discount > 0 && (
           <div className={s.discountBadge}>
             {discount}%
           </div>
         )}
         <p className={s.productName}>{shortName || name}</p>
-        <p className={s.price}>Rs. {subTotal.toFixed(2)}</p>
+        <div className={s.priceContainer}>
+          {discount > 0 && (
+            <p className={s.originalPrice}>
+              ₹ {priceNumber.toFixed(2)}
+            </p>
+          )}
+          <p className={s.discountedPrice}>
+            ₹ {discountedPrice.toFixed(2)}
+          </p>
+        </div>
         <p className={s.sizeAndQuantity}>
-          Qty: <CustomNumberInput product={data} quantity={validQuantity} />
+          Qty: <CustomNumberInput product={data} quantity={quantity} onChange={handleQuantityChange} />
         </p>
         <p className={s.returnPolicy}>Free Delivery</p>
         <p className={s.returnPolicy}>All issues easy return allowed</p>
@@ -334,7 +362,6 @@ const CartProduct = ({ data }) => {
           <p onClick={removeProduct} className={s.remove}>
             <MdDelete className={s.deleteIcon} /> {t('remove')}
           </p>
-          |
           <p onClick={moveToWishlist} className={s.moveToWishlist}>
             <FaHeart className={s.wishlistIcon} /> {t('MoveToWishlist')}
           </p>

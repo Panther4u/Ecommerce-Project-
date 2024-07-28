@@ -1,49 +1,372 @@
-@import "src/Styles/mixins";
+// @import "src/Styles/mixins";
 
-.billingDetailsSection {
-  max-width: 470px;
+// .billingDetailsSection {
+//   max-width: 470px;
+// }
+
+// @include medium {
+//   .billingDetailsSection {
+//     max-width: 360px;
+//   }
+// }
+
+// @include medium {
+//   .billingDetailsSection {
+//     max-width: 80vw;
+//     width: 80vw;
+//   }
+// }
+
+// @include small {
+//   .billingDetailsSection {
+//     max-width: 100%;
+//     width: 100%;
+//   }
+// }
+
+// .billingDetailsSection>h2 {
+//   font-family: Inter;
+//   font: 500 2.25rem "Inter", sans-serif;
+//   letter-spacing: .04rem;
+//   margin-bottom: 20px;
+// }
+
+// .submitPaymentButton {
+//   border: none;
+//   outline: none;
+//   background-color: var(--dark-tomato);
+//   color: var(--white);
+//   font-weight: 500;
+//   font-size: 1rem;
+//   padding: 16px 48px;
+//   border-radius: 4px;
+//   margin-top: 34px;
+//   outline: solid 2px transparent;
+//   outline-offset: -2px;
+//   transition: background-color .2s;
+
+//   &:focus-visible {
+//     transition: var(--outline-transition);
+//     outline-color: var(--tomato);
+//     color: var(--very-dark-gray);
+//     background: transparent;
+//     color: var(--tomato);
+//   }
+
+//   &:not(:focus-visible):hover {
+//     background: var(--tomato);
+//   }
+// }
+
+// @include small {
+//   .submitPaymentButton {
+//     font-size: .8rem;
+//     width: 100%;
+//     padding: 12px 20px;
+//     margin-top: 10px;
+//   }
+// }
+
+/* Global reset and basic styles */
+
+// @import 'src/Styles/mixins';
+
+// h1 {
+//   font-size: 16px;
+//   margin: 5px;
+// }
+
+// .paymentDetails {
+//   width: 100%;
+//   height: auto;
+//   // display: flex;
+//   // justify-content: space-evenly;
+//   // align-items: center;
+//   background-color: #f9fafc;
+// }
+
+// .detailsCard {
+//   width: 100%;
+//   height: auto;
+//   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+//   border-radius: 8px;
+//   padding: 10px;
+//   background-color: #fff;
+// }
+
+// .nameAddress {
+//   margin-bottom: 20px;
+// }
+
+// .firstLastName,
+// .address {
+//   display: flex;
+//   justify-content: space-between;
+//   margin: 10px 0;
+// }
+
+// input {
+//   outline: 0;
+  // background: #f2f2f2;
+//   border-radius: 4px;
+//   width: 100%;
+//   border: 0;
+//   caret-color: #4f5d7e;
+//   margin: 10px 15px;
+//   padding: 15px 20px;
+//   box-sizing: border-box;
+//   font-size: 14px;
+// }
+
+// .shippingCard {
+//   display: flex;
+//   justify-content: space-between;
+//   margin: 10px 0;
+// }
+
+// .newCard {
+//   width: 100%;
+//   height: 100px;
+//   border: 2px solid #53b5aa;
+//   padding: 10px;
+//   margin: 10px;
+//   border-radius: 10px;
+// }
+
+// .addSavedCard {
+//   width: 100%;
+//   height: auto;
+//   border: 2px solid #a1a1a1;
+//   padding: 10px;
+//   margin: 10px;
+//   border-radius: 10px;
+// }
+
+// .proceedPayment {
+//   margin-top: 20px;
+// }
+
+// .proceedPayment a {
+//   display: block;
+//   border: none;
+//   outline: none;
+//   height: 40px;
+//   padding: 12px 30px;
+//   border-radius: 4px;
+//   font-weight: 500;
+//   background: var(--dark-tomato);
+//   color: var(--white);
+//   width: fit-content;
+//   margin: 0 auto;
+//   outline: solid 2px transparent;
+//   outline-offset: -2px;
+//   transition: background 0.2s;
+//   font-size: 12px;
+
+//   &:focus-visible {
+//     transition: var(--outline-transition);
+//     outline-color: var(--tomato);
+//     color: var(--very-dark-gray);
+//     background: transparent;
+//     color: var(--tomato);
+//   }
+
+//   &:not(:focus-visible):hover {
+//     background: var(--tomato);
+//   }
+
+//   &:active {
+//     transform: scale(var(--button-active-scale)); // Using transform for scaling
+//   }
+
+//   @include large {
+//     font-size: .8rem;
+//     padding: 12px 30px;
+//   }
+  
+//   @include medium {
+//     font-size: .7rem;
+//     padding: 12px 20px;
+//   }
+
+//   @include small {
+//     font-size: .6rem;
+//     padding: 12px 30px;
+//   }
+// }
+
+
+
+
+@import 'src/Styles/mixins';
+@import 'src/Styles/fonts';
+
+// General Styles
+h3 {
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Rubik";
+  margin: 5px;
+}
+.BillingDetails{
+  width: 100%;
+  height: auto;
+  background-color: transparent;
+  font-family: "Rubik";
+  border-radius: 8px;
+  padding-bottom: 5px;
+  border: 1px solid rgb(225, 221, 221);
 }
 
-@include medium {
-  .billingDetailsSection {
-    max-width: 360px;
-  }
+.paymentDetails {
+  width: 100%;
+  height: auto;
+  background-color: transparent;
+  font-family: "Rubik";
+  border-radius: 4px;
+  padding-bottom: 5px;
 }
 
-@include medium {
-  .billingDetailsSection {
-    max-width: 80vw;
-    width: 80vw;
-  }
+.detailsCard {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  padding: 5px;
+  background-color: transparent;
+  padding-top: 5px;
+  
 }
 
-@include small {
-  .billingDetailsSection {
-    max-width: 100%;
-    width: 100%;
-  }
-}
-
-.billingDetailsSection>h2 {
-  font-family: Inter;
-  font: 500 2.25rem "Inter", sans-serif;
-  letter-spacing: .04rem;
+.nameAddress {
   margin-bottom: 20px;
 }
 
-.submitPaymentButton {
+.firstLastName,
+.address {
+  display: flex;
+  flex-direction: row; // Stack inputs vertically
+  margin: 0;
+  gap: 10px;
+}
+
+
+.inputField {
+  outline: 0;
+  background: transparent;
+  border-radius: 4px;
+  width: 100%;
+  border: 1px solid #ddd;
+  caret-color: #4f5d7e;
+  margin: 5px 0;
+  padding: 12px 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-family: "Rubik";
+
+  @include large {
+    font-size: .8rem;
+  }
+  
+  @include medium {
+    font-size: .7rem;
+  }
+
+  @include small {
+    font-size: .6rem;
+  }
+}
+
+.shippingCard {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+  height: auto;
+}
+
+.newCard,
+.addSavedCard {
+  width: 100%;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+  line-height: 20px;
+
+  @include large {
+    font-size: .8rem;
+  }
+  
+  @include medium {
+    font-size: .7rem;
+  }
+
+  @include small {
+    font-size: .6rem;
+  }
+}
+
+.newCard {
+  height: auto;
+  border: 2px solid #53b5aa;
+}
+
+.addSavedCard {
+  border: 1px solid rgb(225, 221, 221);
+  width: 100%;
+
+  font-size: 14px;
+  .addressOptions{
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .addressOption{
+    gap: 15px;
+    display: flex;
+    width: 100%;
+    align-items: self-start;
+    justify-content: flex-start;
+    color: gray;
+    margin: 5px 0px;
+  }
+  @include large {
+    font-size: .8rem;
+
+  }
+  
+  @include medium {
+    font-size: .7rem;
+
+  }
+
+  @include small {
+    font-size: .7rem;
+
+  }
+
+}
+
+.proceedPayment {
+  text-align: center;
+}
+
+.proceedPayment button {
+  display: block;
   border: none;
   outline: none;
-  background-color: var(--dark-tomato);
-  color: var(--white);
-  font-weight: 500;
-  font-size: 1rem;
-  padding: 16px 48px;
+  height: 40px;
+  padding: 12px 30px;
   border-radius: 4px;
-  margin-top: 34px;
+  font-weight: 500;
+  background: var(--dark-tomato);
+  color: var(--white);
+  width: fit-content;
+  margin: 0 auto;
   outline: solid 2px transparent;
   outline-offset: -2px;
-  transition: background-color .2s;
+  transition: background 0.2s;
+  font-size: 12px;
+  cursor: pointer;
 
   &:focus-visible {
     transition: var(--outline-transition);
@@ -56,13 +379,245 @@
   &:not(:focus-visible):hover {
     background: var(--tomato);
   }
+
+  &:active {
+    transform: scale(var(--button-active-scale));
+  }
+
+  @include large {
+    font-size: .8rem;
+    padding: 12px 30px;
+  }
+  
+  @include medium {
+    font-size: .7rem;
+    padding: 12px 20px;
+  }
+
+  @include small {
+    font-size: .7rem;
+    padding: 12px 30px;
+  }
 }
 
-@include small {
-  .submitPaymentButton {
+.addAddressPrompt {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  text-align: end;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  font-weight: 500;
+  color: var(--dark-tomato);
+  margin: 0 auto;
+  outline-offset: -2px;
+  transition: background 0.2s;
+  font-size: 12px;
+  padding: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  &:focus-visible {
+    transition: var(--outline-transition);
+    color: var(--white);
+  }
+
+  &:not(:focus-visible):hover {
+    color: var(--tomato);
+  }
+
+  &:active {
+    transform: scale(var(--button-active-scale));
+  }
+
+  @include large {
     font-size: .8rem;
+  }
+  
+  @include medium {
+    font-size: .7rem;
+  }
+
+  @include small {
+    font-size: .7rem;
+  }
+}
+
+.addAddressIcon {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.addAddressIcon p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  
+  // button {
+  //   flex: 1;
+  //   margin-right: 0.5rem;
+  //   padding: 0.5rem 1rem;
+  //   border: none;
+  //   border-radius: 4px;
+  //   cursor: pointer;
+  //   font-size: 1rem;
+
+  //   &:last-child {
+  //     margin-right: 0;
+  //   }
+  // }
+
+  .saveButton,
+  .cancelButton {
+    display: flex;
+    justify-content: flex-end;
     width: 100%;
-    padding: 12px 20px;
-    margin-top: 10px;
+    text-align: end;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    font-weight: 500;
+    color: var(--dark-tomato);
+    margin: 0 auto;
+    outline-offset: -2px;
+    transition: background 0.2s;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+  
+    cursor: pointer;
+
+    &:focus-visible {
+      transition: var(--outline-transition);
+      color: var(--white);
+    }
+  
+    &:not(:focus-visible):hover {
+      color: var(--tomato);
+    }
+  
+    &:active {
+      transform: scale(var(--button-active-scale));
+    }
+  
+    @include large {
+      font-size: .8rem;
+    }
+    
+    @include medium {
+      font-size: .7rem;
+    }
+  
+    @include small {
+      font-size: .7rem;
+    }
+  }
+
+  .cancelButton {
+    background: var(--light-gray);
+    color: var(--dark-gray);
+  }
+}
+
+
+.button{
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.editButton{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  text-align: end;
+  border: none;
+  outline: none;
+  font-weight: 500;
+  color: var(--dark-tomato);
+  margin: 0 auto;
+  outline-offset: -2px;
+  transition: background 0.2s;
+  background-color: transparent;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:focus-visible {
+    transition: var(--outline-transition);
+    color: var(--white);
+  }
+
+  &:not(:focus-visible):hover {
+    color: var(--tomato);
+  }
+
+  &:active {
+    transform: scale(var(--button-active-scale));
+  }
+
+  @include large {
+    font-size: .8rem;
+
+  }
+  
+  @include medium {
+    font-size: .7rem;
+
+  }
+
+  @include small {
+    font-size: .7rem;
+
+  }
+}
+
+.removeButton{
+  display: flex;
+  justify-content: flex-end;
+  text-align: end;
+  border: none;
+  outline: none;
+  font-weight: 500;
+  color: var(--dark-tomato);
+  margin: 0 auto;
+  outline-offset: -2px;
+  transition: background 0.2s;
+  background-color: transparent;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:focus-visible {
+    transition: var(--outline-transition);
+    color: var(--white);
+  }
+
+  &:not(:focus-visible):hover {
+    color: var(--tomato);
+  }
+
+  &:active {
+    transform: scale(var(--button-active-scale));
+  }
+
+  @include large {
+    font-size: .8rem;
+
+  }
+  
+  @include medium {
+    font-size: .7rem;
+
+  }
+
+  @include small {
+    font-size: .6rem;
+
   }
 }

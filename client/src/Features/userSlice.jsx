@@ -598,11 +598,10 @@
 
 // export default userSlice.reducer;
 
-// userSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { updateCartFromBackend } from './cartSlice'; // Import cartSlice actions
+import { updateCartFromBackend } from './cartSlice';
 
 // Function to retrieve user data from localStorage
 const getUserDataFromLocalStorage = () => {
@@ -697,10 +696,8 @@ export const deleteAccount = createAsyncThunk(
   async (userId, { rejectWithValue, dispatch }) => {
     try {
       await axios.delete(`http://localhost:8000/api/user/${userId}`);
-
       // Clear all user data from state and localStorage
       dispatch(clearUserData());
-
       toast.success('Account deleted successfully');
     } catch (error) {
       console.error('Failed to delete account:', error);
@@ -713,9 +710,9 @@ export const deleteAccount = createAsyncThunk(
 // Async thunk for saving billing information
 export const saveBillingInfo = createAsyncThunk(
   'user/saveBillingInfo',
-  async ({ _id, ...billingInfo }, { rejectWithValue }) => {
+  async ({ userId, ...billingInfo }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/user/save-billing', { _id, ...billingInfo });
+      const response = await axios.post('http://localhost:8000/api/user/save-billing', { userId, ...billingInfo });
       toast.success('Billing information saved successfully');
       return response.data; // Assuming your backend sends back meaningful data upon successful save
     } catch (error) {
@@ -725,11 +722,8 @@ export const saveBillingInfo = createAsyncThunk(
   }
 );
 
-// Action to clear all user data
-export const clearUserData = () => {
-  localStorage.removeItem('userSliceData');
-  return { type: 'user/clearUserData' };
-};
+// Define the clearUserData action using createAction
+export const clearUserData = createAction('user/clearUserData');
 
 // Define user slice with reducers
 const userSlice = createSlice({
@@ -744,7 +738,7 @@ const userSlice = createSlice({
     setLoginData: (state, { payload }) => {
       state.loginInfo = { ...payload, isSignIn: true };
       state.loginInfo.lastLogin = payload.lastLogin;
-      state.cart = { products: payload.cart.products, couponDiscount: payload.cart.couponDiscount };
+      // state.cart = { products: payload.cart.products, couponDiscount: payload.cart.couponDiscount };
       localStorage.setItem('userSliceData', JSON.stringify(state));
     },
     signOut: (state) => {
@@ -793,12 +787,14 @@ const userSlice = createSlice({
         state.loginInfo.lastLogin = action.payload.lastLogin;
         state.cart = { products: action.payload.cart.products, couponDiscount: action.payload.cart.couponDiscount };
         localStorage.setItem('userSliceData', JSON.stringify(state));
-        // Example: Update cart after login
-        dispatch(updateCartFromBackend(action.payload.cart.products)); // Dispatch action to update cart from backend
+        // Dispatch action to update cart from backend
+        if (action.payload.cart.products) {
+          dispatch(updateCartFromBackend(action.payload.cart.products));
+        }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload.message || 'Failed to log in';
+        state.error = action.payload || 'Failed to log in';
       })
       .addCase(updateProfile.pending, (state) => {
         state.status = 'loading';
@@ -807,7 +803,7 @@ const userSlice = createSlice({
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.loginInfo = { ...state.loginInfo, ...action.payload };
-        localStorage.setItem('userSliceData', JSON.stringify(state)); // Update localStorage
+        localStorage.setItem('userSliceData', JSON.stringify(state));
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.status = 'failed';
@@ -840,22 +836,53 @@ const userSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload || 'Failed to delete account';
       })
+      .addCase(signUpUser.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(signUpUser.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.signedUpUsers.push(action.payload);
+        localStorage.setItem('userSliceData', JSON.stringify(state));
+      })
+      .addCase(signUpUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Failed to sign up';
+      })
       .addCase(saveBillingInfo.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(saveBillingInfo.fulfilled, (state) => {
+      .addCase(saveBillingInfo.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        // Optionally handle any specific state update after saving billing info
+        toast.success('Billing information saved successfully');
       })
       .addCase(saveBillingInfo.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload || 'Failed to save billing information';
+        state.error = action.payload || 'Error saving billing information';
+      })
+      // Handle custom action for clearing user data
+      .addCase(clearUserData, (state) => {
+        state.loginInfo = {
+          userId: '',
+          username: '',
+          email: '',
+          mobileNumber: '',
+          streetAddress: '',
+          townCity: '',
+          pincode: '',
+          profileImage: '',
+          lastLogin: null,
+          role: '',
+          isSignIn: false,
+        };
+        state.signedUpUsers = [];
+        state.cart = { products: [], couponDiscount: 0 };
+        localStorage.removeItem('userSliceData');
       });
   },
 });
 
-// Export actions and reducer
 export const {
   newSignUp,
   setLoginData,
@@ -866,6 +893,8 @@ export const {
   clearStatus,
 } = userSlice.actions;
 
-export const selectUserId = (state) => state.user.loginInfo.userId; // Adjust path as per your actual state structure
+
+
+export const selectUserId = (state) => state.user.loginInfo.userId; 
 
 export default userSlice.reducer;

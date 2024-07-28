@@ -1,0 +1,344 @@
+@import "src/Styles/mixins";
+
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); // Semi-transparent black background
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; // Ensure the modal appears on top of other content
+}
+
+.modalContent {
+  background: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 600px; // Increase width to accommodate the coupon card
+  width: 95%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+
+  &:hover {
+    color: #ff7b00; // Highlight color on hover
+  }
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.couponContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  @include large {
+    width: 80%;
+    flex-direction: column;
+  }
+
+  @include small {
+    flex-direction: column; // For smaller screens, make input and button stack vertically
+    gap: 10px;
+    min-height: 20px;
+  }
+
+  @include medium {
+    width: 80%;
+    flex-direction: row;
+  }
+
+  > input {
+    flex: 3; // Takes 60% of the width
+    height: 40px;
+    padding: 12px 20px;
+    border-radius: 4px;
+    border: 1px solid rgb(225, 221, 221);
+    transition: border-color .1s, background-color .1s .05s;
+    color: gray;
+    font-size: 12px;
+
+    &:focus {
+      outline-color: #ff7b00;
+      background-color: rgba(255, 166, 0, .08);
+    }
+
+    &::placeholder {
+      color: var(--dark-gray);
+    }
+
+    @include large {
+      width: 100%;
+      font-size: .8rem;
+    }
+    @include medium {
+      width: 100%;
+      font-size: .6rem;
+    }
+    @include small {
+      width: 100%;
+      font-size: .6rem;
+    }
+  }
+
+  .couponbtn {
+    flex: 2; // Takes 40% of the width
+    border: none;
+    outline: none;
+    height: 40px;
+    padding: 12px 10px;
+    border-radius: 4px;
+    font-weight: 500;
+    color: var(--white);
+    background: var(--dark-tomato);
+    outline: solid 2px transparent;
+    outline-offset: -2px;
+    transition: background .2s;
+    font-size: 12px;
+
+    &:focus-visible {
+      transition: var(--outline-transition);
+      outline-color: var(--tomato);
+      color: var(--very-dark-gray);
+      background: transparent;
+      color: var(--tomato);
+    }
+
+    &:not(:focus-visible):hover {
+      background: var(--tomato);
+    }
+
+    &:active {
+      scale: var(--button-active-scale);
+    }
+
+    @include large {
+      width: 100%;
+      font-size: .6rem;
+      padding: 12px 30px;
+    }
+    @include medium {
+      width: 100%;
+      font-size: .6rem;
+      padding: 10px 20px;
+    }
+
+    @include small {
+      width: 100%;
+      font-size: .6rem;
+      padding: 12px 30px;
+    }
+  }
+}
+
+.couponCard {
+  height: 200px;
+  width: 330px;
+  background: linear-gradient(135deg, #7158fe, #9d4de6);
+  color: #fff;
+  text-align: center;
+  padding: 13px 20px; // Adjusted padding
+  border-radius: 15px;
+  box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.15);
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 20px;
+
+  .logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+  }
+
+
+
+  .couponhead {
+    font-weight: 400;
+    line-height: 20px;
+
+    @include large {
+      width: 100%;
+      font-size: .8rem;
+    }
+    @include medium {
+      width: 100%;
+      font-size: .6rem;
+    }
+    @include small {
+      width: 100%;
+      font-size: .6rem;
+    }
+  }
+
+  p {
+    font-size: 15px;
+
+    @include large {
+      width: 100%;
+      font-size: .8rem;
+    }
+    @include medium {
+      width: 100%;
+      font-size: .6rem;
+    }
+    @include small {
+      width: 100%;
+      font-size: .6rem;
+    }
+  }
+
+  .couponRow {
+    display: flex;
+    align-items: center;
+    margin: 10px auto; // Adjusted margin
+    width: fit-content;
+  }
+
+  .cpnCode {
+    border: 1px dashed #fff;
+    padding: 5px 10px; // Adjusted padding
+    border-right: 0;
+
+    @include large {
+      font-size: .8rem;
+    }
+    @include medium {
+      font-size: .6rem;
+    }
+    @include small {
+      font-size: .6rem;
+    }
+  }
+
+  .cpnBtn {
+    border: 1px solid #fff;
+    background: #fff;
+    padding: 5px 10px; // Adjusted padding
+    color: #7158fe;
+    cursor: pointer;
+
+    @include large {
+      font-size: .8rem;
+    }
+    @include medium {
+      font-size: .6rem;
+    }
+    @include small {
+      font-size: .6rem;
+    }
+  }
+
+  .circle1, .circle2 {
+    background: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .circle1 {
+    left: -25px;
+  }
+
+  .circle2 {
+    right: -25px;
+  }
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+
+.couponCard h3 {
+  font-size: 28px;
+  font-weight: 400;
+
+  @include large {
+    font-size: .8rem;
+  }
+  @include medium {
+    font-size: .6rem;
+  }
+  @include small {
+    font-size: .6rem;
+  }
+}
+
+.couponCard p {
+  font-size: 15px;
+
+  @include large {
+    font-size: .8rem;
+  }
+  @include medium {
+    font-size: .6rem;
+  }
+  @include small {
+    font-size: .6rem;
+  }
+}
+
+.couponRow {
+  display: flex;
+  align-items: center;
+  margin: 15px auto; // Adjusted margin
+  width: fit-content;
+}
+
+.cpnCode {
+  border: 1px dashed #fff;
+  padding: 10px 15px; // Adjusted padding
+  border-right: 0;
+}
+
+.cpnBtn {
+  border: 1px solid #fff;
+  background: #fff;
+  padding: 10px 15px; // Adjusted padding
+  color: #7158fe;
+  cursor: pointer;
+}
+
+.circle1, .circle2 {
+  background: #f0fff3;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.circle1 {
+  left: -25px;
+}
+
+.circle2 {
+  right: -25px;
+}
+
+

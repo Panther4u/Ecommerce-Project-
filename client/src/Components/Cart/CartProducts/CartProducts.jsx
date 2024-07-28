@@ -157,7 +157,7 @@ const CartProducts = ({ userId }) => {
   const validCartProducts = Array.isArray(cartProducts) ? cartProducts : [];
 
   return (
-    <div className={s.cartProducts}>
+    <div>
       {status === 'loading' || !isDataLoaded ? (
         <div className={s.loading}>
           <div className={s.spinner}></div>

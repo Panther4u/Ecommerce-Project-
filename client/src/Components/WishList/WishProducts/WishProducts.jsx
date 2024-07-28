@@ -23,6 +23,7 @@
 // };
 // export default WishProducts;
 
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { productCardCustomizations } from 'src/Data/staticData';
 import useScrollOnMount from 'src/Hooks/App/useScrollOnMount';
@@ -36,7 +37,7 @@ const WishProducts = () => {
 
   // Handle loading and error states
   if (status === 'loading') return <p>Loading...</p>;
-  if (status === 'failed') return <p>Error: {error}</p>;
+  if (status === 'failed') return <p>Error: {error.message || 'An unknown error occurred'}</p>;
 
   return (
     <div className={s.wishProducts}>
@@ -57,3 +58,4 @@ const WishProducts = () => {
 };
 
 export default WishProducts;
+

@@ -15,13 +15,14 @@ const multer = require('multer');
 const { v4: uuidv4 } = require('uuid'); // Import UUID library
 const generateToken = require('./utils/generateToken');
 const fs = require('fs');
-const { User, Coupon } = require('./model/User'); 
+const { User, Coupon, Address } = require('./model/User'); 
 const Order = require('./model/orderModel');
 const Admin = require('./model/Admin');
 const Cart = require('./model/Cart'); 
 const auth = require('./Middleware/auth'); 
 const Product = require('./model/Product'); 
 const Wishlist = require('./model/Wishlist');
+const Billing = require('./model/billingDetails');
 // const productRoutes = require('./routes/productRoutes');
 const productsData = require('./scripts/productsData');
 
@@ -166,79 +167,95 @@ app.post('/upload', upload.single('profileImage'), async (req, res) => {
 // const generateCouponCode = () => {
 //   return `WELCOME-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 // };
-const sendCouponEmail = (email, couponCode) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD
-    },
-    port: 465,
-    host: "smtp.gmail.com"
-  });
+// const sendCouponEmail = async (email, couponCode) => {
+//   const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//       user: process.env.EMAIL_USERNAME,
+//       pass: process.env.EMAIL_PASSWORD,
+//     },
+//     port: 465,
+//     host: 'smtp.gmail.com',
+//   });
 
-  const mailOptions = {
-    from: 'your_email@gmail.com',
-    to: email,
-    subject: 'Welcome! Here is your coupon code',
-    text: `Thank you for signing up! Use the following coupon code to get a discount: ${couponCode}`,
-  };
+//   const mailOptions = {
+//     from: 'kavinkaviya7@gmail.com',
+//     to: email,
+//     subject: 'Welcome! Here is your coupon code',
+//     text: `Thank you for signing up! Use the following coupon code to get a discount: ${couponCode}`,
+//   };
 
-  return transporter.sendMail(mailOptions);
-  
-};
+//   try {
+//     await transporter.sendMail(mailOptions);
+//     console.log('Email sent successfully');
+//   } catch (error) {
+//     console.error('Error sending email:', error);
+//     throw new Error('Email could not be sent.');
+//   }
+// };
 
-// Utility function to generate a coupon code
-function generateCouponCode() {
-  const uuid = uuidv4();
-  const alphanumeric = uuid.replace(/-/g, '').substr(0, 24);
-  const couponCode = `COUPON${alphanumeric}`;
-  return couponCode;
-}
+// // Utility function to generate a coupon code
+// function generateCouponCode() {
+//   const uuid = uuidv4();
+//   const alphanumeric = uuid.replace(/-/g, '').substr(0, 24);
+//   const couponCode = `COUPON${alphanumeric}`;
+//   return couponCode;
+// }
 
-app.post('/apply-coupon', async (req, res) => {
-  const { userId, couponCode, discountPercentage } = req.body;
+// Apply coupon route
+app.post('/api/coupons/apply', async (req, res) => {
+  const { couponCode, userId } = req.body;
 
   try {
-    // Check if the coupon code is valid and not expired
     const coupon = await Coupon.findOne({ code: couponCode });
 
     if (!coupon) {
-      return res.status(400).json({ error: 'Invalid coupon code.' });
+      return res.status(400).json({ error: 'Coupon code is invalid.' });
     }
 
-    if (coupon.usedBy !== userId) {
-      return res.status(400).json({ error: 'Coupon code does not belong to this user.' });
-    }
-
-    if (coupon.validUntil < new Date()) {
+    // Check for expiration date
+    if (coupon.valid === 'SPECIFIC_DATE' && new Date(coupon.validDate) < new Date()) {
       return res.status(400).json({ error: 'Coupon code has expired.' });
     }
 
-    // If coupon is valid, calculate discount percentage
-    const discountPercentage = coupon.discountPercent; // Assuming `discount` is a percentage value
+    // Check usage limits and user usage
+    if (coupon.valid === 'LIMITED_USE') {
+      if (coupon.usedBy.length >= coupon.limit) {
+        return res.status(400).json({ error: 'Coupon code has reached its usage limit.' });
+      }
+      if (coupon.usedBy.includes(userId)) {
+        return res.status(400).json({ error: 'Coupon code has already been used by you.' });
+      }
+    }
 
-    // Proceed with applying the discount logic in your application
+    // Add userId to the usedBy list for "LIMITED_USE" coupons
+    if (coupon.valid === 'LIMITED_USE') {
+      coupon.usedBy.push(userId);
+      await coupon.save();
+    }
 
-    res.json({ discountPercentage, message: 'Coupon applied successfully.' });
+    res.status(200).json({ message: 'Coupon applied successfully!', discountPercent: coupon.discountPercent });
   } catch (error) {
     console.error('Error applying coupon:', error);
-    res.status(500).json({ error: 'An error occurred while applying the coupon.' });
+    res.status(500).json({ error: 'Internal server error.' });
   }
 });
 
-app.get('/coupons/discount/:code', async (req, res) => {
-  const couponCode = req.params.code;
+
+
+// Get discount percentage for a specific coupon code
+app.get('/api/coupons/discount/:code', async (req, res) => {
+  const { code } = req.params;
 
   try {
     // Find the coupon by code and project only the discountPercent field
-    const coupon = await Coupon.findOne({ code: couponCode }).select('discountPercent');
+    const coupon = await Coupon.findOne({ code }).select('discountPercent');
 
     if (!coupon) {
       return res.status(404).json({ error: 'Coupon not found.' });
     }
 
-    // If found, return the discount percentage
+    // Return the discount percentage
     res.json({ discountPercent: coupon.discountPercent });
 
   } catch (error) {
@@ -247,6 +264,23 @@ app.get('/coupons/discount/:code', async (req, res) => {
   }
 });
 
+// Get all available coupons
+app.get('/api/coupons/available', async (req, res) => {
+  try {
+    const { userId } = req.query; // Get userId from query parameters
+
+    // Fetch coupons; you can filter or modify the query as needed
+    const coupons = await Coupon.find();
+
+    // Optionally filter based on userId
+    // Example: const coupons = await Coupon.find({ usedBy: { $ne: userId } });
+
+    res.json(coupons);
+  } catch (error) {
+    console.error('Error fetching coupons:', error);
+    res.status(500).json({ error: 'Error fetching coupons', message: error.message });
+  }
+});
 
 
 // API endpoint to get user data
@@ -338,73 +372,96 @@ app.get('/auth/google/callback', passport.authenticate('google', { session: fals
 
 
 
-// API endpoint to get user profile image
-app.get('/api/users/:username/profile-image', async (req, res) => {
+app.get('/api/user/get-addresses/:userId', async (req, res) => {
   try {
-    const { username } = req.params;
-    const user = await User.findOne({ username });
+    const { userId } = req.params;
+    const user = await User.findOne({ userId });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    // Assuming profileImage is a URL
-    const { profileImage } = user;
-    res.json({ profileImage });
-  } catch (error) {
-    console.error('Error fetching profile image:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-
-
-app.get("/api/user/save-billing", async (req, res) => {
-  try {
-    const user = await User.findOne(); // Fetch the first user document
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    res.json(user);
+    const { addressList } = user;
+    res.json({ addresses: addressList });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-
 app.post('/api/user/save-billing', async (req, res) => {
-  const { userId, firstName, streetAddress, townCity, apartment, pincode, mobileNumber } = req.body;
+  const { userId, addressIndex, firstName, streetAddress, townCity, apartment, pincode, mobileNumber } = req.body;
 
   try {
-    // Validate _id is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ error: 'Invalid userId format' });
-    }
+    let user = await User.findOne({ userId });
 
-    // Find user by userId and update billing information
-    const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    // Update user's billing information
-    user.firstName = firstName;
-    user.streetAddress = streetAddress;
-    user.townCity = townCity;
-    user.apartment = apartment;
-    user.pincode = pincode;
-    user.mobileNumber = mobileNumber;
+    const newAddress = {
+      userId,  // Make sure to include userId here if required
+      firstName,
+      streetAddress,
+      townCity,
+      apartment,
+      pincode,
+      mobileNumber
+    };
 
-    // Save updated user
+    if (addressIndex !== undefined && addressIndex >= 0) {
+      // Update existing address
+      user.addressList[addressIndex] = newAddress;
+    } else {
+      // Add new address
+      user.addressList.push(newAddress);
+    }
+
     await user.save();
 
-    // Respond with success message
-    res.status(200).json({ message: 'Billing information saved successfully' });
+    res.json({ message: 'Billing information saved successfully', user });
   } catch (error) {
     console.error('Error saving billing information:', error);
-    res.status(500).json({ message: 'Error saving billing information' });
+    res.status(500).json({ message: 'An error occurred while saving billing information' });
   }
 });
+
+
+app.post('/api/user/remove-billing-address', async (req, res) => {
+  const { userId, addressIndex } = req.body;
+
+  try {
+    // Find the user by userId
+    let user = await User.findOne({ userId });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Ensure addressIndex is within bounds
+    if (addressIndex >= 0 && addressIndex < user.addressList.length) {
+      // Remove the address at the specified index
+      user.addressList.splice(addressIndex, 1);
+
+      // Save the user document
+      await user.save();
+      res.json({ message: 'Address removed successfully', user });
+    } else {
+      res.status(400).json({ message: 'Invalid address index' });
+    }
+  } catch (error) {
+    console.error('Error removing billing address:', error);
+    res.status(500).json({ message: 'An error occurred while removing the billing address' });
+  }
+});
+
+
+
+
+
+
+
+
+
 
 
 app.post('/api/wishlist/add', async (req, res) => {
@@ -517,21 +574,24 @@ app.delete('/api/wishlist/remove/:userId/:productId', async (req, res) => {
 });
 
 
-
 app.post('/api/cart', async (req, res) => {
   try {
     const { userId, product } = req.body;
 
+    // Validate input
     if (!userId || !product || !product.id || !product.name || !product.category || !product.price || !product.description || !product.img || !product.shortName) {
+      // console.warn('Invalid input:', req.body);
       return res.status(400).json({ error: 'UserId and all product fields are required' });
     }
 
     // Default quantity to 1 if not provided or invalid
     const quantity = isNaN(product.quantity) || product.quantity <= 0 ? 1 : product.quantity;
 
+    // Find or create a cart for the user
     let cart = await Cart.findOne({ userId });
 
     if (!cart) {
+      // Create a new cart if it doesn't exist
       cart = new Cart({
         userId,
         products: [{
@@ -546,13 +606,17 @@ app.post('/api/cart', async (req, res) => {
           quantity
         }]
       });
+      // console.log('Created new cart:', cart);
     } else {
+      // Check if the product already exists in the cart
       const existingProductIndex = cart.products.findIndex(p => p.id === product.id);
+
       if (existingProductIndex !== -1) {
-        // Update quantity if product exists
+        // Update quantity if the product already exists
         cart.products[existingProductIndex].quantity = quantity;
+        // console.log(`Updated product ${product.id} quantity to ${cart.products[existingProductIndex].quantity}`);
       } else {
-        // Add new product
+        // Add new product if it does not exist
         cart.products.push({
           id: product.id,
           name: product.name,
@@ -564,17 +628,28 @@ app.post('/api/cart', async (req, res) => {
           discount: product.discount,
           quantity
         });
+        // console.log('Added new product to cart:', product.id);
       }
     }
 
-    await cart.save();
+    // Remove duplicates by converting to a Set based on product ID
+    cart.products = Array.from(
+      new Map(cart.products.map(p => [p.id, p])).values()
+    );
 
+    // Save the cart
+    await cart.save();
+    // console.log({ message: 'Product added to cart successfully', cart });
     res.status(200).json({ message: 'Product added to cart successfully', cart });
   } catch (error) {
-    console.error('Error adding product to cart:', error);
+    // console.error('Error adding product to cart:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
+
+
 
 
 
@@ -782,18 +857,21 @@ app.post('/api/admin/create', upload.single('profileImage'), async (req, res) =>
   }
 });
 // Login endpoint
-// POST /auth/login - User login
+
+
+
 app.post('/auth/signup', upload.single('profileImage'), async (req, res) => {
   try {
     const { username, email, password, mobileNumber, streetaddress, towncity, pincode } = req.body;
     const profileImage = req.file ? req.file.path : '';
 
-    if (!email) {
-      return res.status(400).json({ error: 'Email is required.' });
+    // Validate input
+    if (!email || !validator.isEmail(email)) {
+      return res.status(400).json({ error: 'Valid email is required.' });
     }
 
-    if (!validator.isEmail(email)) {
-      return res.status(400).json({ error: 'Invalid email address.' });
+    if (!password || password.length < 6) {
+      return res.status(400).json({ error: 'Password is required and should be at least 6 characters long.' });
     }
 
     const existingUser = await User.findOne({ email });
@@ -805,6 +883,7 @@ app.post('/auth/signup', upload.single('profileImage'), async (req, res) => {
     const userId = uuidv4();
     const couponCode = generateCouponCode();
 
+    // Create new user
     const newUser = new User({
       userId,
       username,
@@ -818,17 +897,24 @@ app.post('/auth/signup', upload.single('profileImage'), async (req, res) => {
       coupon: couponCode,
     });
 
+    // Create new coupon
     const coupon = new Coupon({
       code: couponCode,
-      discountPercent: 10, // Example: 10% discount
-      validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Valid for 30 days
-      usedBy: userId,
+      discountPercent: 10, // Example discount
+      valid: 'ALL_TIME_APPLY', // Ensure this matches one of the enum values
+      usedBy: [userId] // Make sure to use an array
     });
 
+    // Save user and coupon
     await newUser.save();
     await coupon.save();
 
-    await sendCouponEmail(email, couponCode);
+    // Initialize wishlist for the new user
+    const wishlist = new Wishlist({ userId });
+    await wishlist.save();
+
+    // Send coupon email
+    await sendCouponEmail(email, couponCode, username);
 
     res.status(201).json({ userId, message: 'User created successfully and coupon sent.' });
   } catch (error) {
@@ -837,6 +923,69 @@ app.post('/auth/signup', upload.single('profileImage'), async (req, res) => {
   }
 });
 
+
+
+
+const sendCouponEmail = async (email, couponCode, username) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USERNAME,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+    port: 465,
+    host: 'smtp.gmail.com',
+    secure: false, // Use TLS
+    tls: {
+      rejectUnauthorized: false, // For self-signed certificates
+    },
+  });
+
+  const mailOptions = {
+    from: 'teampanther4@gmail.com',
+    to: email,
+    subject: 'Welcome! Here is your coupon code',
+    html: `
+      <div style="font-family: Poppins, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+        <h1 style="font-size: 22px; font-weight: 500; color: #854CE6; text-align: center; margin-bottom: 30px;">Verify Your Account</h1>
+        <div style="background-color: #FFF; border: 1px solid #e5e5e5; border-radius: 5px; box-shadow: 0px 3px 6px rgba(0,0,0,0.05);">
+          <div style="background-color: #854CE6; border-top-left-radius: 5px; border-top-right-radius: 5px; padding: 20px 0;">
+            <h2 style="font-size: 28px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 10px;">Thank you for signing up!</h2>
+            <h1 style="font-size: 32px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 20px;">${couponCode}</h1>
+          </div>
+          <div style="padding: 30px;">
+            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Dear ${username},</p>
+            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Thank you for creating an account. Use the following coupon code to get a discount:</p>
+            <p style="font-size: 20px; font-weight: 500; color: #666; text-align: center; margin-bottom: 30px; color: #854CE6;">${couponCode}</p>
+            <p style="font-size: 12px; color: #666; margin-bottom: 20px;">If you did not create an account, please disregard this email.</p>
+          </div>
+        </div>
+        <br>
+        <p style="font-size: 16px; color: #666; margin-bottom: 20px; text-align: center;">Best regards,<br>The Team</p>
+      </div>
+    `
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw new Error('Email could not be sent.');
+  }
+};
+
+
+// Utility function to generate a coupon code
+function generateCouponCode() {
+  // Define a prefix for the coupon code
+  const prefix = 'WELCOME';
+  // Generate a random 4-digit number
+  const randomNumber = Math.floor(1000 + Math.random() * 9000);
+  // Combine prefix and random number to create the coupon code
+  const couponCode = `${prefix}${randomNumber}`;
+  return couponCode;
+}
 
 app.post('/auth/login', async (req, res) => {
   const { email, password } = req.body;

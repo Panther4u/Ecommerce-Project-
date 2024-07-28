@@ -195,7 +195,6 @@
 //   color: green; /* Example success message color */
 //   margin-top: -15px;
 // }
-
 @import 'src/Styles/mixins';
 
 // General Styles
@@ -229,8 +228,39 @@
         color: green; // Green color for discount value
       }
     }
+
+    .ship {
+      color: green; // Green color for shipping text
+    }
+  }
+
+  .coupon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; // Space between "Remove" button and discount value
+    color: var(--tomato); // Default color for coupon text
+    gap: 20px;
+    
+    &.couponApplied {
+      color: green; // Green color for applied coupon discount
+    }
+  
+    .removeCouponBtn {
+      color: var(--tomato); // Color for the remove button
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 0.8rem;
+      text-decoration: underline;
+      
+      &:hover {
+        color: darkred; // Darker color on hover
+      }
+    }
   }
   
+  
+
   .items {
     display: flex;
     align-items: center;
@@ -305,7 +335,7 @@
   }
 
   @include small {
-    font-size: .6rem;
+    font-size: .7rem;
     padding: 12px 30px;
   }
 }

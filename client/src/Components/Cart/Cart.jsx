@@ -253,7 +253,7 @@ const Cart = () => {
           <CartProducts userId={userId} cartProducts={cartProducts} />
           {cartProducts.length > 0 && (
             <div className={s.wrapper}>
-              <AddCoupon />
+              {/* <AddCoupon /> */}
               <CartInfoMenu />
             </div>
           )}

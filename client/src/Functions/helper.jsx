@@ -274,14 +274,14 @@ export function random(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function isItemFound(data, getItem, key) {
-  return data.find((item) => item[key] === getItem[key]);
-}
+// export function isItemFound(data, getItem, key) {
+//   return data.find((item) => item[key] === getItem[key]);
+// }
 
-// export const isItemFound = (data, product, key) => {
-//   const productsArray = Array.isArray(data?.products) ? data.products : [];
-//   return productsArray.find((item) => item[key] === product[key]);
-// };
+export const isItemFound = (data, product, key) => {
+  const productsArray = Array.isArray(data?.products) ? data.products : [];
+  return productsArray.find((item) => item[key] === product[key]);
+};
 
 
 
@@ -303,16 +303,23 @@ export function isMobileDevice() {
   return isMobileDevice;
 }
 
-
-
-// src/Functions/helper.js
-
 export const calculateTotalDiscount = (cartProducts) => {
   return cartProducts.reduce((totalDiscount, product) => {
     const { discount, price, quantity } = product;
+
+    // Parse price and quantity to numbers
     const priceNumber = parseFloat(price) || 0;
-    const afterDiscount = discount > 0 ? priceNumber - (priceNumber * discount) / 100 : priceNumber;
-    const discountAmount = (priceNumber - afterDiscount) * quantity;
+    const quantityNumber = parseInt(quantity, 10) || 0;
+
+    // Calculate discounted price
+    const discountedPrice = discount > 0 
+      ? priceNumber - (priceNumber * discount) / 100 
+      : priceNumber;
+
+    // Calculate discount amount
+    const discountAmount = (priceNumber - discountedPrice) * quantityNumber;
+
+    // Accumulate the total discount
     return totalDiscount + discountAmount;
   }, 0);
 };

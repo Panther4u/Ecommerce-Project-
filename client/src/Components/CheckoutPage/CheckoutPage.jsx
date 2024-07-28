@@ -13,6 +13,8 @@ import PaymentSection from './PaymentSection/PaymentSection';
 import s from './CheckoutPage.module.scss';
 import PagesHistory from '../Shared/MiniComponents/PagesHistory/PagesHistory';
 
+const BASE_URL = 'http://localhost:8000/api'; // Define base URL
+
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,21 +61,21 @@ const CheckoutPage = () => {
   };
 
   const handlePlaceOrder = async () => {
-    try {
-      if (!validateBillingDetails()) {
-        toast.error('Please fill in all billing details');
-        return;
-      }
+    if (!validateBillingDetails()) {
+      toast.error('Please fill in all billing details');
+      return;
+    }
 
+    try {
       if (billingValues.saveInfo) {
         await handleSaveBillingInfo();
       }
 
-      const orderResponse = await axios.post('http://localhost:8000/api/checkout', {
-        userId: userId,
+      const orderResponse = await axios.post(`${BASE_URL}/checkout`, {
+        userId,
         cartProducts,
         billingDetails: billingValues,
-        deliveryMethod: "Express Delivery",
+        deliveryMethod: 'Express Delivery',
         totalBillAmount: totalAmount,
       });
 
@@ -88,11 +90,9 @@ const CheckoutPage = () => {
       dispatch(setOrderedProductsInOrderSlice(cartProducts));
 
       toast.success('Order placed successfully');
-      
-      // Navigate to order summary page after a delay
-      setTimeout(() => {
-        navigate(`/order/${userId}`);
-      }, 5000); // 5 seconds delay before navigating
+
+      // Navigate to order summary page
+      navigate(`/order/${userId}`);
     } catch (error) {
       console.error("Error placing order:", error);
       toast.error("Error placing order");
@@ -106,11 +106,7 @@ const CheckoutPage = () => {
 
   const handleSubmitPayment = async (e) => {
     e.preventDefault();
-    try {
-      await handlePlaceOrder();
-    } catch (error) {
-      console.error('Error during payment submission:', error);
-    }
+    await handlePlaceOrder();
   };
 
   // History for breadcrumbs or navigation history
@@ -123,29 +119,26 @@ const CheckoutPage = () => {
         <title>Checkout</title>
       </Helmet>
 
-      <div className="container">
-        <main className={s.checkoutPage} id="checkout-page">
-          <PagesHistory history={pageHistory} historyPaths={historyPaths} />
+      <main className={s.checkoutPage} id="checkout-page">
+        <PagesHistory history={pageHistory} historyPaths={historyPaths} />
 
-          <form className={s.checkoutPageContent} onSubmit={handleSubmitPayment}>
+        <form className={s.checkoutPageContent} onSubmit={handleSubmitPayment}>
           <PaymentSection
-              handlePlaceOrder={handlePlaceOrder}
-              handleApplyCoupon={handleApplyCoupon}
-              setTotalAmount={setTotalAmount}
-            />
-            <BillingDetails
-              billingValues={billingValues}
-              setBillingValues={setBillingValues}
-            />
-          </form>
-        </main>
-      </div>
+            handlePlaceOrder={handlePlaceOrder}
+            handleApplyCoupon={handleApplyCoupon}
+            setTotalAmount={setTotalAmount}
+          />
+          <BillingDetails
+            billingValues={billingValues}
+            setBillingValues={setBillingValues}
+          />
+        </form>
+      </main>
     </>
   );
 };
 
 export default CheckoutPage;
-
 
 
 

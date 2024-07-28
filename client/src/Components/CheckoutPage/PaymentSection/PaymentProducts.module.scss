@@ -43,28 +43,28 @@
 // }
 
 
-
-@import "src/Styles/mixins";
+@import "src/Styles/mixins"; // Import mixins if needed for your project
 
 .productContainer {
   display: flex;
   align-items: flex-start;
   width: 100%;
-  height: auto;
   gap: 35px;
   padding: 15px;
-  border: 1px solid rgb(225, 221, 221);
+  border: 1px solid #dcdcdc; // Gray border color
   border-radius: 5px;
   background-color: white;
   margin-bottom: 10px;
 
-  img {
-    height: 120px;
-    width: 120px;
-    padding: 5px;
-    border: 2px solid rgb(225, 221, 221);
-    border-radius: 5px;
-    object-fit: cover;
+  .imageContainer {
+    img {
+      height: 120px;
+      width: 120px;
+      padding: 5px;
+      border: 0.5px solid #dcdcdc; // Gray border color
+      border-radius: 5px;
+      object-fit: cover;
+    }
   }
 
   .productDetails {
@@ -72,6 +72,7 @@
     flex-direction: column;
     gap: 8px;
     width: 100%;
+    position: relative;
 
     .productName {
       font-weight: bold;
@@ -81,11 +82,34 @@
       font-size: 16px;
     }
 
-    .price {
-      color: rgb(101, 101, 101);
-      font-size: 13px;
+    .discountBadge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: green;
+      color: white;
+      padding: 4px 14px;
+      border-radius: 3px;
+      font-size: 10px;
     }
 
+    .priceContainer {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      font-size: 12px;
+      
+      .originalPrice {
+        color: #999;
+        text-decoration: line-through;
+      }
+      
+      .discountedPrice {
+        color: green;
+        font-weight: 500;
+      }
+    }
+    
     .returnPolicy {
       color: rgb(101, 101, 101);
       font-size: 10px;
@@ -103,7 +127,7 @@
       }
     }
 
-    .remove {
+    .remove, .moveToWishlist {
       display: flex;
       align-items: center;
       font-weight: bold;
@@ -111,9 +135,17 @@
       cursor: pointer;
       font-size: 14px;
 
-      .removeIcon {
+      .deleteIcon, .wishlistIcon {
         font-size: 18px;
-        color: rgb(159, 32, 137);
+        margin-right: 5px;
+      }
+
+      .deleteIcon {
+        color: rgb(159, 32, 137); // Color for delete icon
+      }
+
+      .wishlistIcon {
+        color: rgb(255, 0, 0); // Color for wishlist icon
       }
     }
 
@@ -121,45 +153,12 @@
       display: flex;
       justify-content: space-between;
       padding: 10px 0;
-      border-top: 1px solid rgb(225, 221, 221);
+      border-top: 1px solid #dcdcdc; // Gray border color
       font-size: 14px;
       color: rgb(101, 101, 101);
     }
   }
 }
-
-// @include small {
-//   .productContainer {
-  
-//     img {
-//       height: 80px;
-//       width: 80px;
-//     }
-
-//     .productDetails {
-//       .productName {
-//         font-size: 14px;
-//       }
-//     }
-
-//     .productDetails {
-//       gap: 4px;
-//     }
-
-//     .sellerInfo {
-//       font-size: 8px;
-//     }
-//     .price {
-//       color: rgb(101, 101, 101);
-//       font-size: 12px;
-//     }
-
-//     .returnPolicy {
-//       color: rgb(101, 101, 101);
-//       font-size: 10px;
-//     }
-//   }
-// }
 
 @media (max-width: 500px) {
   .productContainer {
@@ -169,63 +168,51 @@
     }
 
     .productDetails {
-      display: flex;
-      flex-direction: column;
       gap: 8px;
       width: 100%;
-  
+
       .productName {
-        font-weight: bold;
-        display: flex;
-        justify-content: space-between;
-        color: rgb(101, 101, 101);
         font-size: 16px;
       }
-  
-      .price {
-        color: rgb(101, 101, 101);
-        font-size: 12px;
+
+      .priceContainer {
+        .originalPrice {
+          font-size: 12px;
+        }
+        
+        .discountedPrice {
+          font-size: 12px;
+        }
       }
-  
+
       .returnPolicy {
-        color: rgb(101, 101, 101);
         font-size: 10px;
       }
-  
+
       .sizeAndQuantity {
-        display: flex;
-        align-items: center;
-        color: rgb(101, 101, 101);
-  
+        font-size: 12px;
+
         .dot {
           font-size: 10px;
-          color: rgb(159, 155, 155);
         }
       }
-  
-      .remove {
-        display: flex;
-        align-items: center;
-        font-weight: bold;
-        color: rgb(101, 101, 101);
-        cursor: pointer;
+
+      .remove, .moveToWishlist {
         font-size: 12px;
-  
-        .removeIcon {
+
+        .deleteIcon, .wishlistIcon {
           font-size: 18px;
-          color: rgb(159, 32, 137);
         }
       }
-  
+
+      .discountBadge {
+        font-size: 8px;
+        padding: 4px 8px;
+      }
+
       .sellerInfo {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 0;
-        border-top: 1px solid rgb(225, 221, 221);
-        font-size: 10px;
-        color: rgb(101, 101, 101);
+        font-size: 12px;
       }
     }
   }
-
 }

@@ -1,29 +1,67 @@
 @import "src/Styles/mixins";
 
+// Checkout Page Styles
 .checkoutPage {
-  margin: 60px 0 160px;
-}
-
-.checkoutPage>form {
-  margin-top: 60px;
+  margin: var(--page-margin);
+  padding-top: 5px;
+  height: auto;
+  margin: 1.3rem;
 }
 
 .checkoutPageContent {
-  display: flex;
-  justify-content: space-between;
-  gap: 80px;
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 10px; // Space between the two columns
+  margin-top: 20px;
 }
 
-@include medium {
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; // Space between child components
+  margin-right: 20px;
+}
+
+@media (max-width: 768px) {
   .checkoutPageContent {
-    gap: 40px;
+    grid-template-columns: 60% 40%;
+    gap: 10px; // Space between the two columns
+  }
+  .wrapper {
+    margin-right: 0px;
   }
 }
 
-@include small {
+@media (max-width: 678px) {
   .checkoutPageContent {
+    grid-template-columns: 1fr; // Full width for each component in smaller screens
+  }
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    gap: 10px; // Space between the two columns
+    margin: 0;
+  }
+
+  .checkoutPage {
+    margin: var(--page-margin);
+    padding-top: 15px;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  .wrapper {
+    display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    gap: 30px;
+    margin: 0;
+  }
+
+  .checkoutPage {
+    margin: var(--page-margin);
+    padding-top: 15px;
+    margin-top: 0;
   }
 }

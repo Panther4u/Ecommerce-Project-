@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, NavLink } from "react-router-dom";
@@ -10,18 +9,18 @@ import s from "./SignUpForm.module.scss";
 import Avatar from '@mui/material/Avatar';
 
 // Default avatar image path
-const DEFAULT_AVATAR = 'src/Assets/Images/Avatar.jpg'; // Replace with your default image path
+const DEFAULT_AVATAR = 'src/Assets/Images/Avatar.jpg'; // Ensure this path is correct
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
-  const usernameRef = useRef("");
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
-  const mobileNumberRef = useRef("");
-  const streetAddressRef = useRef("");
-  const townCityRef = useRef("");
-  const pincodeRef = useRef("");
+  const usernameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const mobileNumberRef = useRef(null);
+  const streetAddressRef = useRef(null);
+  const townCityRef = useRef(null);
+  const pincodeRef = useRef(null);
   const fileInputRef = useRef(null);
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -78,28 +77,35 @@ const SignUpForm = () => {
     formData.append('email', emailRef.current.value);
     formData.append('password', passwordRef.current.value);
     formData.append('mobileNumber', mobileNumberRef.current.value);
-    formData.append('streetaddress', streetAddressRef.current.value);
-    formData.append('towncity', townCityRef.current.value);
+    formData.append('streetAddress', streetAddressRef.current.value);
+    formData.append('townCity', townCityRef.current.value);
     formData.append('pincode', pincodeRef.current.value);
-
+  
     try {
       const response = await axios.post('http://localhost:8000/auth/signup', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      const { userId } = response.data; // Extract userId from response
-      dispatch(setLoginData({ ...response.data, userId }));
-      localStorage.setItem("userSliceData", JSON.stringify({ ...response.data, userId }));
-      navigateTo("/", { replace: true });
-      toast.success("Sign up successful!");
+      
+      const responseData = response.data;
+  
+      console.log("Sign-Up Response:", responseData); // Debugging
+  
+      if (responseData && responseData.userId) {
+        dispatch(setLoginData({ ...responseData, userId: responseData.userId }));
+        localStorage.setItem("userSliceData", JSON.stringify({ ...responseData, userId: responseData.userId }));
+        navigateTo("/", { replace: true });
+        toast.success("Sign up successful!");
+      } else {
+        toast.error("Unexpected response format.");
+      }
     } catch (error) {
+      console.error("Sign-Up error:", error.response ? error.response.data : error.message);
       toast.error("An error occurred during sign-up. Please try again.");
-      console.error("Sign-Up error:", error);
     }
   };
-
-
+  
   return (
     <form className={s.form} onSubmit={handleSubmit}>
       <h2>Create Account</h2>
@@ -127,11 +133,11 @@ const SignUpForm = () => {
       </div>
       <div className={s.inputs}>
         <input type="text" name="username" placeholder="Full Name" ref={usernameRef} required />
-        <input type="text" name="email" placeholder="Email" ref={emailRef} required />
+        <input type="email" name="email" placeholder="Email" ref={emailRef} required />
         <input type="password" name="password" placeholder="Password" ref={passwordRef} required />
         <input type="text" name="mobileNumber" placeholder="Mobile Number" ref={mobileNumberRef} required />
-        <input type="text" name="streetAddress" placeholder="streetAddress" ref={streetAddressRef}/>
-        <input type="text" name="towncity" placeholder="town/city" ref={townCityRef} />
+        <input type="text" name="streetAddress" placeholder="Street Address" ref={streetAddressRef} />
+        <input type="text" name="townCity" placeholder="Town/City" ref={townCityRef} />
         <input type="text" name="pincode" placeholder="Pincode" ref={pincodeRef} />
       </div>
       <div className={s.buttons}>

@@ -37,7 +37,7 @@ import PaymentCalculation from './PaymentCalculation';
 import PaymentOptionsSelection from './PaymentOptionsSelection';
 import { useTranslation } from 'react-i18next';
 import s from './PaymentSection.module.scss';
-import { clearCart } from 'src/Features/cartSlice';
+// import { clearCart } from 'src/Features/cartSlice';
 import PlaceOrderButton from './PlaceOrderButton';
 import { setOrderedProducts } from 'src/Features/orderSlice';
 
@@ -55,7 +55,7 @@ const PaymentSection = ({ handlePlaceOrder, handleApplyCoupon, setTotalAmount })
     try {
       await handlePlaceOrder(); // Assuming this function handles frontend logic for placing order
       dispatch(setOrderedProducts(products)); // Dispatch ordered products to Redux state
-      dispatch(clearCart()); // Clear cart after successful order placement
+      // dispatch(clearCart()); // Clear cart after successful order placement
 
       setTimeout(() => {
         toast.success('Order placed successfully', {
@@ -73,7 +73,7 @@ const PaymentSection = ({ handlePlaceOrder, handleApplyCoupon, setTotalAmount })
 
   return (
     <section className={s.paymentSection}>
-      <h2>{t('Order Summary')}</h2>
+      {/* <h2>{t('Order Summary')}</h2> */}
       <PaymentProducts products={products} />
       <PaymentCalculation products={products} handleApplyCoupon={handleApplyCoupon} setTotalAmount={setTotalAmount} />
       {/* <PaymentOptionsSelection /> */}

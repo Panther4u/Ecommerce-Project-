@@ -38,9 +38,7 @@
 
 // export default store;
 
-
-
-
+// store.jsx
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import globalReducer from '../Features/globalSlice';
 import productsReducer from '../Features/productsSlice';
@@ -48,17 +46,7 @@ import userReducer from '../Features/userSlice';
 import cartReducer from '../Features/cartSlice';
 import orderReducer from '../Features/orderSlice';
 
-// Combine your reducers
-const rootReducer = combineReducers({
-  global: globalReducer,
-  user: userReducer,
-  products: productsReducer,
-  cart: cartReducer,
-  order: orderReducer,
-  // add other reducers here
-});
-
-// Load initial state from local storage
+// Define loadState function
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem('state');
@@ -72,7 +60,7 @@ const loadState = () => {
   }
 };
 
-// Save state to local storage
+// Define saveState function
 const saveState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
@@ -82,14 +70,23 @@ const saveState = (state) => {
   }
 };
 
-// Configure store with initial state and middleware
+// Combine reducers
+const rootReducer = combineReducers({
+  global: globalReducer,
+  user: userReducer,
+  products: productsReducer,
+  cart: cartReducer,
+  order: orderReducer,
+  // other reducers
+});
+
+// Configure store
 const store = configureStore({
   reducer: rootReducer,
   preloadedState: loadState(), // Initialize state from local storage
-  // Add any additional middleware or configurations here
 });
 
-// Subscribe to store updates and save state to local storage
+// Subscribe to store updates
 store.subscribe(() => {
   saveState(store.getState());
 });

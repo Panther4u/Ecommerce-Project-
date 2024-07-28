@@ -1,8 +1,8 @@
-
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 
+// User Schema
 const userSchema = new mongoose.Schema({
   userId: {
     type: String,
@@ -14,7 +14,9 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  firstName: { type: String },
+  firstName: { 
+    type: String 
+  },
   email: {
     type: String,
     required: true,
@@ -35,48 +37,46 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
-  streetAddress: {
-    type: String,
-    trim: true
-  },
-  townCity: {
-    type: String,
-    trim: true
-  },
-  pincode: {
-    type: String,
-    trim: true
-  },
   profileImage: {
     type: String
   },
-  apartment: String,
-  coupon: String,
-  lastLogin: Date,
-  balance: Number,
+  coupon: {
+    type: String
+  },
+  lastLogin: {
+    type: Date
+  },
+  balance: {
+    type: Number
+  },
   status: {
     type: String,
-    default: 'active', // or any other default value
+    default: 'active'
   },
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
+  addressList: [{
+    firstName: { type: String },
+    streetAddress: { type: String },
+    townCity: { type: String },
+    apartment: { type: String },
+    pincode: { type: String },
+    mobileNumber: { type: String }
+  }],
 });
-
-// Hash password before saving user to database
+// Combined pre-save hook
 userSchema.pre('save', async function(next) {
   const user = this;
   if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8);
   }
-  next();
-});
 
-userSchema.pre('save', async function(next) {
-  if (!this.userId) {
-    this.userId = await User.generateUserId();
+  if (!user.userId) {
+    user.userId = await User.generateUserId();
   }
+
   next();
 });
 
@@ -89,13 +89,29 @@ userSchema.statics.generateUserId = async function() {
   }
   return userId;
 };
+const VALID_FOR_ALL_TIME = 'ALL_TIME_APPLY'; // Define a constant for 'valid' field
 
+// Coupon Schema
 const couponSchema = new mongoose.Schema({
-  code: { type: String, required: true, unique: true },
-  discountPercent: { type: Number, required: true },
-  validUntil: { type: Date, required: true },
-  usedBy: { type: String, required: true },  // User ID who owns this coupon
+  code: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  discountPercent: {
+    type: Number,
+    required: true
+  },
+  valid: {
+    type: String,
+    required: true,
+    enum: ['ALL_TIME_APPLY', 'SPECIFIC_DATE', 'LIMITED_USE'] // Example of possible values
+  },
+  usedBy: [{
+    type: String // Assuming you use userId as a string
+  }]
 });
+
 
 
 const Coupon = mongoose.model('Coupon', couponSchema);

@@ -68,16 +68,11 @@
 
 
 
-
-
-
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getUniqueArrayByObjectKey } from 'src/Functions/helper';
 import { fetchWishlist, updateProductsState } from '../../Features/productsSlice';
 import SectionTitle from '../Shared/MiniComponents/SectionTitle/SectionTitle';
 import ForYouProducts from './ForYouProducts/ForYouProducts';
@@ -90,40 +85,22 @@ const WishList = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   
-  // Local state to manage loading delay
-  const [showLoader, setShowLoader] = useState(false);
-
-  // Get state from Redux store
-  const { wishList, status, error, cartProducts } = useSelector((state) => state.products);
+  const { wishList, status } = useSelector((state) => state.products);
   const userId = useSelector(selectUserId);
   const numberOfWishlist = wishList.length;
 
-  // Fetch wishlist when component mounts or userId changes
   useEffect(() => {
     if (userId) {
-      setShowLoader(true); // Show loader
-      const timer = setTimeout(() => {
-        dispatch(fetchWishlist(userId)).finally(() => {
-          setShowLoader(false); // Hide loader when fetch is done
-        });
-      }, 500); // Simulate a delay of 500ms
-      return () => clearTimeout(timer); // Clean up the timer if the component unmounts
+      dispatch(fetchWishlist(userId));
     }
   }, [dispatch, userId]);
 
-  // Move all wishlist items to the cart
   const moveAllToCart = () => {
-    const uniqueCartProducts = getUniqueArrayByObjectKey({
-      arr: cartProducts,
-      newArr: wishList,
-      key: 'shortName',
-    });
-
-    dispatch(updateProductsState({ key: 'cartProducts', value: uniqueCartProducts }));
+    dispatch(updateProductsState({ key: 'cartProducts', value: wishList }));
     dispatch(updateProductsState({ key: 'wishList', value: [] }));
+    localStorage.setItem('wishList', JSON.stringify([]));
   };
 
-  // Check if wishlist is empty
   const isEmptyWishlist = status !== 'loading' && numberOfWishlist === 0;
 
   return (
@@ -141,7 +118,7 @@ const WishList = () => {
             </button>
           </header>
 
-          {showLoader || status === 'loading' ? (
+          {status === 'loading' ? (
             <div className={s.loaderWrapper}>
               <div className={s.spinner}></div>
             </div>
