@@ -25,6 +25,7 @@ const Wishlist = require('./model/Wishlist');
 const Billing = require('./model/billingDetails');
 // const productRoutes = require('./routes/productRoutes');
 const productsData = require('./scripts/productsData');
+const Invoice = require('./model/Invoice');
 
 // Create Express app
 const app = express();
@@ -281,6 +282,59 @@ app.get('/api/coupons/available', async (req, res) => {
     res.status(500).json({ error: 'Error fetching coupons', message: error.message });
   }
 });
+
+
+app.post('/api/invoice/generate', async (req, res) => {
+  const { billingInfo, userId, cartProducts, totalAmount } = req.body;
+
+  // Validate the presence of all required fields
+  if (!billingInfo || !userId || !cartProducts || totalAmount == null) {
+    return res.status(400).json({ message: 'Required fields are missing' });
+  }
+
+  const { firstName, streetAddress, townCity, pincode, mobileNumber } = billingInfo;
+  if (!firstName || !streetAddress || !townCity || !pincode || !mobileNumber) {
+    return res.status(400).json({ message: 'All billing fields are required' });
+  }
+
+  // Optionally, add logging to identify the issue
+  console.log('Received Data:', { billingInfo, userId, cartProducts, totalAmount });
+
+  try {
+    const invoiceId = 'INV-' + Math.floor(Math.random() * 1000000);
+
+    const newInvoice = new Invoice({
+      userId,
+      billingInfo,
+      cartProducts,
+      totalAmount,
+      invoiceId
+    });
+
+    await newInvoice.save();
+
+    res.status(200).json({
+      message: 'Invoice generated successfully',
+      invoiceId: newInvoice.invoiceId,
+      invoiceDetails: newInvoice
+    });
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+  
+
+
+
+
+
+
+
+
 
 
 // API endpoint to get user data
@@ -573,14 +627,13 @@ app.delete('/api/wishlist/remove/:userId/:productId', async (req, res) => {
   }
 });
 
-
+// Add or update product in cart
 app.post('/api/cart', async (req, res) => {
   try {
     const { userId, product } = req.body;
 
     // Validate input
     if (!userId || !product || !product.id || !product.name || !product.category || !product.price || !product.description || !product.img || !product.shortName) {
-      // console.warn('Invalid input:', req.body);
       return res.status(400).json({ error: 'UserId and all product fields are required' });
     }
 
@@ -601,12 +654,11 @@ app.post('/api/cart', async (req, res) => {
           price: product.price,
           description: product.description,
           img: product.img,
-          discount: product.discount,
+          discount: product.discount || 0,
           shortName: product.shortName,
           quantity
         }]
       });
-      // console.log('Created new cart:', cart);
     } else {
       // Check if the product already exists in the cart
       const existingProductIndex = cart.products.findIndex(p => p.id === product.id);
@@ -614,7 +666,6 @@ app.post('/api/cart', async (req, res) => {
       if (existingProductIndex !== -1) {
         // Update quantity if the product already exists
         cart.products[existingProductIndex].quantity = quantity;
-        // console.log(`Updated product ${product.id} quantity to ${cart.products[existingProductIndex].quantity}`);
       } else {
         // Add new product if it does not exist
         cart.products.push({
@@ -625,27 +676,36 @@ app.post('/api/cart', async (req, res) => {
           description: product.description,
           img: product.img,
           shortName: product.shortName,
-          discount: product.discount,
+          discount: product.discount || 0,
           quantity
         });
-        // console.log('Added new product to cart:', product.id);
       }
     }
 
-    // Remove duplicates by converting to a Set based on product ID
-    cart.products = Array.from(
-      new Map(cart.products.map(p => [p.id, p])).values()
-    );
+    // Remove duplicates by converting to a Map based on product ID
+    const uniqueProductsMap = new Map();
+    cart.products.forEach(p => {
+      if (uniqueProductsMap.has(p.id)) {
+        // If the product already exists, update its quantity
+        uniqueProductsMap.get(p.id).quantity += p.quantity;
+      } else {
+        // Otherwise, add the new product
+        uniqueProductsMap.set(p.id, p);
+      }
+    });
+
+    // Convert the Map back to an array
+    cart.products = Array.from(uniqueProductsMap.values());
 
     // Save the cart
     await cart.save();
-    // console.log({ message: 'Product added to cart successfully', cart });
     res.status(200).json({ message: 'Product added to cart successfully', cart });
   } catch (error) {
-    // console.error('Error adding product to cart:', error);
+    console.error('Error adding product to cart:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 
 

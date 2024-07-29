@@ -365,19 +365,26 @@
 
 
 
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
 import { selectUserId } from 'src/Features/userSlice';
-import { useNavigate } from 'react-router-dom'; // Ensure useNavigate is imported
+import { useNavigate } from 'react-router-dom';
 import s from './BillingDetails.module.scss';
+import { selectCartProducts } from 'src/Features/productsSlice'; // Adjust import as per your slice
+import Modal from './Modal';
+import InvoiceModal from './InvoiceModal';
 
-const BillingDetails = () => {
+const BillingDetails = ({ totalAmount }) => {
   const userId = useSelector(selectUserId);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
+  const cartProducts = useSelector(selectCartProducts);
 
+  // console.log('BillingDetails totalAmount:', totalAmount); // Debugging log
   const [formValues, setFormValues] = useState({
     firstName: '',
     streetAddress: '',
@@ -393,7 +400,8 @@ const BillingDetails = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
   const [error, setError] = useState('');
-
+  const [invoiceDetails, setInvoiceDetails] = useState({});
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     const fetchAddresses = async () => {
       if (!userId) return;
@@ -437,28 +445,82 @@ const BillingDetails = () => {
     }
   };
 
-  const generateInvoice = async (billingInfo) => {
+  const generateInvoice = async () => {
+    // Check if userId is available
+    if (!userId) {
+      toast.error('User ID is not defined.');
+      return;
+    }
+  
+    // Validate form values
+    if (!validateForm()) {
+      toast.error('Billing information is incomplete.');
+      return;
+    }
+  
+    // Log data for debugging
+    console.log('Form Values:', formValues);
+    console.log('User ID:', userId);
+    console.log('Cart Products:', cartProducts);
+    console.log('Total Amount:', totalAmount);
+  
+    // Filter out invalid cart products
+    const filteredCartProducts = cartProducts.filter(product => 
+      product.id && product.name && product.price
+    );
+  
     try {
-      await axios.post('http://localhost:8000/api/invoice/generate', {
-        ...billingInfo,
-        userId
+      // Make API request to generate invoice
+      const response = await axios.post('http://localhost:8000/api/invoice/generate', {
+        billingInfo: formValues,
+        userId,
+        cartProducts: filteredCartProducts,
+        totalAmount
       });
-      toast.success('Invoice generated successfully!');
+  
+      // Check for successful response
+      if (response.status === 200) {
+        setInvoiceDetails(response.data); // Set invoice details from response
+        setShowModal(true); // Show the modal with invoice details
+        toast.success(`Invoice generated successfully! Invoice ID: ${response.data.invoiceId}`);
+      } else {
+        // Handle unexpected response status
+        throw new Error(`Unexpected response status: ${response.status}`);
+      }
     } catch (error) {
+      // Log the error and show an error message
       console.error('Error generating invoice:', error);
-      toast.error('Failed to generate invoice.');
+      toast.error(`Failed to generate invoice. ${error.response?.data?.message || error.message}`);
     }
   };
-
+  
+  
+  
+  
   const handleProceedPayment = async () => {
     const { streetAddress, pincode } = formValues;
-
+  
     if (selectedAddressIndex !== null || (streetAddress && pincode)) {
       setError('');
       try {
         await saveBillingInfo();
-        await generateInvoice(formValues); // Generate invoice before proceeding
-        navigate('/payment-section', { state: { billingInfo: formValues } }); // Pass data to PaymentSection
+  
+        // Use a callback function to handle navigation
+        await generateInvoice(() => {
+          // Check if invoiceDetails are set and then navigate
+          if (invoiceDetails && invoiceDetails.invoiceId) {
+            navigate('/payment-section', { 
+              state: { 
+                billingInfo: formValues, 
+                invoiceDetails, 
+                cartProducts, 
+                totalAmount // Pass total amount to the next page
+              } 
+            });
+          } else {
+            toast.error('Invoice generation failed. Please try again.');
+          }
+        });
       } catch (error) {
         console.error('Error during payment processing:', error);
         toast.error('Failed to proceed to payment.');
@@ -471,6 +533,7 @@ const BillingDetails = () => {
       }
     }
   };
+  
 
   const handleSaveAddress = async () => {
     if (!validateForm()) {
@@ -546,6 +609,25 @@ const BillingDetails = () => {
     setSelectedAddressIndex(index);
     setFormValues(address);
     setError('');
+  };
+
+  const handleModalClose = () => {
+    // Close the modal
+    setShowModal(false);
+  
+    // Navigate after closing the modal
+    if (invoiceDetails && invoiceDetails.invoiceId) {
+      navigate('/payment-section', { 
+        state: { 
+          billingInfo: formValues, 
+          invoiceDetails, 
+          cartProducts, 
+          totalAmount // Pass total amount to the next page
+        } 
+      });
+    } else {
+      toast.error('Invoice generation failed. Please try again.');
+    }
   };
 
   return (
@@ -685,7 +767,7 @@ const BillingDetails = () => {
             </div>
           )}
 
-            <div className={s.proceedPayment}>
+          <div className={s.proceedPayment}>
             <button
               type="button"
               className={s.proceedButton}
@@ -694,6 +776,10 @@ const BillingDetails = () => {
               Proceed to Payment
             </button>
           </div>
+          <Modal isOpen={showModal} onRequestClose={handleModalClose}>
+            <InvoiceModal invoiceDetails={invoiceDetails} />
+          </Modal>
+          
         </div>
       </div>
     </div>

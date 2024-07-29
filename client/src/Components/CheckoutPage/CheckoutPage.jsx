@@ -131,6 +131,7 @@ const CheckoutPage = () => {
           <BillingDetails
             billingValues={billingValues}
             setBillingValues={setBillingValues}
+            totalAmount={totalAmount}
           />
         </form>
       </main>

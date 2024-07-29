@@ -29,65 +29,114 @@
 
 // PaymentSection.jsx
 
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+// import React, { useState } from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { useNavigate } from 'react-router-dom';
+// import PaymentProducts from './PaymentProducts';
+// import PaymentCalculation from './PaymentCalculation';
+// import PaymentOptionsSelection from './PaymentOptionsSelection';
+// import { useTranslation } from 'react-i18next';
+// import s from './PaymentSection.module.scss';
+// // import { clearCart } from 'src/Features/cartSlice';
+// import PlaceOrderButton from './PlaceOrderButton';
+// import { setOrderedProducts } from 'src/Features/orderSlice';
+
+// const PaymentSection = ({ handlePlaceOrder, handleApplyCoupon, setTotalAmount }) => {
+//   const { products } = useSelector((state) => state.cart);
+//   const { t } = useTranslation();
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(null);
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+
+//   const placeOrderFrontend = async () => {
+//     setLoading(true);
+//     setError(null);
+//     try {
+//       await handlePlaceOrder(); // Assuming this function handles frontend logic for placing order
+//       dispatch(setOrderedProducts(products)); // Dispatch ordered products to Redux state
+//       // dispatch(clearCart()); // Clear cart after successful order placement
+
+//       setTimeout(() => {
+//         toast.success('Order placed successfully', {
+//           onClose: () => navigate('/order-summary')
+//         });
+//       }, 5000); // Wait for 2 seconds before navigating
+
+//     } catch (error) {
+//       console.error('Error placing order:', error);
+//       setError('Failed to place order. Please try again.');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <section className={s.paymentSection}>
+//       {/* <h2>{t('Order Summary')}</h2> */}
+//       <PaymentProducts products={products} />
+//       <PaymentCalculation products={products} handleApplyCoupon={handleApplyCoupon} setTotalAmount={setTotalAmount} />
+//       {/* <PaymentOptionsSelection /> */}
+
+//       {/* <PlaceOrderButton
+//         type="button"
+//         className={s.submitPaymentButton}
+//         onClick={placeOrderFrontend} // Use the frontend function here
+//         disabled={loading}
+//       >
+//         {loading ? t('buttons.placingOrder') : t('buttons.placeOrder')}
+//       </PlaceOrderButton>
+
+//       {error && <p className={s.errorMessage}>{error}</p>} */}
+//     </section>
+//   );
+// };
+
+// export default PaymentSection;
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import PaymentProducts from './PaymentProducts';
 import PaymentCalculation from './PaymentCalculation';
-import PaymentOptionsSelection from './PaymentOptionsSelection';
-import { useTranslation } from 'react-i18next';
 import s from './PaymentSection.module.scss';
-// import { clearCart } from 'src/Features/cartSlice';
-import PlaceOrderButton from './PlaceOrderButton';
-import { setOrderedProducts } from 'src/Features/orderSlice';
+import { selectCartProducts } from 'src/Features/productsSlice';
+import { getSubTotal, calculateTotalDiscount } from 'src/Functions/helper';
 
-const PaymentSection = ({ handlePlaceOrder, handleApplyCoupon, setTotalAmount }) => {
-  const { products } = useSelector((state) => state.cart);
-  const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+const PaymentSection = ({ handleApplyCoupon, setTotalAmount }) => {
+  const cartProducts = useSelector(selectCartProducts) || [];
+  const couponDiscount = useSelector((state) => state.cart.couponDiscount) || 0;
 
-  const placeOrderFrontend = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      await handlePlaceOrder(); // Assuming this function handles frontend logic for placing order
-      dispatch(setOrderedProducts(products)); // Dispatch ordered products to Redux state
-      // dispatch(clearCart()); // Clear cart after successful order placement
+  const location = useLocation();
+  const [totalAmount, setTotalAmountState] = useState(location.state?.totalAmount || 0);
 
-      setTimeout(() => {
-        toast.success('Order placed successfully', {
-          onClose: () => navigate('/order-summary')
-        });
-      }, 5000); // Wait for 2 seconds before navigating
+  useEffect(() => {
+    const subTotal = parseFloat(getSubTotal(cartProducts)) || 0;
+    const totalDiscount = calculateTotalDiscount(cartProducts) || 0;
+    const discountAmount = (subTotal * couponDiscount) / 100;
 
-    } catch (error) {
-      console.error('Error placing order:', error);
-      setError('Failed to place order. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    const calculatedTotalAmount = subTotal - totalDiscount - discountAmount;
+    setTotalAmountState(calculatedTotalAmount);
+    setTotalAmount(calculatedTotalAmount);
+  }, [cartProducts, couponDiscount, location.state?.totalAmount, setTotalAmount]);
 
   return (
     <section className={s.paymentSection}>
-      {/* <h2>{t('Order Summary')}</h2> */}
-      <PaymentProducts products={products} />
-      <PaymentCalculation products={products} handleApplyCoupon={handleApplyCoupon} setTotalAmount={setTotalAmount} />
-      {/* <PaymentOptionsSelection /> */}
-
-      {/* <PlaceOrderButton
-        type="button"
-        className={s.submitPaymentButton}
-        onClick={placeOrderFrontend} // Use the frontend function here
-        disabled={loading}
-      >
-        {loading ? t('buttons.placingOrder') : t('buttons.placeOrder')}
-      </PlaceOrderButton>
-
-      {error && <p className={s.errorMessage}>{error}</p>} */}
+      <PaymentProducts cartProducts={cartProducts} />
+      <PaymentCalculation
+        setTotalAmount={setTotalAmount}
+        handleApplyCoupon={handleApplyCoupon}
+        cartProducts={cartProducts}
+        couponDiscount={couponDiscount}
+        totalAmount={totalAmount}
+      />
+      {/* Additional UI components to display billing info and invoice details */}
     </section>
   );
 };

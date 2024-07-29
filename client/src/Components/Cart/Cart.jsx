@@ -164,7 +164,6 @@
 
 
 
-
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
@@ -183,8 +182,8 @@ const Cart = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
-  const cartProducts = useSelector(selectCartProducts);
-  const [isSaving, setIsSaving] = useState(false); // Added state for saving
+  const cartProducts = useSelector(selectCartProducts) || []; // Ensure cartProducts is an array
+  const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
 
   useEffect(() => {
@@ -192,7 +191,7 @@ const Cart = () => {
       if (!userId || hasSaved) {
         return;
       }
-  
+
       setIsSaving(true);
       try {
         for (const product of cartProducts) {
@@ -200,20 +199,18 @@ const Cart = () => {
             await dispatch(addProductToCart({ userId, product }));
           }
         }
-        setHasSaved(true); // Set flag to prevent re-saving
+        setHasSaved(true);
       } catch (error) {
         console.error('Error saving cart products to backend:', error);
       } finally {
         setIsSaving(false);
       }
     };
-  
+
     if (cartProducts.length > 0 && userId) {
       saveCartProductsToBackend();
     }
   }, [cartProducts, userId, dispatch, hasSaved]);
-  
-  
 
   const handleAddToCart = (product) => {
     dispatch(addProductToCart({
@@ -231,7 +228,6 @@ const Cart = () => {
       }
     }));
   };
-  
 
   if (!userId) {
     return (
@@ -260,10 +256,9 @@ const Cart = () => {
         </div>
         {/* <CartButtons /> */}
       </main>
-      {<WishList />}
+      <WishList />
     </>
   );
 };
 
 export default Cart;
-

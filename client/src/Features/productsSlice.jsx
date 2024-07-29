@@ -312,6 +312,9 @@
 // export default productsSlice.reducer;
 // productsSlice.js
 
+
+
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { selectUserId } from './userSlice';
@@ -328,7 +331,9 @@ const initialState = {
   status: 'idle',
   error: null,
   userId: savedState.userId || null,
+  totalAmount: savedState.totalAmount || 0,  // Add this line
 };
+
 
 const API_URL = "http://localhost:8000/api/products";
 const CART_API_URL = "http://localhost:8000/api/cart";
@@ -440,6 +445,8 @@ export const removeProductFromWishlist = createAsyncThunk(
   }
 );
 
+
+
 // Slice
 const productsSlice = createSlice({
   name: "products",
@@ -514,6 +521,10 @@ const productsSlice = createSlice({
     },
     setUserId: (state, action) => {
       state.userId = action.payload;
+    },
+    updateTotalAmount: (state, action) => {
+      state.totalAmount = action.payload;
+      saveToLocalStorage(state);
     },
   },
   extraReducers: (builder) => {
@@ -665,8 +676,10 @@ const saveToLocalStorage = (state) => {
     products: state.products,
     searchProducts: state.searchProducts,
     userId: state.userId,
+    totalAmount: state.totalAmount,  // Add this line
   }));
 };
+
 
 
 
@@ -679,6 +692,7 @@ export const selectDiscount = (state) => state.products.discount;
 export const selectAppliedCoupon = (state) => state.products.appliedCoupon;
 export const selectSearchProducts = (state) => state.products.searchProducts;
 export const selectStatus = (state) => state.products.status;
+export const selectTotalAmount = (state) => state.products.totalAmount;
 export const selectError = (state) => state.products.error;
 
 export default productsSlice.reducer;

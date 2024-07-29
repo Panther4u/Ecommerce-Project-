@@ -74,10 +74,11 @@
   }
 
   .wrapper {
-    display: grid;
-    grid-template-columns: 40% 60%;
-    gap: 20px; // Optional: Add space between the two columns
+    // display: grid;
+    // grid-template-columns: 40% 60%;
+    // gap: 20px; // Optional: Add space between the two columns
     margin: 0px;
+    width: 100%;
   }
   .cartPage {
     margin: var(--page-margin);
@@ -88,9 +89,9 @@
 @media (max-width: 500px) {
 
   .wrapper {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
+    // display: flex;
+    // justify-content: space-between;
+    // gap: 30px;
     margin: 0px;
   }
   .cartPage {

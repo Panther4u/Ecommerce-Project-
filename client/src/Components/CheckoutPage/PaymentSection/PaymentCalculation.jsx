@@ -30,8 +30,12 @@
 // };
 // export default PaymentCalculation;
 
+
+
+
+
+
 import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { getSubTotal, calculateTotalDiscount } from 'src/Functions/helper';
 import s from './PaymentCalculation.module.scss';
@@ -40,22 +44,48 @@ const PaymentCalculation = ({ setTotalAmount }) => {
   const { cartProducts } = useSelector((state) => state.products);
   const couponDiscount = useSelector((state) => state.cart.couponDiscount) || 0;
 
+  // Extract and filter unique product IDs, removing any invalid IDs
+  const uniqueProductIds = Array.from(new Set(cartProducts.map(p => p.id).filter(id => id !== undefined)));
+
+  // Get the count of unique products
+  const uniqueProductCount = uniqueProductIds.length;
+
+  // Debugging: Log unique product IDs and count
+  console.log('Unique Product IDs:', uniqueProductIds);
+  console.log('Number of Unique Products:', uniqueProductCount);
+
+  // Ensure unique products and aggregate quantities
+  const uniqueProductsMap = new Map();
+  cartProducts.forEach(product => {
+    if (product.id) {
+      if (!uniqueProductsMap.has(product.id)) {
+        uniqueProductsMap.set(product.id, {
+          ...product,
+          quantity: product.quantity || 1 // Default quantity to 1 if not provided
+        });
+      } else {
+        // If the product already exists, update its quantity
+        const existingProduct = uniqueProductsMap.get(product.id);
+        existingProduct.quantity += (product.quantity || 1);
+        uniqueProductsMap.set(product.id, existingProduct);
+      }
+    }
+  });
+
+  const uniqueCartProducts = Array.from(uniqueProductsMap.values());
+
   // Calculate subtotal and total discount
-  const subTotal = parseFloat(getSubTotal(cartProducts)) || 0;
-  const totalDiscount = calculateTotalDiscount(cartProducts) || 0;
+  const subTotal = parseFloat(getSubTotal(uniqueCartProducts)) || 0;
+  const totalDiscount = calculateTotalDiscount(uniqueCartProducts) || 0;
   
   // Apply coupon discount to subtotal
-  const discountAmount = (subTotal * couponDiscount) / 100; // Ensure this calculation is correct
+  const discountAmount = (subTotal * couponDiscount) / 100;
   const totalAfterDiscount = subTotal - totalDiscount - discountAmount;
 
   useEffect(() => {
     setTotalAmount(totalAfterDiscount);
   }, [totalAfterDiscount, setTotalAmount]);
 
-  const { t } = useTranslation();
-  const cartInfo = t('cartPage.cartInfoMenu'); // Localization key for cart info
-
-  // Format currency value
   const formatCurrency = (value) => {
     return typeof value === 'number' ? value.toFixed(2) : '0.00';
   };
@@ -65,11 +95,11 @@ const PaymentCalculation = ({ setTotalAmount }) => {
       <div className={s.content}>
         <div className={s.item}>
           <span>Total Products:</span>
-          <span>{cartProducts.length}</span>
+          <span>{uniqueProductCount}</span>
         </div>
         <div className={s.item}>
           <span>Total MRP : </span>
-          <span>₹ {subTotal.toFixed(2)}</span>
+          <span>₹ {formatCurrency(subTotal)}</span>
         </div>
 
         <div className={`${s.item} ${s.discount}`}>

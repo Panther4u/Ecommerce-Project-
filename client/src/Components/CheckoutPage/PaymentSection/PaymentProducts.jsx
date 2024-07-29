@@ -94,9 +94,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import s from './PaymentProducts.module.scss';
+import { selectCartProducts } from 'src/Features/productsSlice';
 
 const PaymentProducts = () => {
-  const { cartProducts } = useSelector((state) => state.products);
+  const cartProducts = useSelector(selectCartProducts) || [];
 
   return (
     <div className={s.products}>
