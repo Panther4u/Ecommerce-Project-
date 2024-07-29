@@ -365,18 +365,18 @@
 
 
 
-
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
 import { selectUserId } from 'src/Features/userSlice';
+import { useNavigate } from 'react-router-dom'; // Ensure useNavigate is imported
 import s from './BillingDetails.module.scss';
 
 const BillingDetails = () => {
   const userId = useSelector(selectUserId);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const [formValues, setFormValues] = useState({
     firstName: '',
@@ -423,7 +423,7 @@ const BillingDetails = () => {
       toast.error('User ID is not defined.');
       return;
     }
-  
+
     try {
       await axios.post('http://localhost:8000/api/user/save-billing', {
         ...formValues,
@@ -436,25 +436,42 @@ const BillingDetails = () => {
       toast.error('Failed to save billing information.');
     }
   };
-  
-  const handleProceedPayment = () => {
+
+  const generateInvoice = async (billingInfo) => {
+    try {
+      await axios.post('http://localhost:8000/api/invoice/generate', {
+        ...billingInfo,
+        userId
+      });
+      toast.success('Invoice generated successfully!');
+    } catch (error) {
+      console.error('Error generating invoice:', error);
+      toast.error('Failed to generate invoice.');
+    }
+  };
+
+  const handleProceedPayment = async () => {
     const { streetAddress, pincode } = formValues;
-    
-    if (selectedAddressIndex !== null) {
+
+    if (selectedAddressIndex !== null || (streetAddress && pincode)) {
       setError('');
-      // Proceed to payment logic here
-    } else if (streetAddress && pincode) {
-      setError('');
-      // Proceed to payment logic here
+      try {
+        await saveBillingInfo();
+        await generateInvoice(formValues); // Generate invoice before proceeding
+        navigate('/payment-section', { state: { billingInfo: formValues } }); // Pass data to PaymentSection
+      } catch (error) {
+        console.error('Error during payment processing:', error);
+        toast.error('Failed to proceed to payment.');
+      }
     } else {
       if (addressList.length === 0) {
         toast.error('No saved addresses available. Please add a new address.');
       } else {
-        toast.error('Please select an address.');
+        toast.error('Please select an address or complete the billing form.');
       }
     }
   };
-  
+
   const handleSaveAddress = async () => {
     if (!validateForm()) {
       toast.error('Please fill out all fields.');
@@ -510,10 +527,10 @@ const BillingDetails = () => {
       toast.error('Invalid address index.');
       return;
     }
-  
+
     const updatedAddressList = addressList.filter((_, i) => i !== index);
     setAddressList(updatedAddressList);
-  
+
     try {
       await axios.post('http://localhost:8000/api/user/remove-billing-address', {
         userId,
@@ -645,33 +662,30 @@ const BillingDetails = () => {
                         {address.pincode}<br />
                         {address.mobileNumber}
                       </label>
-                      <div className={s.button}>
-                        <button
-                          type="button"
-                          className={s.editButton}
-                          onClick={() => startEditing(index)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          type="button"
-                          className={s.removeButton}
-                          onClick={() => handleRemoveAddress(index)}
-                        >
-                          Remove
-                        </button>
-                      </div>
+                      <button
+                        type="button"
+                        className={s.editButton}
+                        onClick={() => startEditing(index)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        className={s.removeButton}
+                        onClick={() => handleRemoveAddress(index)}
+                      >
+                        Remove
+                      </button>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className={s.emptyState}>
-                  <p>No saved addresses available.</p>
-                </div>
+                <p>No addresses available. Please add a new address.</p>
               )}
             </div>
           )}
-          <div className={s.proceedPayment}>
+
+            <div className={s.proceedPayment}>
             <button
               type="button"
               className={s.proceedButton}

@@ -85,9 +85,9 @@ const PaymentSection = ({ handlePlaceOrder, handleApplyCoupon, setTotalAmount })
         disabled={loading}
       >
         {loading ? t('buttons.placingOrder') : t('buttons.placeOrder')}
-      </PlaceOrderButton> */}
+      </PlaceOrderButton>
 
-      {error && <p className={s.errorMessage}>{error}</p>}
+      {error && <p className={s.errorMessage}>{error}</p>} */}
     </section>
   );
 };
