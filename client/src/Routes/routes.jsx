@@ -45,6 +45,8 @@ import AccountPage from "../Components/AccountPage/AccountPage";
 import Cart from "../Components/Cart/Cart";
 import OrderSummaryPage from "../Components/Cart/OrderProduct/OrderSummaryPage";
 import CheckoutPage from "../Components/CheckoutPage/CheckoutPage";
+import OrderSuccessPage from "../Components/CheckoutPage/OrderPlaced/OrderSuccessPage";
+import SuccessMessage from "../Components/CheckoutPage/OrderPlaced/SuccessMessage";
 import Contact from "../Components/Contact/Contact";
 import AdminSignup from "../Components/Dashboard/AccountMenuSection/AdminSignup/AdminSignup";
 import DashBoard from "../Components/Dashboard/AdminDashBoardPage";
@@ -99,5 +101,6 @@ export const ROUTES_CONFIG = [
   { path: "/profile", element: <AccountPage /> },
   { path: "/search", element: <SearchPage /> },
   { path: "/dashboard", element: <DashBoard /> }, // Add this entry for Dashboard
+  { path: "/ordersuccess", element: <OrderSuccessPage /> }, // Add this entry for Dashboard
   { path: "*", element: <NotFoundPage /> },
 ];

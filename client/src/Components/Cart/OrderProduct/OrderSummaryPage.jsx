@@ -306,6 +306,7 @@
 
 // export default OrderSummaryPage;
 
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -313,12 +314,13 @@ import { toast } from 'react-toastify';
 import PagesHistory from '../../Shared/MiniComponents/PagesHistory/PagesHistory';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import styles from './OrderSummaryPage.module.scss'; // Importing CSS Modules
+import styles from './OrderSummaryPage.module.scss';
 
 const OrderSummaryPage = () => {
   const { loginInfo } = useSelector((state) => state.user);
   const { t } = useTranslation();
   const [orders, setOrders] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState('All');
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -328,79 +330,101 @@ const OrderSummaryPage = () => {
           return;
         }
 
-        const response = await axios.get(`http://localhost:8000/api/order/${loginInfo.userId}`);
-        setOrders(response.data); // Set the fetched orders into state
-        console.log('Fetched orders:', response.data); // Optional: Log the fetched orders
+        const response = await axios.get(`http://localhost:8000/api/orders/user/${loginInfo.userId}`);
+        setOrders(response.data);
       } catch (error) {
-        console.error('Failed to fetch orders:', error);
         toast.error('Failed to fetch orders');
       }
     };
 
     if (loginInfo.userId) {
       fetchOrders();
-    } else {
-      console.log('User not logged in');
-      // Handle the case where user is not logged in, maybe redirect or show a message
     }
   }, [loginInfo.userId]);
 
+  const filteredOrders = orders.filter(order =>
+    selectedStatus === 'All' || order.status === selectedStatus
+  );
+
   return (
-    <div className={styles.orderDetails}>
+    <div className={styles.orderSummaryPage}>
       <div className={styles.wrapper}>
         <PagesHistory history={['/', t('nav.profile')]} />
-
         <p className={styles.welcomeMessage}>
-          {t('common.welcome')}{'! '}
-          <Link to="/profile">{loginInfo.username}</Link>
+          {t('common.welcome')}! <Link to="/profile">{loginInfo.username}</Link>
         </p>
       </div>
-      <h2>Order Summary</h2>
-      <div className={styles.productDetails}>
-        {orders.length > 0 ? (
-          orders.map(order => (
-            <div key={order._id} className={styles.order}>
-              <div className={styles.orderedProducts}>
-                {order.orderedProducts.map(product => (
-                  <div key={product.id} className={styles.product}>
-                    <img
-                      src={
-                        order.orderedProducts.length > 0
-                          ? order.orderedProducts[0].img
-                          : 'placeholder_image_url'
-                      }
-                      alt={
-                        order.orderedProducts.length > 0
-                          ? order.orderedProducts[0].name
-                          : 'Product'
-                      }
-                      style={{ cursor: 'pointer' }}
-                    />
-                    <div className={styles.productInfo}>
-                      <h4>{product.name}</h4>
-                      <p>
-                        <span>{t('OrderID')}:</span> {order._id}
-                      </p>
-                      <p>
-                        <span>{t('Status')}:</span> {order.status}
-                      </p>
-                      <p>
-                        <span>{t('Delivery Date')}:</span> {order.orderDate}
-                      </p>
-                      <p>
-                        <Link className={styles.view} to={`/orders/${order._id}`}>
-                          {t('View Order Details')}
-                        </Link>
-                      </p>
+      <h2>{t('Order Summary')}</h2>
+      <div className={styles.container}>
+        <div className={styles.filterSection}>
+          <h3>{t('Filter')}</h3>
+          <select onChange={(e) => setSelectedStatus(e.target.value)} value={selectedStatus}>
+            <option value="All">{t('All')}</option>
+            <option value="Pending">{t('Pending')}</option>
+            <option value="Packed">{t('Packed')}</option>
+            <option value="Shipped">{t('Shipped')}</option>
+            <option value="Out for Delivery">{t('Out for Delivery')}</option>
+            <option value="Delivered">{t('Delivered')}</option>
+            <option value="Cancelled">{t('Cancelled')}</option>
+          </select>
+        </div>
+        <div className={styles.productDetails}>
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map(order => (
+              <div key={order._id} className={styles.order}>
+                <div className={styles.orderedProducts}>
+                  {order.cartProducts.map(product => (
+                    <div key={product.id} className={styles.product}>
+                      <img
+                        src={`http://localhost:8000/${product.img}`} 
+                        alt={product.name} 
+                        onError={(e) => e.target.src = '/path/to/fallback-image.jpg'}
+                      />
+                      <div className={styles.productInfo}>
+                        <h4>{product.name}</h4>
+                        <p>
+                          <span>{t('ID')}:</span> {order._id}
+                        </p>
+                        <p>
+                          <span>{t('Status')}:</span> {order.status}
+                        </p>
+                        <div className={styles.orderTracking}>
+  <div className={`${styles.line} ${styles.line1} ${order.status === 'Packed' ? styles.active : ''} ${styles.first}`}>
+    <div className={styles.dot} />
+    <div className={styles.status}>Packed</div>
+    <div className={styles.innerLine1} />
+  </div>
+  <div className={`${styles.line} ${styles.line2} ${order.status === 'Shipped' ? styles.active : ''} ${styles.second}`}>
+    <div className={styles.dot} />
+    <div className={styles.status}>Shipped</div>
+    <div className={styles.innerLine2} />
+  </div>
+  <div className={`${styles.line} ${styles.line3} ${order.status === 'Delivered' ? styles.active : ''} ${styles.third}`}>
+    <div className={styles.dot} />
+    <div className={styles.status}>Delivered</div>
+    <div className={styles.innerLine3} />
+  </div>
+</div>
+
+
+                        <div className={styles.orderdate}>
+                          <span>{t('Delivery Date')}:</span> {new Date(order.createdAt).toLocaleDateString()}
+                        </div>
+                        <p>
+                          <Link className={styles.view} to={`/orders/${order._id}`}>
+                            {t('View Order Details')}
+                          </Link>
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p>{t('orderSummary.noOrdersFound')}</p>
-        )}
+            ))
+          ) : (
+            <p className={styles.ordersFound}>{t('Orders Not Found')}</p>
+          )}
+        </div>
       </div>
     </div>
   );

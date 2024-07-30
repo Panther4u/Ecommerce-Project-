@@ -16,7 +16,7 @@ const { v4: uuidv4 } = require('uuid'); // Import UUID library
 const generateToken = require('./utils/generateToken');
 const fs = require('fs');
 const { User, Coupon, Address } = require('./model/User'); 
-const Order = require('./model/orderModel');
+const Order = require('./model/Order');
 const Admin = require('./model/Admin');
 const Cart = require('./model/Cart'); 
 const auth = require('./Middleware/auth'); 
@@ -326,8 +326,67 @@ app.post('/api/invoice/generate', async (req, res) => {
 
 
 
+app.post('/api/orders/save', async (req, res) => {
+  const { userId, cartProducts, totalAmount, invoiceId, billingInfo } = req.body;
+
+  console.log('Received Data:', { userId, cartProducts, totalAmount, invoiceId, billingInfo });
+
+  if (!userId || !cartProducts || totalAmount == null || !invoiceId || !billingInfo) {
+    return res.status(400).json({ message: 'Required fields are missing' });
+  }
+
+  const { firstName, streetAddress, townCity, pincode, mobileNumber } = billingInfo;
+  if (!firstName || !streetAddress || !townCity || !pincode || !mobileNumber) {
+    return res.status(400).json({ message: 'All billing fields are required' });
+  }
+
+  // Log each product in cartProducts for validation
+  for (const product of cartProducts) {
+    console.log('Validating Product:', product);
+    const { id, img, description, price, category, name, shortName } = product;
+    if (!id || !img || !description || price == null || !category || !name || !shortName) {
+      return res.status(400).json({ message: 'Missing required fields in cartProducts', product });
+    }
+  }
+
+  try {
+    const newOrder = new Order({
+      userId,
+      cartProducts,
+      totalAmount,
+      invoiceId,
+      billingInfo
+    });
+
+    await newOrder.save();
+
+    res.status(200).json({
+      message: 'Order saved successfully',
+      orderId: newOrder._id
+    });
+  } catch (error) {
+    console.error('Error saving order:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
   
 
+app.get('/api/orders/user/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const orders = await Order.find({ userId }); // Find orders by userId
+    if (!orders.length) {
+      return res.status(404).json({ message: 'No orders found for this user' });
+    }
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
 
 
@@ -707,15 +766,6 @@ app.post('/api/cart', async (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
-
 app.get('/api/cart/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
@@ -787,6 +837,22 @@ app.delete('/api/cart/:userId/:productId', async (req, res) => {
   }
 });
 
+// Clear the cart in the backend
+app.post('/api/cart/clear', async (req, res) => {
+  const { userId } = req.body;
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+  
+  try {
+    // Find and clear the cart for the given user ID
+    await Cart.deleteOne({ userId });
+    res.status(200).json({ message: 'Cart cleared successfully' });
+  } catch (error) {
+    console.error('Error clearing cart:', error);
+    res.status(500).json({ message: 'Failed to clear cart' });
+  }
+});
 
 
 
@@ -820,48 +886,54 @@ app.post('/api/checkout', async (req, res) => {
   }
 });
 
-// Example backend route to fetch orders by user ID
-app.get('/api/order/:userId', async (req, res) => {
-  const userId = req.params.userId;
+// // Example backend route to fetch orders by user ID
+// app.get('/api/order/:userId', async (req, res) => {
+//   const userId = req.params.userId;
 
-  try {
-    // Retrieve orders from your database or another data source
-    const orders = await Order.find({ userId }).populate('orderedProducts');
-    res.json(orders);
-  } catch (error) {
-    console.error('Failed to fetch orders:', error);
-    res.status(500).json({ message: 'Failed to fetch orders' });
-  }
-});
+//   try {
+//     // Retrieve orders from your database or another data source
+//     const orders = await Order.find({ userId }).populate('orderedProducts');
+//     res.json(orders);
+//   } catch (error) {
+//     console.error('Failed to fetch orders:', error);
+//     res.status(500).json({ message: 'Failed to fetch orders' });
+//   }
+// });
 
-// Route to fetch orders by userId
-app.get('/api/order/:userId', async (req, res) => {
-  const { userId } = req.params;
-  try {
-    const orders = await Order.find({ userId }).populate('orderedProducts.id', 'name img'); // Populate products with name and img
-    res.json(orders);
-  } catch (error) {
-    console.error('Failed to fetch orders:', error);
-    res.status(500).json({ error: 'Failed to fetch orders' });
-  }
-});
+// // Route to get a specific order by orderId and userId
+// app.get('/api/orders/:userId/:orderId', async (req, res) => {
+//   const { userId, orderId } = req.params;
 
-// Route to update order status by orderId
-app.put('/api/orders/:orderId/status', async (req, res) => {
-  const { orderId } = req.params;
-  const { status } = req.body;
-  try {
-    const updatedOrder = await Order.findByIdAndUpdate(
-      orderId,
-      { status },
-      { new: true }
-    );
-    res.json(updatedOrder);
-  } catch (error) {
-    console.error('Failed to update order status:', error);
-    res.status(500).json({ error: 'Failed to update order status' });
-  }
-});
+//   try {
+//     const order = await Order.findOne({ _id: orderId, userId });
+
+//     if (!order) {
+//       return res.status(404).json({ message: 'Order not found' });
+//     }
+
+//     res.status(200).json(order);
+//   } catch (error) {
+//     console.error('Error fetching order:', error);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
+
+// // Route to update order status by orderId
+// app.put('/api/orders/:orderId/status', async (req, res) => {
+//   const { orderId } = req.params;
+//   const { status } = req.body;
+//   try {
+//     const updatedOrder = await Order.findByIdAndUpdate(
+//       orderId,
+//       { status },
+//       { new: true }
+//     );
+//     res.json(updatedOrder);
+//   } catch (error) {
+//     console.error('Failed to update order status:', error);
+//     res.status(500).json({ error: 'Failed to update order status' });
+//   }
+// });
 
 // Route to fetch product details for multiple productIds
 app.post('/api/products/details', async (req, res) => {

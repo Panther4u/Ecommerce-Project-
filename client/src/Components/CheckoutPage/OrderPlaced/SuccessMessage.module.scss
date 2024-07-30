@@ -1,0 +1,268 @@
+// @import 'src/Styles/mixins';
+@import 'src/Styles/mixins';
+@import 'src/Styles/fonts';
+
+
+
+
+.fundsSuccessMessageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 30vh; // Use viewport height for full centering
+    background-color: transparent;
+    font-family: "Rubik";
+    border-radius: 8px;
+    // padding: 25px;
+    border: 1px solid rgb(225, 221, 221);
+}
+
+.fundsContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center; // Center items horizontally
+    justify-content: center; // Center items vertically
+}
+
+
+.fundsCheckmarkTextContainer {
+    // display: flex;
+    // flex-direction: row;
+    // align-items: center; // Center items horizontally
+    // justify-content: center; // Center items vertically
+}
+
+.fundsCheckmarkContainer {
+    display: flex;
+    align-items: center; // Center the checkmark within the container
+    justify-content: center;
+    margin: 0 auto;
+}
+  
+  .fundsSuccessMessage .SuccessMessageh2 {
+    margin-top: 0px;
+  }
+  
+  .SuccessMessageh1,
+  .SuccessMessageh2,
+  .SuccessMessageh3 {
+    font-weight: 700;
+    margin-top: 0px;
+    text-align: center;
+  }
+  
+  .SuccessMessageh1 {
+    font-size: 28pt;
+    // margin-top: 45px;
+  }
+  
+  .SuccessMessageh2 {
+    font-size: 14px;
+  }
+
+  .SuccessMessageh3 {
+    font-size: 10pt;
+    font-weight: 500;
+  }
+  
+  .SuccessMessagep {
+    font-size: 10pt;
+    padding-bottom: 1em;
+    line-height: 20.2px;
+    text-align: center;
+    font-weight: 300;
+  }
+  
+  /* CHECKMARK */
+  .fundsCheckmarkCircle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 5;
+    stroke-miterlimit: 10;
+    stroke: #33bb11;
+    fill: none;
+    -webkit-animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+  }
+  
+  .fundsCheckmark {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 5;
+    stroke: #33bb11;
+    stroke-miterlimit: 10;
+    margin: 10% auto;
+    -webkit-box-shadow: inset 0px 0px 0px #33bb11;
+    box-shadow: inset 0px 0px 0px #33bb11;
+    -webkit-animation: fill 0.4s ease-in-out 0.4s forwards,
+      scale 0.3s ease-in-out 0.9s both;
+    animation: fill 0.4s ease-in-out 0.4s forwards,
+      scale 0.3s ease-in-out 0.9s both;
+  }
+  
+  .fundsCheckmarkCheck {
+    -webkit-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    -webkit-animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+  }
+  
+  .fundsDisplayOnIe {
+    display: none;
+  }
+  
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .fundsDisplayOnIe {
+      display: block;
+    }
+  
+    .fundsCheckmark {
+      display: none;
+    }
+  
+    .fundsIeCheckmarkCircle {
+      stroke-dasharray: 166;
+      stroke-dashoffset: 166;
+      stroke-width: 5;
+      stroke-miterlimit: 10;
+      stroke: #33bb11;
+      fill: none;
+      -webkit-animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+      animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+  
+    .fundsIeCheckmark {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: block;
+      stroke-width: 5;
+      stroke: #33bb11;
+      stroke-miterlimit: 10;
+      margin: 10% auto;
+      -webkit-box-shadow: inset 0px 0px 0px #33bb11;
+      box-shadow: inset 0px 0px 0px #33bb11;
+      -webkit-animation: fill 0.4s ease-in-out 0.4s forwards,
+        scale 0.3s ease-in-out 0.9s both;
+      animation: fill 0.4s ease-in-out 0.4s forwards,
+        scale 0.3s ease-in-out 0.9s both;
+    }
+  
+    .fundsIeCheckmarkCheck {
+      -webkit-transform-origin: 50% 50%;
+      -ms-transform-origin: 50% 50%;
+      transform-origin: 50% 50%;
+      -webkit-animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+      animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    }
+  }
+  
+  @-webkit-keyframes stroke {
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @keyframes stroke {
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @-webkit-keyframes fill {
+    100% {
+      fill: none;
+    }
+  }
+  
+  @keyframes fill {
+    100% {
+      fill: none;
+    }
+  }
+  
+  @-webkit-keyframes scale {
+    0% {
+      -webkit-transform: none;
+      transform: none;
+    }
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes scale {
+    0% {
+      -webkit-transform: none;
+      transform: none;
+    }
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  }
+  
+
+
+.proceedPayment {
+    text-align: center;
+    margin-top: 25px;
+  }
+  
+.proceedPayment button {
+    display: block;
+    border: none;
+    outline: none;
+    height: 40px;
+    padding: 12px 30px;
+    border-radius: 4px;
+    font-weight: 500;
+    background: var(--dark-tomato);
+    color: var(--white);
+    width: fit-content;
+    margin: 0 auto;
+    outline: solid 2px transparent;
+    outline-offset: -2px;
+    transition: background 0.2s;
+    font-size: 12px;
+    cursor: pointer;
+  
+    &:focus-visible {
+      transition: var(--outline-transition);
+      outline-color: var(--tomato);
+      color: var(--very-dark-gray);
+      background: transparent;
+      color: var(--tomato);
+    }
+  
+    &:not(:focus-visible):hover {
+      background: var(--tomato);
+    }
+  
+    &:active {
+      transform: scale(var(--button-active-scale));
+    }
+  
+    @include large {
+      font-size: .8rem;
+      padding: 12px 30px;
+    }
+    
+    @include medium {
+      font-size: .7rem;
+      padding: 12px 20px;
+    }
+  
+    @include small {
+      font-size: .7rem;
+      padding: 12px 30px;
+    }
+}

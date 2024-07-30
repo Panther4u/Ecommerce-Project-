@@ -371,20 +371,20 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux'; 
 import { selectUserId } from 'src/Features/userSlice';
 import { useNavigate } from 'react-router-dom';
 import s from './BillingDetails.module.scss';
-import { selectCartProducts } from 'src/Features/productsSlice'; // Adjust import as per your slice
+import { selectCartProducts, clearCart } from 'src/Features/productsSlice'; // Adjust import as per your slice
 import Modal from './Modal';
 import InvoiceModal from './InvoiceModal';
 
 const BillingDetails = ({ totalAmount }) => {
+  const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
   const navigate = useNavigate();
   const cartProducts = useSelector(selectCartProducts);
 
-  // console.log('BillingDetails totalAmount:', totalAmount); // Debugging log
   const [formValues, setFormValues] = useState({
     firstName: '',
     streetAddress: '',
@@ -402,6 +402,7 @@ const BillingDetails = ({ totalAmount }) => {
   const [error, setError] = useState('');
   const [invoiceDetails, setInvoiceDetails] = useState({});
   const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     const fetchAddresses = async () => {
       if (!userId) return;
@@ -441,61 +442,40 @@ const BillingDetails = ({ totalAmount }) => {
       toast.success('Billing information saved successfully!');
     } catch (error) {
       console.error('Error saving billing information:', error);
-      toast.error('Failed to save billing information.');
+      toast.error('Failed to save billing information. Please try again.');
     }
   };
 
   const generateInvoice = async () => {
-    // Check if userId is available
-    if (!userId) {
-      toast.error('User ID is not defined.');
-      return;
-    }
+    if (!userId || !validateForm()) return { success: false };
   
-    // Validate form values
-    if (!validateForm()) {
-      toast.error('Billing information is incomplete.');
-      return;
-    }
-  
-    // Log data for debugging
-    console.log('Form Values:', formValues);
-    console.log('User ID:', userId);
-    console.log('Cart Products:', cartProducts);
-    console.log('Total Amount:', totalAmount);
-  
-    // Filter out invalid cart products
-    const filteredCartProducts = cartProducts.filter(product => 
+    const filteredCartProducts = cartProducts.filter(product =>
       product.id && product.name && product.price
     );
   
     try {
-      // Make API request to generate invoice
-      const response = await axios.post('http://localhost:8000/api/invoice/generate', {
+      const { data, status } = await axios.post('http://localhost:8000/api/invoice/generate', {
         billingInfo: formValues,
         userId,
         cartProducts: filteredCartProducts,
         totalAmount
       });
   
-      // Check for successful response
-      if (response.status === 200) {
-        setInvoiceDetails(response.data); // Set invoice details from response
-        setShowModal(true); // Show the modal with invoice details
-        toast.success(`Invoice generated successfully! Invoice ID: ${response.data.invoiceId}`);
+      if (status === 200 && data.invoiceId) {
+        setInvoiceDetails(data);
+        setShowModal(true);
+        toast.success(`Invoice generated successfully! Invoice ID: ${data.invoiceId}`);
+        return { success: true, invoiceId: data.invoiceId };
       } else {
-        // Handle unexpected response status
-        throw new Error(`Unexpected response status: ${response.status}`);
+        toast.error('Failed to generate invoice.');
+        return { success: false };
       }
-    } catch (error) {
-      // Log the error and show an error message
-      console.error('Error generating invoice:', error);
-      toast.error(`Failed to generate invoice. ${error.response?.data?.message || error.message}`);
+    } catch (err) {
+      console.error('Error generating invoice:', err); // Log detailed error information
+      toast.error(`Failed to generate invoice. ${err.response?.data?.message || 'An unexpected error occurred. Please try again later.'}`);
+      return { success: false };
     }
   };
-  
-  
-  
   
   const handleProceedPayment = async () => {
     const { streetAddress, pincode } = formValues;
@@ -504,35 +484,98 @@ const BillingDetails = ({ totalAmount }) => {
       setError('');
       try {
         await saveBillingInfo();
+        const { success, invoiceId } = await generateInvoice();
   
-        // Use a callback function to handle navigation
-        await generateInvoice(() => {
-          // Check if invoiceDetails are set and then navigate
-          if (invoiceDetails && invoiceDetails.invoiceId) {
-            navigate('/payment-section', { 
-              state: { 
-                billingInfo: formValues, 
-                invoiceDetails, 
-                cartProducts, 
-                totalAmount // Pass total amount to the next page
-              } 
+        if (success) {
+          // Filter out empty objects from cartProducts
+          const modifiedCartProducts = cartProducts
+            .filter(product => product.id) // Ensure product has an ID
+            .map(product => ({
+              id: product.id,
+              img: product.img,
+              description: product.description,
+              price: product.price,
+              category: product.category,
+              name: product.name,
+              shortName: product.shortName,
+              discount: product.discount,
+              quantity: product.quantity
+            }));
+  
+          console.log('Request Payload:', {
+            userId,
+            cartProducts: modifiedCartProducts,
+            totalAmount,
+            invoiceId,
+            billingInfo: formValues
+          });
+  
+          const response = await axios.post('http://localhost:8000/api/orders/save', {
+            userId,
+            cartProducts: modifiedCartProducts,
+            totalAmount,
+            invoiceId,
+            billingInfo: formValues
+          });
+  
+          if (response.status === 200) {
+            handlePaymentSuccess();
+            navigate('/ordersuccess', {
+              state: {
+                billingInfo: formValues,
+                invoiceDetails: { invoiceId },
+                cartProducts: modifiedCartProducts,
+                totalAmount,
+                invoiceId
+              }
             });
           } else {
-            toast.error('Invoice generation failed. Please try again.');
+            toast.error('Failed to save order. Please try again.');
           }
-        });
-      } catch (error) {
-        console.error('Error during payment processing:', error);
+        } else {
+          toast.error('Invoice generation failed. Please try again.');
+        }
+      } catch (err) {
+        console.error('Error proceeding to payment:', err);
         toast.error('Failed to proceed to payment.');
       }
     } else {
-      if (addressList.length === 0) {
-        toast.error('No saved addresses available. Please add a new address.');
-      } else {
-        toast.error('Please select an address or complete the billing form.');
-      }
+      toast.error(addressList.length === 0
+        ? 'No saved addresses available. Please add a new address.'
+        : 'Please select an address or complete the billing form.');
     }
   };
+  
+  
+  
+  
+  
+  const handlePaymentSuccess = async () => {
+    try {
+      // Clear the cart in the frontend
+      dispatch(clearCart());
+  
+      // Clear the cart in the backend
+      if (userId) {
+        const response = await axios.post('http://localhost:8000/api/cart/clear', { userId });
+        if (response.status === 200) {
+          toast.success('Cart cleared successfully!');
+          // Also clear the cart in local storage
+          localStorage.removeItem('cartProducts');
+        } else {
+          toast.error('Failed to clear cart in the backend.');
+        }
+      } else {
+        toast.error('Failed to clear cart in the backend. User ID is not defined.');
+      }
+    } catch (error) {
+      console.error('Error clearing cart in backend:', error);
+      toast.error('Failed to clear cart in the backend. Please try again.');
+    }
+  };
+  
+  
+  
   
 
   const handleSaveAddress = async () => {
@@ -617,7 +660,7 @@ const BillingDetails = ({ totalAmount }) => {
   
     // Navigate after closing the modal
     if (invoiceDetails && invoiceDetails.invoiceId) {
-      navigate('/payment-section', { 
+      navigate('/ordersuccess', { 
         state: { 
           billingInfo: formValues, 
           invoiceDetails, 

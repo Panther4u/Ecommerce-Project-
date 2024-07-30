@@ -161,9 +161,6 @@
 
 
 
-
-
-
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
@@ -174,7 +171,7 @@ import AddCoupon from './CartInfo/AddCoupon';
 import CartInfoMenu from './CartInfo/CartInfoMenu';
 import CartButtons from './CartProducts/CartButtons';
 import CartProducts from './CartProducts/CartProducts';
-import { addProductToCart, selectCartProducts } from 'src/Features/productsSlice';
+import { addProductToCart, clearCart, selectCartProducts } from 'src/Features/productsSlice';
 import { selectUserId } from 'src/Features/userSlice';
 import WishList from '../WishList/WishList';
 
@@ -182,7 +179,7 @@ const Cart = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
-  const cartProducts = useSelector(selectCartProducts) || []; // Ensure cartProducts is an array
+  const cartProducts = useSelector(selectCartProducts) || [];
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
 
@@ -229,6 +226,12 @@ const Cart = () => {
     }));
   };
 
+  const handlePaymentSuccess = () => {
+    // Clear the cart after payment success
+    dispatch(clearCart());
+    // Additional logic such as redirecting to a different page or showing a message
+  };
+
   if (!userId) {
     return (
       <div className="container">
@@ -257,6 +260,8 @@ const Cart = () => {
         {/* <CartButtons /> */}
       </main>
       <WishList />
+      {/* Assuming you have a payment confirmation logic */}
+      {/* Call handlePaymentSuccess upon successful payment */}
     </>
   );
 };
