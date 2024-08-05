@@ -50,7 +50,7 @@ const Featured = () => {
           <CircularProgressbar value={(totalRevenue / targetRevenue) * 100} text={`${((totalRevenue / targetRevenue) * 100).toFixed(2)}%`} strokeWidth={5} />
         </div>
         <p className="title">Total sales made today</p>
-        <p className="amount">Rs. {totalRevenue.toLocaleString()} -</p>
+        <p className="amount">₹ {totalRevenue.toLocaleString()} -</p>
         <p className="desc">
           Previous transactions processing. Last payments may not be included.
         </p>
@@ -59,21 +59,21 @@ const Featured = () => {
             <div className="itemTitle">Target</div>
             <div className={`itemResult ${totalRevenue < targetRevenue ? 'negative' : 'positive'}`}>
               {totalRevenue < targetRevenue ? <KeyboardArrowDownIcon fontSize="small" /> : <KeyboardArrowUpOutlinedIcon fontSize="small" />}
-              <div className="resultAmount">Rs. {targetRevenue.toLocaleString()} -</div>
+              <div className="resultAmount">₹ {targetRevenue.toLocaleString()} -</div>
             </div>
           </div>
           <div className="item">
             <div className="itemTitle">Last Week</div>
             <div className="itemResult positive">
               <KeyboardArrowUpOutlinedIcon fontSize="small" />
-              <div className="resultAmount">Rs. {lastWeekRevenue.toLocaleString()} -</div>
+              <div className="resultAmount">₹ {lastWeekRevenue.toLocaleString()} -</div>
             </div>
           </div>
           <div className="item">
             <div className="itemTitle">Last Month</div>
             <div className="itemResult positive">
               <KeyboardArrowUpOutlinedIcon fontSize="small" />
-              <div className="resultAmount">Rs. {lastMonthRevenue.toLocaleString()} -</div>
+              <div className="resultAmount">₹ {lastMonthRevenue.toLocaleString()} -</div>
             </div>
           </div>
         </div>

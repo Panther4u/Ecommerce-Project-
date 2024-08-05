@@ -375,9 +375,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectUserId } from 'src/Features/userSlice';
 import { useNavigate } from 'react-router-dom';
 import s from './BillingDetails.module.scss';
-import { selectCartProducts, clearCart } from 'src/Features/productsSlice'; // Adjust import as per your slice
+import { selectCartProducts, clearCart, clearCoupon } from 'src/Features/productsSlice'; // Adjust import as per your slice
 import Modal from './Modal';
 import InvoiceModal from './InvoiceModal';
+import { capitalizeFirstLetter } from 'src/Functions/helper'; // Adjust the path accordingly
+
 
 const BillingDetails = ({ totalAmount }) => {
   const dispatch = useDispatch();
@@ -415,11 +417,15 @@ const BillingDetails = ({ totalAmount }) => {
       }
     };
     fetchAddresses();
-  }, [userId]);
+  }, [userId]); // Re-fetch addresses if userId changes or if addressList is updated
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues(prev => ({ ...prev, [name]: value }));
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: capitalizeFirstLetter(value),
+    }));
   };
 
   const validateForm = () => {
@@ -432,19 +438,24 @@ const BillingDetails = ({ totalAmount }) => {
       toast.error('User ID is not defined.');
       return;
     }
-
+  
     try {
-      await axios.post('http://localhost:8000/api/user/save-billing', {
+      const response = await axios.post('http://localhost:8000/api/user/save-billing', {
         ...formValues,
         userId,
         addressIndex: isEditing ? editingIndex : undefined
       });
-      toast.success('Billing information saved successfully!');
+      toast.success(response.data.message || 'Billing information saved successfully!');
     } catch (error) {
       console.error('Error saving billing information:', error);
-      toast.error('Failed to save billing information. Please try again.');
+      if (error.response && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error('Failed to save billing information. Please try again.');
+      }
     }
   };
+  
 
   const generateInvoice = async () => {
     if (!userId || !validateForm()) return { success: false };
@@ -464,7 +475,7 @@ const BillingDetails = ({ totalAmount }) => {
       if (status === 200 && data.invoiceId) {
         setInvoiceDetails(data);
         setShowModal(true);
-        toast.success(`Invoice generated successfully! Invoice ID: ${data.invoiceId}`);
+        // toast.success(`Invoice generated successfully! Invoice ID: ${data.invoiceId}`);
         return { success: true, invoiceId: data.invoiceId };
       } else {
         toast.error('Failed to generate invoice.');
@@ -477,74 +488,179 @@ const BillingDetails = ({ totalAmount }) => {
     }
   };
   
-  const handleProceedPayment = async () => {
-    const { streetAddress, pincode } = formValues;
+  // const handleProceedPayment = async () => {
+  //   const { streetAddress, pincode } = formValues;
   
-    if (selectedAddressIndex !== null || (streetAddress && pincode)) {
-      setError('');
-      try {
-        await saveBillingInfo();
-        const { success, invoiceId } = await generateInvoice();
+  //   if (selectedAddressIndex !== null || (streetAddress && pincode)) {
+  //     setError('');
+  //     try {
+  //       await saveBillingInfo();
+  //       const { success, invoiceId } = await generateInvoice();
   
-        if (success) {
-          // Filter out empty objects from cartProducts
-          const modifiedCartProducts = cartProducts
-            .filter(product => product.id) // Ensure product has an ID
-            .map(product => ({
-              id: product.id,
-              img: product.img,
-              description: product.description,
-              price: product.price,
-              category: product.category,
-              name: product.name,
-              shortName: product.shortName,
-              discount: product.discount,
-              quantity: product.quantity
-            }));
+  //       if (success) {
+  //         // Filter out empty objects from cartProducts
+          // const modifiedCartProducts = cartProducts
+          //   .filter(product => product.id) // Ensure product has an ID
+          //   .map(product => ({
+          //     id: product.id,
+          //     img: product.img,
+          //     description: product.description,
+          //     price: product.price,
+          //     category: product.category,
+          //     name: product.name,
+          //     shortName: product.shortName,
+          //     discount: product.discount,
+          //     quantity: product.quantity
+          //   }));
   
-          console.log('Request Payload:', {
-            userId,
-            cartProducts: modifiedCartProducts,
-            totalAmount,
-            invoiceId,
-            billingInfo: formValues
-          });
+  //         console.log('Request Payload:', {
+  //           userId,
+  //           cartProducts: modifiedCartProducts,
+  //           totalAmount,
+  //           invoiceId,
+  //           billingInfo: formValues
+  //         });
   
-          const response = await axios.post('http://localhost:8000/api/orders/save', {
-            userId,
-            cartProducts: modifiedCartProducts,
-            totalAmount,
-            invoiceId,
-            billingInfo: formValues
-          });
+  //         const response = await axios.post('http://localhost:8000/api/orders/save', {
+  //           userId,
+  //           cartProducts: modifiedCartProducts,
+  //           totalAmount,
+  //           invoiceId,
+  //           billingInfo: formValues
+  //         });
   
-          if (response.status === 200) {
-            handlePaymentSuccess();
-            navigate('/ordersuccess', {
-              state: {
-                billingInfo: formValues,
-                invoiceDetails: { invoiceId },
+  //         if (response.status === 200) {
+  //           handlePaymentSuccess();
+  //           navigate('/ordersuccess', {
+  //             state: {
+  //               billingInfo: formValues,
+  //               invoiceDetails: { invoiceId },
+  //               cartProducts: modifiedCartProducts,
+  //               totalAmount,
+  //               invoiceId
+  //             }
+  //           });
+  //         } else {
+  //           toast.error('Failed to save order. Please try again.');
+  //         }
+  //       } else {
+  //         toast.error('Invoice generation failed. Please try again.');
+  //       }
+  //     } catch (err) {
+  //       console.error('Error proceeding to payment:', err);
+  //       toast.error('Failed to proceed to payment.');
+  //     }
+  //   } else {
+  //     toast.error(addressList.length === 0
+  //       ? 'No saved addresses available. Please add a new address.'
+  //       : 'Please select an address or complete the billing form.');
+  //   }
+  // };
+
+
+
+  const handleProceedPayment = async (e) => {
+    e.preventDefault();
+  
+    if (!validateForm()) {
+      toast.error('Please fill out all required fields.');
+      return;
+    }
+  
+    const amountInPaise = Math.round(totalAmount * 100); // Convert totalAmount to paise
+  
+    try {
+      // Create order with Razorpay
+      const { data: order } = await axios.post('http://localhost:8000/api/payment/create-order', {
+        amount: amountInPaise,
+        currency: 'INR'
+      });
+  
+      // Payment method is inferred or set based on user input or application logic
+      const paymentMethod = 'Card'; // Example: Set your payment method here or based on user selection
+  
+      const options = {
+        key: "rzp_test_4lHTJB8EKyoVKv", // Your Razorpay key
+        amount: order.amount,
+        currency: order.currency,
+        order_id: order.id,
+        name: "Exclusive",
+        description: "For testing purpose",
+        handler: async function(response) {
+          const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = response;
+  
+          try {
+            const { success, invoiceId } = await generateInvoice();
+  
+            if (success) {
+              const modifiedCartProducts = cartProducts
+                .filter(product => product.id)
+                .map(product => ({
+                  id: product.id,
+                  img: product.img,
+                  description: product.description,
+                  price: product.price,
+                  category: product.category,
+                  name: product.name,
+                  shortName: product.shortName,
+                  discount: product.discount,
+                  quantity: product.quantity
+                }));
+  
+              await axios.post('http://localhost:8000/api/orders/save', {
+                userId,
                 cartProducts: modifiedCartProducts,
                 totalAmount,
-                invoiceId
-              }
-            });
-          } else {
-            toast.error('Failed to save order. Please try again.');
+                invoiceId,
+                billingInfo: formValues,
+                paymentId: razorpay_payment_id,
+                paymentSignature: razorpay_signature,
+                paymentStatus: 'Completed',
+                paymentMethod // Pass the paymentMethod here
+              });
+  
+              handlePaymentSuccess();
+              navigate('/ordersuccess', {
+                state: {
+                  billingInfo: formValues,
+                  invoiceDetails: { invoiceId },
+                  cartProducts: modifiedCartProducts,
+                  totalAmount
+                }
+              });
+            } else {
+              toast.error('Failed to generate invoice.');
+            }
+          } catch (error) {
+            console.error('Error saving payment details:', error);
+            toast.error('Failed to save payment details.');
           }
-        } else {
-          toast.error('Invoice generation failed. Please try again.');
+        },
+        prefill: {
+          name: "Panther",
+          email: "teampanther4@gmail.com",
+          contact: "8668054205"
+        },
+        notes: {
+          address: "Razorpay Corporate office"
+        },
+        theme: {
+          color: "#3399cc"
         }
-      } catch (err) {
-        console.error('Error proceeding to payment:', err);
-        toast.error('Failed to proceed to payment.');
-      }
-    } else {
-      toast.error(addressList.length === 0
-        ? 'No saved addresses available. Please add a new address.'
-        : 'Please select an address or complete the billing form.');
+      };
+  
+      // Initialize Razorpay
+      const pay = new window.Razorpay(options);
+      pay.open();
+    } catch (err) {
+      console.error('Error creating order:', err);
+      toast.error('Failed to initiate payment.');
     }
   };
+  
+  
+  
+  
   
   
   
@@ -555,13 +671,17 @@ const BillingDetails = ({ totalAmount }) => {
       // Clear the cart in the frontend
       dispatch(clearCart());
   
-      // Clear the cart in the backend
+      // Clear the coupon
+      dispatch(clearCoupon());
+  
+      // Clear the cart and coupon data in the backend
       if (userId) {
         const response = await axios.post('http://localhost:8000/api/cart/clear', { userId });
         if (response.status === 200) {
           toast.success('Cart cleared successfully!');
-          // Also clear the cart in local storage
+          // Also clear the cart and coupon data in local storage
           localStorage.removeItem('cartProducts');
+          localStorage.removeItem('appliedCoupon'); // Remove coupon data
         } else {
           toast.error('Failed to clear cart in the backend.');
         }
@@ -577,23 +697,34 @@ const BillingDetails = ({ totalAmount }) => {
   
   
   
+  
 
   const handleSaveAddress = async () => {
     if (!validateForm()) {
       toast.error('Please fill out all fields.');
       return;
     }
-
+  
+    // Capitalize the first letter of each form field
+    const capitalizedFormValues = {
+      firstName: capitalizeFirstLetter(formValues.firstName),
+      streetAddress: capitalizeFirstLetter(formValues.streetAddress),
+      townCity: capitalizeFirstLetter(formValues.townCity),
+      apartment: capitalizeFirstLetter(formValues.apartment),
+      pincode: formValues.pincode,  // Assuming pincode should not be capitalized
+      mobileNumber: formValues.mobileNumber,  // Assuming mobile number should not be capitalized
+    };
+  
     const updatedAddressList = [...addressList];
     if (isEditing) {
-      updatedAddressList[editingIndex] = formValues;
+      updatedAddressList[editingIndex] = capitalizedFormValues;
     } else {
-      updatedAddressList.push(formValues);
+      updatedAddressList.push(capitalizedFormValues);
     }
-
+  
     setAddressList(updatedAddressList);
     await saveBillingInfo();
-
+  
     setFormValues({
       firstName: '',
       streetAddress: '',
@@ -606,6 +737,7 @@ const BillingDetails = ({ totalAmount }) => {
     setEditingIndex(null);
     setShowAddressFields(false);
   };
+  
 
   const handleCancelEdit = () => {
     setFormValues({
@@ -811,13 +943,14 @@ const BillingDetails = ({ totalAmount }) => {
           )}
 
           <div className={s.proceedPayment}>
-            <button
-              type="button"
-              className={s.proceedButton}
-              onClick={handleProceedPayment}
-            >
-              Proceed to Payment
-            </button>
+          <button
+  type="button"
+  className={s.proceedButton}
+  onClick={(e) => handleProceedPayment(e)}
+>
+  Proceed to Payment
+</button>
+
           </div>
           <Modal isOpen={showModal} onRequestClose={handleModalClose}>
             <InvoiceModal invoiceDetails={invoiceDetails} />

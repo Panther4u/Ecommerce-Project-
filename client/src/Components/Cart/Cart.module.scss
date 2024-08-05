@@ -46,6 +46,7 @@
   display: grid;
   grid-template-columns: 60% 40%;
   gap: 20px; // Optional: Add space between the two columns
+  min-height: 500px;
 }
 
 .wrapper {

@@ -389,24 +389,22 @@ const OrderSummaryPage = () => {
                           <span>{t('Status')}:</span> {order.status}
                         </p>
                         <div className={styles.orderTracking}>
-  <div className={`${styles.line} ${styles.line1} ${order.status === 'Packed' ? styles.active : ''} ${styles.first}`}>
-    <div className={styles.dot} />
-    <div className={styles.status}>Packed</div>
-    <div className={styles.innerLine1} />
-  </div>
-  <div className={`${styles.line} ${styles.line2} ${order.status === 'Shipped' ? styles.active : ''} ${styles.second}`}>
-    <div className={styles.dot} />
-    <div className={styles.status}>Shipped</div>
-    <div className={styles.innerLine2} />
-  </div>
-  <div className={`${styles.line} ${styles.line3} ${order.status === 'Delivered' ? styles.active : ''} ${styles.third}`}>
-    <div className={styles.dot} />
-    <div className={styles.status}>Delivered</div>
-    <div className={styles.innerLine3} />
-  </div>
-</div>
-
-
+                          <div className={`${styles.line1} ${styles.line} ${styles.first} ${order.status === 'Packed' || order.status === 'Shipped' || order.status === 'Delivered' ? styles.active : ''}`}>
+                            <div className={`${styles.dot} ${order.status === 'Packed' ? styles.active : ''}`} />
+                            <div className={styles.status}>Packed</div>
+                            <div className={`${styles.innerLine} ${styles.first}`} />
+                          </div>
+                          <div className={`${styles.line2} ${styles.second}  ${styles.line} ${order.status === 'Shipped' || order.status === 'Delivered' ? styles.active : ''}`}>
+                            <div className={`${styles.dot} ${order.status === 'Shipped' ? styles.active : ''}`} />
+                            <div className={styles.status}>Shipped</div>
+                            <div className={`${styles.innerLine} ${styles.second}`} />
+                          </div>
+                          <div className={`${styles.line3} ${styles.third}  ${styles.line} ${order.status === 'Delivered' ? styles.active : ''}`}>
+                            <div className={`${styles.dot} ${order.status === 'Delivered' ? styles.active : ''}`} />
+                            <div className={styles.status}>Delivered</div>
+                            <div className={`${styles.innerLine} ${styles.third}`} />
+                          </div>
+                        </div>
                         <div className={styles.orderdate}>
                           <span>{t('Delivery Date')}:</span> {new Date(order.createdAt).toLocaleDateString()}
                         </div>

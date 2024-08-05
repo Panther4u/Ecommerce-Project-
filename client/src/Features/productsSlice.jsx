@@ -526,6 +526,9 @@ const productsSlice = createSlice({
       state.totalAmount = action.payload;
       saveToLocalStorage(state);
     },
+    clearCoupon: (state) => {
+      state.coupon = null; // Clear the coupon
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -662,7 +665,8 @@ export const {
   updateCart,
   update,
   updateUserId,
-  setUserId
+  setUserId,
+  clearCoupon
 } = productsSlice.actions;
 
 

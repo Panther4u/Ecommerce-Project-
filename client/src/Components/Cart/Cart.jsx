@@ -159,8 +159,6 @@
 
 
 
-
-
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
@@ -171,7 +169,7 @@ import AddCoupon from './CartInfo/AddCoupon';
 import CartInfoMenu from './CartInfo/CartInfoMenu';
 import CartButtons from './CartProducts/CartButtons';
 import CartProducts from './CartProducts/CartProducts';
-import { addProductToCart, clearCart, selectCartProducts } from 'src/Features/productsSlice';
+import { addProductToCart, clearCart, selectCartProducts, selectWishList } from 'src/Features/productsSlice';
 import { selectUserId } from 'src/Features/userSlice';
 import WishList from '../WishList/WishList';
 
@@ -180,6 +178,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
   const cartProducts = useSelector(selectCartProducts) || [];
+  const wishListProducts = useSelector(selectWishList) || []; // Fetch wishlist products
   const [isSaving, setIsSaving] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
 
@@ -240,6 +239,9 @@ const Cart = () => {
     );
   }
 
+  // Check if there are any products in the wishlist
+  const hasWishListProducts = wishListProducts.length > 0;
+
   return (
     <>
       <Helmet>
@@ -257,9 +259,8 @@ const Cart = () => {
             </div>
           )}
         </div>
-        {/* <CartButtons /> */}
+        {hasWishListProducts && <WishList />} {/* Conditionally render WishList */}
       </main>
-      <WishList />
       {/* Assuming you have a payment confirmation logic */}
       {/* Call handlePaymentSuccess upon successful payment */}
     </>

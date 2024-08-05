@@ -484,6 +484,7 @@
   margin: 0 auto;
   padding: 5px;
   margin-bottom: 50px;
+  min-height: 500px;
 }
 
 .wrapper {
@@ -493,6 +494,7 @@
   margin-top: 10px;
   margin-left: 0;
   margin-right: 10px;
+  margin: 10px;
 }
 
 .welcomeMessage {
@@ -623,19 +625,20 @@ h2 {
   display: flex;
   align-items: center;
   margin-top: 20px;
-  position: relative; // Ensure the position is relative for absolute positioning inside
+  position: relative;
   padding: 0px 15px;
 
   .line {
     position: relative;
-    flex: 1; // Allow lines to take up available space
+    flex: 1;
     height: 2px;
     background: #dad0d0;
     display: flex;
     align-items: center;
     
+
     &:not(:last-child) {
-      // margin-right: 10px; // Space between lines
+      margin-right: 0px;
     }
 
     &.active {
@@ -645,7 +648,7 @@ h2 {
     .dot {
       width: 10px;
       height: 10px;
-      background: green;
+      background: #dad0d0; // Default color
       border-radius: 50%;
       position: absolute;
       top: 50%;
@@ -654,7 +657,7 @@ h2 {
 
     .status {
       position: absolute;
-      top: 20px; // Adjust based on layout needs
+      top: 10px; // Adjust based on layout needs
       font-size: 0.7rem;
       font-weight: normal;
       color: #000;
@@ -662,32 +665,50 @@ h2 {
     }
 
     &.first .dot {
-      left: 0; // Align the first dot at the start
+      left: 0;
     }
 
     &.second .dot {
-      left: 50%; // Center the second dot
-      transform: translate(-50%, -50%); // Center horizontally and vertically
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     &.third .dot {
-      right: 0; // Align the third dot at the end
-      transform: translateY(-50%); // Center vertically
+      right: 0;
+      transform: translateY(-50%);
     }
 
-    .innerLine1 {
-      width: 33%;
+    .innerLine {
+      height: 2px;
       background: green;
+      position: absolute;
+      top: 50%;
+      z-index: -1;
+      transition: width 0.3s ease-in-out;
     }
 
-    .innerLine2 {
-      width: 66%;
-      background: green;
+    &.first .innerLine {
+      width: 0; // Start with no fill
     }
 
-    .innerLine3 {
-      width: 100%;
-      background: green;
+    &.second .innerLine {
+      width: 50%; // Fill to the second stage
+    }
+
+    &.third .innerLine {
+      width: 100%; // Fill to the third stage
+    }
+
+    &.first.active .dot {
+      background: green; // Fill color when active
+    }
+
+    &.second.active .dot {
+      background: green; // Fill color when active
+    }
+
+    &.third.active .dot {
+      background: green; // Fill color when active
     }
   }
 
@@ -697,6 +718,7 @@ h2 {
     text-align: start;
     left: -13px;
     width: 100%;
+    font-size: 0.7rem;
   }
   .line2 .status {
     position: absolute;
@@ -704,6 +726,7 @@ h2 {
     text-align: center;
     left: 0;
     width: 100%;
+    font-size: 0.7rem;
   }
   .line3 .status {
     position: absolute;
@@ -711,9 +734,10 @@ h2 {
     text-align: end;
     left: 15px;
     width: 100%;
+    font-size: 0.7rem;
   }
-
 }
+
 
 .ordersFound{
   width: 100%;
@@ -729,10 +753,22 @@ h2 {
   color: gray;
 }
 
+p{
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
 @media (max-width: 580px) {
   .container {
     display: flex;
     gap: 10px;
     flex-direction: column;
+  }
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-left: 0;
+    margin-right: 10px;
   }
 }

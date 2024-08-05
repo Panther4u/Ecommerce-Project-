@@ -54,7 +54,6 @@
 // };
 
 // export default Datatable;
-
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { userColumns } from "../../datatablesource";
@@ -84,7 +83,6 @@ const Datatable = () => {
   };
 
   const handleDelete = async (userId) => {
-    // console.log(`Attempting to delete user with id: ${userId}`); // Log id being passed
     try {
       await axios.delete(`http://localhost:8000/api/users/${userId}`);
       setData(data.filter((item) => item._id !== userId)); // Update state after delete
@@ -94,7 +92,6 @@ const Datatable = () => {
       console.error("Error deleting user:", error);
     }
   };
-  
 
   const actionColumn = [
     {

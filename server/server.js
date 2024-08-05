@@ -26,6 +26,7 @@ const Billing = require('./model/billingDetails');
 // const productRoutes = require('./routes/productRoutes');
 const productsData = require('./scripts/productsData');
 const Invoice = require('./model/Invoice');
+const Razorpay = require('razorpay');
 
 // Create Express app
 const app = express();
@@ -203,6 +204,45 @@ app.post('/upload', upload.single('profileImage'), async (req, res) => {
 //   return couponCode;
 // }
 
+
+
+// Initialize Razorpay with credentials
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+
+app.post('/api/payment/create-order', async (req, res) => {
+  const { amount, currency = 'INR', receipt } = req.body;
+
+  // Validate the amount
+  if (typeof amount !== 'number' || amount <= 0 || !Number.isInteger(amount)) {
+    return res.status(400).json({ error: 'Invalid amount' });
+  }
+
+  // Generate a unique receipt ID if not provided
+  const receiptId = receipt || `order_rcptid_${Date.now()}`;
+
+  try {
+    const order = await razorpay.orders.create({
+      amount, // Amount in paise
+      currency,
+      receipt: receiptId,
+      payment_capture: 1 // Auto-capture payment
+    });
+
+    res.status(200).json(order);
+  } catch (error) {
+    console.error('Error creating Razorpay order:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
 // Apply coupon route
 app.post('/api/coupons/apply', async (req, res) => {
   const { couponCode, userId } = req.body;
@@ -298,7 +338,7 @@ app.post('/api/invoice/generate', async (req, res) => {
   }
 
   // Optionally, add logging to identify the issue
-  console.log('Received Data:', { billingInfo, userId, cartProducts, totalAmount });
+  // console.log('Received Data:', { billingInfo, userId, cartProducts, totalAmount });
 
   try {
     const invoiceId = 'INV-' + Math.floor(Math.random() * 1000000);
@@ -326,39 +366,122 @@ app.post('/api/invoice/generate', async (req, res) => {
 
 
 
+// app.post('/api/orders/save', async (req, res) => {
+//   const { userId, cartProducts, totalAmount, invoiceId, billingInfo } = req.body;
+
+//   console.log('Received Data:', { userId, cartProducts, totalAmount, invoiceId, billingInfo });
+
+//   if (!userId || !cartProducts || totalAmount == null || !invoiceId || !billingInfo) {
+//     return res.status(400).json({ message: 'Required fields are missing' });
+//   }
+
+//   const { firstName, streetAddress, townCity, pincode, mobileNumber } = billingInfo;
+//   if (!firstName || !streetAddress || !townCity || !pincode || !mobileNumber) {
+//     return res.status(400).json({ message: 'All billing fields are required' });
+//   }
+
+//   // Log each product in cartProducts for validation
+//   for (const product of cartProducts) {
+//     console.log('Validating Product:', product);
+//     const { id, img, description, price, category, name, shortName } = product;
+//     if (!id || !img || !description || price == null || !category || !name || !shortName) {
+//       return res.status(400).json({ message: 'Missing required fields in cartProducts', product });
+//     }
+//   }
+
+//   try {
+//     const newOrder = new Order({
+//       userId,
+//       cartProducts,
+//       totalAmount,
+//       invoiceId,
+//       billingInfo
+//     });
+
+//     await newOrder.save();
+
+//     res.status(200).json({
+//       message: 'Order saved successfully',
+//       orderId: newOrder._id
+//     });
+//   } catch (error) {
+//     console.error('Error saving order:', error);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
+
+app.post('/api/payment/verify', async (req, res) => {
+  const { paymentId, orderId, signature } = req.body;
+
+  // Replace with your actual Razorpay secret key
+  const razorpaySecret = process.env.RAZORPAY_KEY_SECRET
+
+  try {
+    // Generate a signature hash using Razorpay secret key
+    const generatedSignature = crypto.createHmac('sha256', razorpaySecret)
+      .update(`${orderId}|${paymentId}`)
+      .digest('hex');
+
+    // Compare the generated signature with the provided signature
+    if (generatedSignature === signature) {
+      // Signature is valid
+      res.status(200).json({ message: 'Payment verification successful' });
+    } else {
+      // Signature is invalid
+      res.status(400).json({ message: 'Payment verification failed' });
+    }
+  } catch (error) {
+    console.error('Error verifying payment:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
 app.post('/api/orders/save', async (req, res) => {
-  const { userId, cartProducts, totalAmount, invoiceId, billingInfo } = req.body;
+  const { userId, cartProducts, totalAmount, invoiceId, billingInfo, paymentId, paymentSignature, paymentStatus, paymentMethod } = req.body;
 
-  console.log('Received Data:', { userId, cartProducts, totalAmount, invoiceId, billingInfo });
+  // Log the received data
+  console.log('Received Data:', { userId, cartProducts, totalAmount, invoiceId, billingInfo, paymentId, paymentSignature, paymentStatus, paymentMethod });
 
-  if (!userId || !cartProducts || totalAmount == null || !invoiceId || !billingInfo) {
+  // Validate required fields
+  if (!userId || !cartProducts || totalAmount == null || !invoiceId || !billingInfo || !paymentId || !paymentSignature) {
+    console.log('Error: Required fields are missing');
     return res.status(400).json({ message: 'Required fields are missing' });
   }
 
   const { firstName, streetAddress, townCity, pincode, mobileNumber } = billingInfo;
   if (!firstName || !streetAddress || !townCity || !pincode || !mobileNumber) {
+    console.log('Error: All billing fields are required');
     return res.status(400).json({ message: 'All billing fields are required' });
   }
 
-  // Log each product in cartProducts for validation
+  // Validate cart products
   for (const product of cartProducts) {
     console.log('Validating Product:', product);
     const { id, img, description, price, category, name, shortName } = product;
     if (!id || !img || !description || price == null || !category || !name || !shortName) {
+      console.log('Error: Missing required fields in cartProducts', { product });
       return res.status(400).json({ message: 'Missing required fields in cartProducts', product });
     }
   }
 
+  // Attempt to save the order
   try {
+    console.log('Attempting to save new order to database');
     const newOrder = new Order({
       userId,
       cartProducts,
       totalAmount,
       invoiceId,
-      billingInfo
+      billingInfo,
+      paymentId,
+      paymentSignature,
+      paymentStatus: paymentStatus || 'Pending', // Default to 'Pending' if not provided
+      paymentMethod: paymentMethod || 'Others' // Default to 'Others' if not provided
     });
 
     await newOrder.save();
+    console.log('Order saved successfully:', newOrder);
 
     res.status(200).json({
       message: 'Order saved successfully',
@@ -371,7 +494,10 @@ app.post('/api/orders/save', async (req, res) => {
 });
 
 
-  
+
+
+
+
 
 app.get('/api/orders/user/:userId', async (req, res) => {
   const { userId } = req.params;
@@ -512,7 +638,7 @@ app.post('/api/user/save-billing', async (req, res) => {
     }
 
     const newAddress = {
-      userId,  // Make sure to include userId here if required
+      userId,
       firstName,
       streetAddress,
       townCity,
@@ -525,6 +651,17 @@ app.post('/api/user/save-billing', async (req, res) => {
       // Update existing address
       user.addressList[addressIndex] = newAddress;
     } else {
+      // Check for duplicates before adding
+      const isDuplicate = user.addressList.some(address => 
+        address.streetAddress === newAddress.streetAddress &&
+        address.townCity === newAddress.townCity &&
+        address.pincode === newAddress.pincode
+      );
+
+      if (isDuplicate) {
+        return res.status(400).json({ message: 'Duplicate address found' });
+      }
+
       // Add new address
       user.addressList.push(newAddress);
     }
@@ -537,6 +674,7 @@ app.post('/api/user/save-billing', async (req, res) => {
     res.status(500).json({ message: 'An error occurred while saving billing information' });
   }
 });
+
 
 
 app.post('/api/user/remove-billing-address', async (req, res) => {
@@ -1485,17 +1623,21 @@ app.get('/api/totalUserOrderCount', async (req, res) => {
 // Route to fetch total bill amount of all orders
 app.get('/api/totalBillAmount', async (req, res) => {
   try {
+    // Fetch all orders from the database
     const orders = await Order.find();
+
+    // Initialize total bill amount
     let totalBillAmount = 0;
 
-    // Iterate through all orders and sum up the total bill amount
+    // Iterate through all orders and sum up the totalAmount field
     orders.forEach(order => {
-      totalBillAmount += order.totalBillAmount;
+      totalBillAmount += order.totalAmount; // Updated field name
     });
 
     // Round the total bill amount to the nearest integer
     totalBillAmount = Math.round(totalBillAmount);
 
+    // Send the total bill amount as response
     res.json({ amount: totalBillAmount });
   } catch (error) {
     console.error('Error fetching total bill amount:', error);
@@ -1594,15 +1736,15 @@ const generateDummyData = () => {
   return dummyData;
 };
 
-// Route to fetch revenue data
+// Fetch revenue data
 app.get('/api/revenue', async (req, res) => {
   try {
-    // Fetch real revenue data from MongoDB
+    // Fetch revenue data from MongoDB
     const revenueData = await Order.aggregate([
       {
         $group: {
           _id: { $month: '$createdAt' }, // Group by month
-          totalRevenue: { $sum: '$totalBillAmount' } // Sum total bill amount for each month
+          totalRevenue: { $sum: '$totalAmount' } // Sum total amount for each month (use totalAmount if that's the field used)
         }
       },
       {
@@ -1613,7 +1755,7 @@ app.get('/api/revenue', async (req, res) => {
     // Format the data to match the frontend expectations
     const formattedData = revenueData.map(item => ({
       name: new Date(0, item._id - 1).toLocaleString('default', { month: 'long' }), // Convert month number to month name
-      Total:  Math.round(item.totalRevenue)
+      Total: Math.round(item.totalRevenue)
     }));
 
     // Combine real and dummy data for the last 6 months
@@ -1626,6 +1768,7 @@ app.get('/api/revenue', async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 });
+
 
 //-----------------------------------------Users--------------------------------------------->
 
@@ -1705,43 +1848,63 @@ app.delete('/api/orders/:orderId', async (req, res) => {
   }
 });
 
-// Fetch order details by ID
-app.get('/api/orders/:id', async (req, res) => {
+app.get('/api/orders/:orderId', async (req, res) => {
   try {
-    const orderId = req.params.id;
-    const order = await Order.findById(orderId).populate('orderedProducts'); // Assuming orderedProducts is populated
-
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
-
-    res.status(200).json(order);
-  } catch (error) {
-    console.error('Error fetching order details:', error);
-    res.status(500).json({ message: 'Error fetching order details' });
-  }
-});
-
-// Update order status
-app.put('/orders/:orderId/status', async (req, res) => {
-  const { orderId } = req.params;
-  const { status } = req.body;
-
-  try {
-    const order = await Order.findByIdAndUpdate(orderId, { status }, { new: true });
+    const orderId = req.params.orderId;
+    const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
     res.json(order);
   } catch (error) {
-    console.error('Error updating order status:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error('Error fetching order details:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+// Update order status
+app.put('/api/orders/:orderId/status', async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ message: 'Status is required' });
+  }
+
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json({
+      message: 'Order status updated successfully',
+      order: updatedOrder
+    });
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 //-----------------------------------------Products--------------------------------------------->
 
 
-
+// Endpoint to fetch all orders
+app.get('/api/orders', async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 }); // Sort by creation date, newest first
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 // // Function to read slider data from JSON file
 // const getSliderData = () => {
 //   const filePath = path.join(__dirname, 'data/sliderData.json');

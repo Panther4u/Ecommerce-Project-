@@ -52,5 +52,10 @@
       "form_factor": "narrow",
       "label": "Wonder Widgets"
     }
-  ]
+  ],
+  "serviceworker": {
+    "src": "/service-worker.js",
+    "scope": "/",
+    "update_via_cache": "all"
+  }
 }

@@ -49,6 +49,9 @@
 // module.exports = Order;
 
 
+
+
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -109,8 +112,27 @@ const OrderSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['Pending', 'Shipped', 'Delivered'],
+    enum: ['Packed', 'Shipped', 'Delivered'],
+    default: 'Packed', // Default status
+    required: true // Ensure status is always present
+  },
+  paymentId: {
+    type: String,
+    required: true
+  },
+  paymentSignature: {
+    type: String,
+    required: true
+  },
+  paymentStatus: {
+    type: String,
+    enum: ['Pending', 'Completed', 'Failed'],
     default: 'Pending'
+  },
+  paymentMethod: {
+    type: String,
+    enum: ['Card', 'UPI', 'Others'],
+    required: true
   }
 }, { timestamps: true });
 

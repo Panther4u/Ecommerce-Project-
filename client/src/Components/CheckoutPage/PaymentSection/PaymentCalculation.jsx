@@ -51,8 +51,8 @@ const PaymentCalculation = ({ setTotalAmount }) => {
   const uniqueProductCount = uniqueProductIds.length;
 
   // Debugging: Log unique product IDs and count
-  console.log('Unique Product IDs:', uniqueProductIds);
-  console.log('Number of Unique Products:', uniqueProductCount);
+  // console.log('Unique Product IDs:', uniqueProductIds);
+  // console.log('Number of Unique Products:', uniqueProductCount);
 
   // Ensure unique products and aggregate quantities
   const uniqueProductsMap = new Map();
@@ -117,7 +117,7 @@ const PaymentCalculation = ({ setTotalAmount }) => {
           <span>Free</span>
         </div>
 
-        <div className={s.items}>
+        <div className={`${s.items} ${s.total}`} >
           <span>Total:</span>
           <span>₹ {formatCurrency(totalAfterDiscount)}</span>
         </div>

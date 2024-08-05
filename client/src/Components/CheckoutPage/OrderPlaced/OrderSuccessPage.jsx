@@ -5,7 +5,7 @@ import s from './OrderSuccessPage.module.scss'; // Import the SCSS module
 
 const OrderSuccessPage = () => {
   const location = useLocation();
-  const { invoiceId } = location.state || {}; // Destructure invoiceId from location.state
+  const invoiceId = location.state?.invoiceDetails?.invoiceId;
 
   // Debugging: Log the invoiceId and location.state
   console.log('OrderSuccessPage location.state:', location.state);
@@ -23,5 +23,6 @@ const OrderSuccessPage = () => {
     </div>
   );
 };
+
 
 export default OrderSuccessPage;

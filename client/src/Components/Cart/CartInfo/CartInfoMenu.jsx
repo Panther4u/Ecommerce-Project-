@@ -175,6 +175,8 @@
 // export default CartInfoMenu;
 
 
+
+
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -191,26 +193,23 @@ const CartInfoMenu = () => {
   const cartProducts = useSelector((state) => state.products.cartProducts) || [];
   const couponDiscount = useSelector((state) => state.cart.couponDiscount) || 0;
 
-  // Determine if a coupon is applied
-  const couponApplied = couponDiscount > 0;
-
-  // Calculate subtotal and total discount
+  // Calculate subtotal, discount, and final total
   const subTotal = getSubTotal(cartProducts) || 0;
   const totalDiscount = calculateTotalDiscount(cartProducts) || 0;
-
-  // Apply coupon discount to subtotal
   const discountAmount = (subTotal * couponDiscount) / 100; // Ensure this calculation is correct
   const totalAfterDiscount = subTotal - totalDiscount - discountAmount;
 
+  const couponApplied = couponDiscount > 0;
+
   // Apply coupon callback
   const handleApplyCoupon = (discount) => {
-    dispatch(setCouponDiscount(discount)); // Update Redux state with coupon discount
-    setIsModalOpen(false); // Close the modal after applying coupon
+    dispatch(setCouponDiscount(discount));
+    setIsModalOpen(false);
   };
 
   // Remove coupon callback
   const handleRemoveCoupon = () => {
-    dispatch(resetCouponDiscount()); // Reset coupon discount in Redux store
+    dispatch(resetCouponDiscount());
   };
 
   return (
@@ -218,7 +217,7 @@ const CartInfoMenu = () => {
       <b>Cart Total</b>
       <div className={s.content}>
         <div className={s.item}>
-          <span>Total MRP : </span>
+          <span>Total MRP :</span>
           <span>₹ {subTotal.toFixed(2)}</span>
         </div>
         <div className={`${s.item} ${s.discount}`}>
@@ -231,7 +230,7 @@ const CartInfoMenu = () => {
             {couponApplied ? (
               <>
                 <span onClick={handleRemoveCoupon} className={s.removeCouponBtn}>Remove</span>
-                <span>₹ {discountAmount.toFixed(2)}</span> {/* Display actual discount applied */}
+                <span>₹ {discountAmount.toFixed(2)}</span>
               </>
             ) : (
               <span onClick={() => setIsModalOpen(true)}>Apply Coupon</span>
@@ -252,10 +251,12 @@ const CartInfoMenu = () => {
       <CouponModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onApply={handleApplyCoupon} // Pass handleApplyCoupon as a callback
+        onApply={handleApplyCoupon}
       />
     </div>
   );
 };
 
 export default CartInfoMenu;
+
+

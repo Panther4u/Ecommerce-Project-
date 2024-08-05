@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 const OrderDatatable = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { _id: userId } = useSelector((state) => state.user.loginInfo);
 
@@ -19,8 +19,7 @@ const OrderDatatable = () => {
 
   const fetchOrderData = async () => {
     try {
-      setLoading(true);
-      const response = await axios.get(`http://localhost:8000/api/orders/all`, {
+      const response = await axios.get('http://localhost:8000/api/orders/all', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -31,11 +30,11 @@ const OrderDatatable = () => {
         id: order._id,
       }));
       setData(ordersWithId);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching order data:', error);
       toast.error('Failed to fetch order data. Please try again.');
       setError('Failed to fetch data');
+    } finally {
       setLoading(false);
     }
   };
@@ -47,7 +46,7 @@ const OrderDatatable = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      setData(data.filter((item) => item._id !== orderId));
+      setData(data.filter((item) => item.id !== orderId));
       toast.success('Order deleted successfully!');
     } catch (error) {
       toast.error('Error deleting order. Please try again.');
@@ -60,35 +59,26 @@ const OrderDatatable = () => {
       field: 'action',
       headerName: 'Action',
       width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="cellAction">
-            <Link to={`/orderdetails/${params.row.id}`} style={{ textDecoration: 'none' }}>
-              <div className="viewButton">View</div>
-            </Link>
-            <div className="deleteButton" onClick={() => handleDelete(params.row.id)}>
-              Delete
-            </div>
+      renderCell: (params) => (
+        <div className="cellAction">
+          <Link to={`/orderdetails/${params.row.id}`} style={{ textDecoration: 'none' }}>
+            <div className="viewButton">View</div>
+          </Link>
+          <div className="deleteButton" onClick={() => handleDelete(params.row.id)}>
+            Delete
           </div>
-        );
-      },
+        </div>
+      ),
     },
   ];
 
   const orderColumns = [
-    {
-      field: '_id',
-      headerName: 'Order ID',
-      width: 200
-    },
+    { field: 'id', headerName: 'Order ID', width: 200 },
     {
       field: 'userId',
       headerName: 'User ID',
       width: 200,
-      renderCell: params => {
-        const shortId = params.value ? params.value.slice(-12) : '-';
-        return <span>{shortId}</span>;
-      }
+      renderCell: params => <span>{params.value?.slice(-12) || '-'}</span>
     },
     {
       field: 'billingInfo',
@@ -106,68 +96,33 @@ const OrderDatatable = () => {
         );
       },
     },
-    {
-      field: 'totalProducts',
-      headerName: 'Total Products',
-      width: 200,
-      renderCell: params => <span>{params.value || '-'}</span>
-    },
-    {
-      field: 'deliveryMethod',
-      headerName: 'Delivery Method',
-      width: 200,
-      renderCell: params => <span>{params.value || '-'}</span>
-    },
-    {
-      field: 'paymentMethod',
-      headerName: 'Payment Method',
-      width: 200,
-      renderCell: params => <span>{params.value || '-'}</span>
-    },
-    {
-      field: 'transactionId',
-      headerName: 'Transaction ID',
-      width: 200,
-      renderCell: params => <span>{params.value || '-'}</span>
-    },
-    {
-      field: 'totalBillAmount',
-      headerName: 'Total Bill Amount',
-      width: 200,
-      renderCell: params => (
-        <span>Rs.{params.value ? params.value.toFixed(2) : '-'}</span>
-      )
+    { field: 'totalProducts', headerName: 'Total Products', width: 200 },
+    { field: 'deliveryMethod', headerName: 'Delivery Method', width: 200 },
+    { field: 'paymentMethod', headerName: 'Payment Method', width: 200 },
+    { field: 'paymentId', headerName: 'Transaction ID', width: 200 },
+    { 
+      field: 'totalAmount', 
+      headerName: 'Total Bill Amount', 
+      width: 200, 
+      renderCell: params => <span>Rs.{params.value?.toFixed(2) || '-'}</span> 
     },
     {
       field: 'status',
       headerName: 'Status',
       width: 200,
       renderCell: params => {
-        let statusColor = '';
-
-        switch (params.value) {
-          case 'Pending':
-            statusColor = 'pending';
-            break;
-          case 'Processing':
-            statusColor = 'processing';
-            break;
-          case 'Shipped':
-            statusColor = 'shipped';
-            break;
-          case 'Delivered':
-            statusColor = 'delivered';
-            break;
-          default:
-            statusColor = 'default';
-            break;
-        }
-
+        const statusClasses = {
+          Pending: 'pending',
+          Processing: 'processing',
+          Shipped: 'shipped',
+          Delivered: 'delivered',
+        };
+        const statusColor = statusClasses[params.value] || 'default';
         return <span className={`status ${statusColor}`}>{params.value || '-'}</span>;
       }
     },
     {
-      field: 'orderDate',
+      field: 'createdAt',
       headerName: 'Order Date',
       width: 200,
       renderCell: params => {
@@ -175,11 +130,7 @@ const OrderDatatable = () => {
         return (
           <span>
             {date
-              ? date.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })
+              ? date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
               : '-'}
           </span>
         );
@@ -188,11 +139,11 @@ const OrderDatatable = () => {
   ];
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="error">Error: {error}</div>;
   }
 
   return (
