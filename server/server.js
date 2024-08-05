@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 require('./config/passport');
 const validator = require('validator');
 const otpGenerator = require("otp-generator");
