@@ -64,7 +64,7 @@ const RelatedItemsSection = ({ productType, currentProduct }) => {
     <section className={s.section}>
       <SectionTitle type={2} eventName={t("detailsPage.relatedItems")} />
 
-      {!hasRelatedProducts && <p>{t("detailsPage.noRelatedItems")}</p>}
+      {/* {!hasRelatedProducts && <p>{t("detailsPage.noRelatedItems")}</p>} */}
 
       <ProductsSlider filterFun={() => relatedProducts} />
     </section>

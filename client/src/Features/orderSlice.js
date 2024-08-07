@@ -30,6 +30,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { API_BASE_URL } from 'src/api/index';
 
 const orderSlice = createSlice({
   name: 'order',
@@ -59,7 +60,7 @@ export const saveOrderAsync = (orderedProducts) => async (dispatch, getState) =>
     const { userId } = auth; // Get userId from auth state
 
     // Example API call to save order
-    await axios.post('http://localhost:8000/api/orders', { userId, orderedProducts });
+    await axios.post(`${API_BASE_URL}/api/orders`, { userId, orderedProducts });
 
     dispatch(setOrderedProducts(orderedProducts));
   } catch (error) {

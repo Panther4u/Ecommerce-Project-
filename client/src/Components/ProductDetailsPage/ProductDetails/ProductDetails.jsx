@@ -9,6 +9,7 @@ import s from "./ProductDetails.module.scss";
 import ProductFeatures from "./ProductFeatures";
 import ProductFirstInfos from "./ProductFirstInfos";
 import ProductSizes from "./ProductSizes";
+import { API_BASE_URL } from 'src/api/index';
 
 const ProductDetails = ({ data }) => {
   const { previewImg, isZoomInPreviewActive, loadingProductDetails } =
@@ -35,15 +36,16 @@ const ProductDetails = ({ data }) => {
 
           <section className={s.details}>
             <div className={`${s.zoomInPreview} ${activeClass}`}>
-              <img src={previewImg} alt="product preview" ref={zoomInImgRef} />
+              <img  src={`${API_BASE_URL}/${previewImg}`} alt="product preview" ref={zoomInImgRef} />
             </div>
 
             <ProductFirstInfos data={data} />
 
             <div className={s.horizontalLine} />
+            
 
             <ProductColorsSection data={data} />
-            <ProductSizes data={data} />
+            {/* <ProductSizes data={data} /> */}
             <ProductDealingControls data={data} />
             <ProductFeatures />
           </section>

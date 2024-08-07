@@ -14,7 +14,7 @@
 //   useEffect(() => {
 //     const fetchOrders = async () => {
 //       try {
-//         const response = await axios.get(`http://localhost:8000/api/order/${userId}`);
+//         const response = await axios.get(`${API_BASE_URL}/api/order/${userId}`);
 //         setOrders(response.data);
 //       } catch (error) {
 //         console.error('Failed to fetch orders:', error);
@@ -82,7 +82,7 @@
 //   useEffect(() => {
 //     const fetchOrders = async () => {
 //       try {
-//         const response = await axios.get(`http://localhost:8000/api/order/${userId}`);
+//         const response = await axios.get(`${API_BASE_URL}/api/order/${userId}`);
 //         setOrders(response.data); // Assuming response.data is an array of orders
 //       } catch (error) {
 //         console.error('Failed to fetch orders:', error);
@@ -94,7 +94,7 @@
 
 //   const updateOrderStatus = async (orderId, newStatus) => {
 //     try {
-//       const response = await axios.put(`http://localhost:8000/api/orders/${orderId}/status`, { status: newStatus });
+//       const response = await axios.put(`${API_BASE_URL}/api/orders/${orderId}/status`, { status: newStatus });
 //       const updatedOrders = orders.map(order => order._id === orderId ? { ...order, status: newStatus } : order);
 //       setOrders(updatedOrders);
 //     } catch (error) {
@@ -219,7 +219,7 @@
 //   useEffect(() => {
 //     const fetchOrders = async () => {
 //       try {
-//         const response = await axios.get(`http://localhost:8000/api/order/${userId}`);
+//         const response = await axios.get(`${API_BASE_URL}/api/order/${userId}`);
 //         setOrders(response.data); // Assuming response.data is an array of orders
 //         console.error('fetch orders:', setOrders);
 //       } catch (error) {
@@ -232,7 +232,7 @@
 
 //   const updateOrderStatus = async (orderId, newStatus) => {
 //     try {
-//       const response = await axios.put(`http://localhost:8000/api/orders/${orderId}/status`, { status: newStatus });
+//       const response = await axios.put(`${API_BASE_URL}/api/orders/${orderId}/status`, { status: newStatus });
 //       const updatedOrders = orders.map(order => order._id === orderId ? { ...order, status: newStatus } : order);
 //       setOrders(updatedOrders);
 //     } catch (error) {
@@ -315,6 +315,7 @@ import PagesHistory from '../../Shared/MiniComponents/PagesHistory/PagesHistory'
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './OrderSummaryPage.module.scss';
+import { API_BASE_URL } from 'src/api/index';
 
 const OrderSummaryPage = () => {
   const { loginInfo } = useSelector((state) => state.user);
@@ -330,7 +331,7 @@ const OrderSummaryPage = () => {
           return;
         }
 
-        const response = await axios.get(`http://localhost:8000/api/orders/user/${loginInfo.userId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/orders/user/${loginInfo.userId}`);
         setOrders(response.data);
       } catch (error) {
         toast.error('Failed to fetch orders');
@@ -376,7 +377,7 @@ const OrderSummaryPage = () => {
                   {order.cartProducts.map(product => (
                     <div key={product.id} className={styles.product}>
                       <img
-                        src={`http://localhost:8000/${product.img}`} 
+                        src={`${API_BASE_URL}/${product.img}`} 
                         alt={product.name} 
                         onError={(e) => e.target.src = '/path/to/fallback-image.jpg'}
                       />

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './OrderDetailsPage.module.scss'; // Importing CSS Modules
+import { API_BASE_URL } from 'src/api/index';
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
@@ -12,7 +13,7 @@ const OrderDetailsPage = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/orders/${userId}/${orderId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/orders/${userId}/${orderId}`);
         setOrder(response.data);
       } catch (error) {
         console.error('Failed to fetch order:', error);
@@ -39,7 +40,7 @@ const OrderDetailsPage = () => {
         {order.cartProducts.map(product => (
           <div key={product.id} className={styles.product}>
             <img 
-              src={`http://localhost:8000/${product.img}`} 
+              src={`${API_BASE_URL}/${product.img}`} 
               alt={product.name} 
               onError={(e) => e.target.src = 'path/to/placeholder-image.jpg'} // Handle image load errors
             />

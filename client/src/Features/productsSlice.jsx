@@ -223,7 +223,7 @@
 //   error: null,
 // };
 
-// const API_URL = "http://localhost:8000/api/products";
+// const API_URL = "${API_BASE_URL}/api/products";
 
 // export const fetchProducts = createAsyncThunk(
 //   "products/fetchProducts",
@@ -318,6 +318,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { selectUserId } from './userSlice';
+import { API_BASE_URL } from 'src/api/index';
 
 const savedState = JSON.parse(localStorage.getItem('productsSliceData')) || {};
 const initialState = {
@@ -335,9 +336,9 @@ const initialState = {
 };
 
 
-const API_URL = "http://localhost:8000/api/products";
-const CART_API_URL = "http://localhost:8000/api/cart";
-const WISHLIST_API_URL = "http://localhost:8000/api/wishlist";
+const API_URL = `${API_BASE_URL}/api/products`;
+const CART_API_URL = `${API_BASE_URL}/api/cart`;
+const WISHLIST_API_URL = `${API_BASE_URL}/api/wishlist`;
 
 // Thunks
 export const fetchProducts = createAsyncThunk(
@@ -444,6 +445,7 @@ export const removeProductFromWishlist = createAsyncThunk(
     }
   }
 );
+
 
 
 

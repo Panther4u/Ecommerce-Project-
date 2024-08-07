@@ -78,6 +78,7 @@ import { setLoginData } from "../../Features/userSlice";
 import { toast } from "react-toastify";
 import s from "./single.module.scss";
 import Avatar from '@mui/material/Avatar';
+import { API_BASE_URL } from 'src/api/index';
 
 // Default avatar image path
 const DEFAULT_AVATAR = 'src/Assets/Images/Avatar.jpg'; // Replace with your default image path
@@ -122,7 +123,7 @@ const Form = () => {
     formData.append('pincode', pincodeRef.current.value);
 
     try {
-      const response = await axios.post('http://localhost:8000/auth/signup', formData, {
+      const response = await axios.post(`${API_BASE_URL}/auth/signup`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

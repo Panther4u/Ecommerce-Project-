@@ -54,7 +54,7 @@
 // //   async ({ email, password, role }, { rejectWithValue, dispatch }) => {
 // //     try {
 // //       const endpoint = role === 'admin' ? 'admin/login' : 'login';
-// //       const response = await axios.post(`http://localhost:8000/auth/${endpoint}`, { email, password });
+// //       const response = await axios.post(`${API_BASE_URL}/auth/${endpoint}`, { email, password });
 // //       const userData = response.data.user;
 // //       dispatch(setLoginData({ ...userData, role })); // Set role in login data
 // //       return userData;
@@ -68,7 +68,7 @@
 // //   async ({ email, password, role }, { rejectWithValue, dispatch }) => {
 // //     try {
 // //       const endpoint = role === 'admin' ? 'admin/login' : 'auth/login'; // Adjust endpoint based on role
-// //       const response = await axios.post(`http://localhost:8000/${endpoint}`, { email, password });
+// //       const response = await axios.post(`${API_BASE_URL}/${endpoint}`, { email, password });
 // //       const userData = response.data.user;
 // //       dispatch(setLoginData({ ...userData, role })); // Dispatch action to set login data
 // //       return userData;
@@ -83,7 +83,7 @@
 //   async ({ email, password, role }, { rejectWithValue, dispatch }) => {
 //     try {
 //       const endpoint = role === 'admin' ? 'admin/login' : 'auth/login';
-//       const response = await axios.post(`http://localhost:8000/${endpoint}`, { email, password });
+//       const response = await axios.post(`${API_BASE_URL}/${endpoint}`, { email, password });
 //       const userData = response.data.user;
 //       dispatch(setLoginData(userData));
 //       return userData;
@@ -98,7 +98,7 @@
 //   'user/signUpUser',
 //   async ({ formData }, { rejectWithValue }) => {
 //     try {
-//       const response = await axios.post('http://localhost:8000/auth/signup', formData, {
+//       const response = await axios.post('${API_BASE_URL}/auth/signup', formData, {
 //         headers: { 'Content-Type': 'multipart/form-data' },
 //       });
 //       const userData = response.data.user;
@@ -114,7 +114,7 @@
 // //   'user/updateProfile',
 // //   async (formData, { rejectWithValue, getState }) => {
 // //     try {
-// //       const response = await fetch('http://localhost:8000/api/user', {
+// //       const response = await fetch('${API_BASE_URL}/api/user', {
 // //         method: 'PUT',
 // //         body: formData,
 // //       });
@@ -135,7 +135,7 @@
 //   'user/updateProfile',
 //   async (formData, { rejectWithValue }) => {
 //     try {
-//       const response = await axios.put('http://localhost:8000/api/user', formData, {
+//       const response = await axios.put('${API_BASE_URL}/api/user', formData, {
 //         headers: {
 //           'Content-Type': 'multipart/form-data',
 //         },
@@ -153,7 +153,7 @@
 //   'user/deleteAccount',
 //   async (userId, { rejectWithValue, dispatch }) => {
 //     try {
-//       await axios.delete(`http://localhost:8000/api/user/${userId}`);
+//       await axios.delete(`${API_BASE_URL}/api/user/${userId}`);
 
 //       // Clear all user data from state and localStorage
 //       dispatch(clearUserData());
@@ -172,7 +172,7 @@
 //   'user/saveBillingInfo',
 //   async ({ _id, ...billingInfo }, { rejectWithValue }) => {
 //     try {
-//       const response = await axios.post('http://localhost:8000/api/user/save-billing', { _id, ...billingInfo });
+//       const response = await axios.post('${API_BASE_URL}/api/user/save-billing', { _id, ...billingInfo });
 //       toast.success('Billing information saved successfully');
 //       return response.data; // Assuming your backend sends back meaningful data upon successful save
 //     } catch (error) {
@@ -369,7 +369,7 @@
 //   async ({ email, password, role }, { rejectWithValue, dispatch }) => {
 //     try {
 //       const endpoint = role === 'admin' ? 'admin/login' : 'auth/login';
-//       const response = await axios.post(`http://localhost:8000/${endpoint}`, { email, password });
+//       const response = await axios.post(`${API_BASE_URL}/${endpoint}`, { email, password });
 //       const userData = response.data.user;
 //       dispatch(setLoginData(userData)); // Dispatch action to set login data
 //       return userData;
@@ -384,7 +384,7 @@
 //   'user/signUpUser',
 //   async ({ formData }, { rejectWithValue }) => {
 //     try {
-//       const response = await axios.post('http://localhost:8000/auth/signup', formData, {
+//       const response = await axios.post('${API_BASE_URL}/auth/signup', formData, {
 //         headers: { 'Content-Type': 'multipart/form-data' },
 //       });
 //       const userData = response.data.user;
@@ -400,7 +400,7 @@
 //   'user/updateProfile',
 //   async (formData, { rejectWithValue }) => {
 //     try {
-//       const response = await axios.put('http://localhost:8000/api/user', formData, {
+//       const response = await axios.put('${API_BASE_URL}/api/user', formData, {
 //         headers: {
 //           'Content-Type': 'multipart/form-data',
 //         },
@@ -417,7 +417,7 @@
 //   'user/deleteAccount',
 //   async (userId, { rejectWithValue, dispatch }) => {
 //     try {
-//       await axios.delete(`http://localhost:8000/api/user/${userId}`);
+//       await axios.delete(`${API_BASE_URL}/api/user/${userId}`);
 
 //       // Clear all user data from state and localStorage
 //       dispatch(clearUserData());
@@ -436,7 +436,7 @@
 //   'user/saveBillingInfo',
 //   async ({ _id, ...billingInfo }, { rejectWithValue }) => {
 //     try {
-//       const response = await axios.post('http://localhost:8000/api/user/save-billing', { _id, ...billingInfo });
+//       const response = await axios.post('${API_BASE_URL}/api/user/save-billing', { _id, ...billingInfo });
 //       toast.success('Billing information saved successfully');
 //       return response.data; // Assuming your backend sends back meaningful data upon successful save
 //     } catch (error) {
@@ -602,6 +602,7 @@ import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { updateCartFromBackend } from './cartSlice';
+import { API_BASE_URL } from 'src/api/index';
 
 // Function to retrieve user data from localStorage
 const getUserDataFromLocalStorage = () => {
@@ -646,7 +647,7 @@ export const loginUser = createAsyncThunk(
   async ({ email, password, role }, { rejectWithValue, dispatch }) => {
     try {
       const endpoint = role === 'admin' ? 'admin/login' : 'auth/login';
-      const response = await axios.post(`http://localhost:8000/${endpoint}`, { email, password });
+      const response = await axios.post(`${API_BASE_URL}/${endpoint}`, { email, password });
       const userData = response.data.user;
       dispatch(setLoginData(userData)); // Dispatch action to set login data
       dispatch(updateCartFromBackend(userData.cart.products)); // Update cart from backend after login
@@ -662,7 +663,7 @@ export const signUpUser = createAsyncThunk(
   'user/signUpUser',
   async ({ formData }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:8000/auth/signup', formData, {
+      const response = await axios.post(`${API_BASE_URL}/auth/signup`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       const userData = response.data.user;
@@ -678,7 +679,7 @@ export const updateProfile = createAsyncThunk(
   'user/updateProfile',
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await axios.put('http://localhost:8000/api/user', formData, {
+      const response = await axios.put(`${API_BASE_URL}/api/user`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -695,7 +696,7 @@ export const deleteAccount = createAsyncThunk(
   'user/deleteAccount',
   async (userId, { rejectWithValue, dispatch }) => {
     try {
-      await axios.delete(`http://localhost:8000/api/user/${userId}`);
+      await axios.delete(`${API_BASE_URL}/api/user/${userId}`);
       // Clear all user data from state and localStorage
       dispatch(clearUserData());
       toast.success('Account deleted successfully');
@@ -712,7 +713,7 @@ export const saveBillingInfo = createAsyncThunk(
   'user/saveBillingInfo',
   async ({ userId, ...billingInfo }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/user/save-billing', { userId, ...billingInfo });
+      const response = await axios.post(`${API_BASE_URL}/api/user/save-billing`, { userId, ...billingInfo });
       toast.success('Billing information saved successfully');
       return response.data; // Assuming your backend sends back meaningful data upon successful save
     } catch (error) {

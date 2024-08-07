@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from 'axios';
+import { API_BASE_URL } from 'src/api/index';
 
 const List = () => {
   const [rows, setRows] = useState([]);
@@ -15,7 +16,7 @@ const List = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data } = await axios.get('http://localhost:8000/api/orders');
+        const { data } = await axios.get('${API_BASE_URL}/api/orders');
         setRows(data);
       } catch (error) {
         console.error('Error fetching orders:', error);
@@ -47,7 +48,7 @@ const List = () => {
                 <div className={s.cellWrapper}>
                   {row.cartProducts[0]?.img ? (
                     <img 
-                      src={`http://localhost:8000/${row.cartProducts[0]?.img}`} 
+                      src={`${API_BASE_URL}/${row.cartProducts[0]?.img}`} 
                       alt={row.cartProducts[0]?.name} 
                       className={s.image} 
                     />

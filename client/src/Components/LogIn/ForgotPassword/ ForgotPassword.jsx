@@ -16,7 +16,7 @@
 
 //   const handleSendOTP = () => {
 //     axios
-//       .get("http://localhost:8000/api/generateOTP", { params: { email, name: "User", reason: "FORGOTPASSWORD" } })
+//       .get("${API_BASE_URL}/api/generateOTP", { params: { email, name: "User", reason: "FORGOTPASSWORD" } })
 //       .then(() => {
 //         toast.success("OTP sent successfully");
 //         setOtpSent(true);
@@ -34,7 +34,7 @@
 //     }
 
 //     axios
-//       .post("http://localhost:8000/api/resetPassword", { email, password })
+//       .post("${API_BASE_URL}/api/resetPassword", { email, password })
 //       .then(() => {
 //         toast.success("Password reset successfully");
 //         // Redirect or show success message
@@ -122,7 +122,7 @@
 
 //   const handleSendOTP = () => {
 //     axios
-//       .get("http://localhost:8000/api/generateOTP", { params: { email, name: "User", reason: "FORGOTPASSWORD" } })
+//       .get("${API_BASE_URL}/api/generateOTP", { params: { email, name: "User", reason: "FORGOTPASSWORD" } })
 //       .then((response) => {
 //         console.log("OTP sent successfully");
 //         setOtpSent(true);
@@ -140,7 +140,7 @@
 //     }
 
 //     axios
-//       .post("http://localhost:8000/api/resetPassword", { email, password })
+//       .post("${API_BASE_URL}/api/resetPassword", { email, password })
 //       .then(() => {
 //         console.log("Password reset successfully");
 //         // Redirect or show success message
@@ -212,6 +212,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from 'src/api/index';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -224,7 +225,7 @@ const ForgotPassword = () => {
 
   const handleSendOTP = () => {
     axios
-      .get("http://localhost:8000/api/generateOTP", { params: { email, name: "User", reason: "FORGOTPASSWORD" } })
+      .get(`${API_BASE_URL}/api/generateOTP`, { params: { email, name: "User", reason: "FORGOTPASSWORD" } })
       .then(() => {
         toast.success("OTP sent successfully");
         setOtpSent(true);
@@ -237,7 +238,7 @@ const ForgotPassword = () => {
 
   const handleValidateOTP = () => {
     axios
-      .post("http://localhost:8000/api/validateOTP", { email, otp })
+      .post(`${API_BASE_URL}/api/validateOTP`, { email, otp })
       .then(() => {
         toast.success("OTP validated successfully");
         setOtpValidated(true);
@@ -255,7 +256,7 @@ const ForgotPassword = () => {
         return;
       }
 
-      const response = await axios.post("http://localhost:8000/api/resetPassword", { email, password });
+      const response = await axios.post(`${API_BASE_URL}/api/resetPassword`, { email, password });
 
       if (response.status === 200) {
         toast.success("Password reset successfully");

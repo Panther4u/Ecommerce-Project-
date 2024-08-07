@@ -12,7 +12,7 @@
   border-radius: 4px;
   background: var(--very-light-gray2);
   width: 100%;
-  height: 250px;
+  height: 220px;
   @include center-x-y;
   user-select: none;
   position: relative;
@@ -46,6 +46,8 @@
   justify-content: space-between;
   align-items: flex-start;
   overflow: hidden;
+
+  
 }
 
 .layerContent .discount {
@@ -185,6 +187,7 @@
     @include center-x-y;
     user-select: none;
     position: relative;
+    
 
   }
   .card {
@@ -193,5 +196,17 @@
     align-items: flex-start;
     gap: 16px;
     min-width: 150px;
+
+    @include large {
+      font-size: .8rem;
+    }
+    
+    @include medium {
+      font-size: .7rem;
+    }
+  
+    @include small {
+      font-size: .7rem;
+    }
   }
 }

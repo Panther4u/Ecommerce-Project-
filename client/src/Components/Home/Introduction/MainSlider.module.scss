@@ -4,7 +4,7 @@
   width: 100%;
   height: 344px;
   user-select: none;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 @include large {
@@ -16,6 +16,12 @@
 
 @include medium {
   .mainSlider {
-    height: 280px;
+    height: 220px;
+  }
+}
+
+@include small {
+  .mainSlider {
+    height: 220px;
   }
 }

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { API_BASE_URL } from 'src/api/index';
 
 const OrderDatatable = () => {
   const [data, setData] = useState([]);
@@ -15,7 +16,7 @@ const OrderDatatable = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/orders");
+      const response = await axios.get(`${API_BASE_URL}/api/orders`);
       const usersWithId = response.data.map((user) => ({
         ...user,
         id: user._id, // Use _id for DataGrid
@@ -29,7 +30,7 @@ const OrderDatatable = () => {
   const handleDelete = async (userId) => {
     // console.log(`Attempting to delete user with id: ${userId}`); // Log id being passed
     try {
-      await axios.delete(`http://localhost:8000/api/users/${userId}`);
+      await axios.delete(`${API_BASE_URL}/api/users/${userId}`);
       setData(data.filter((item) => item._id !== userId)); // Update state after delete
       toast.success("User deleted successfully!");
     } catch (error) {

@@ -1,19 +1,87 @@
 @import "src/Styles/mixins";
 
-.searchContainer {
+.searchContainerWrapper {
+  position: relative;
+}
+
+.searchDropdown {
+  position: absolute;
+  top: 45px;
+  left: 0;
+  width: auto;
   background-color: var(--secondary-white);
+  border-radius: 5px;
+  border: 1px solid var(--gray);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  max-height: 200px; /* Optional: Set a max height for scrollable dropdown */
+  overflow-y: auto; /* Optional: Allow scrolling if content exceeds max height */
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s; /* Added transition for color */
+  gap: 20px;
+
+  .productImage {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 8px;
+  }
+
+  .productName {
+    font-size: 14px;
+    color: var(--dark-gray);
+
+    @include medium {
+      font-size: .7rem;
+    }
+    @include large {
+      font-size: .7rem;
+    }
+    
+    
+    @include small {
+      font-size: .6rem;
+    }
+  }
+
+  &:hover {
+    background-color: rgba(128, 128, 128, 0.177);
+    color: var(--white); /* Ensure text color is white on hover */
+  }
+
+  @include medium {
+    font-size: .6rem;
+  }
+  
+  
+  @include small {
+    font-size: .6rem;
+  }
+}
+
+.searchContainer {
+  // background-color: var(--secondary-white);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 250px;
+  width: auto;
   padding: 10px 12px 10px 20px;
-  border-radius: 4px;
-  margin-inline-end: 24px;
+  border-radius: 25px;
+  margin-inline-end: 4px;
   user-select: none;
   cursor: pointer;
   position: relative;
-  outline: solid 1px var(--black);
-  border: 6px solid var(--secondary-white);
+  gap: 10px;
+  // outline: solid 1px var(--turquoise);
+  // border: 3px solid var(--secondary-white);
   transition: border-color .1s, outline-color .1s, background-color .1s .05s;
 
   &:hover {
@@ -21,13 +89,14 @@
   }
 
   &:has(:focus) {
+    
     outline-color: var(--turquoise);
     border-color: var(--white);
     background-color: rgba(74, 195, 232, .07);
   }
 }
 
-.searchContainer>input {
+.searchContainer > input {
   all: unset;
   font-size: .75rem;
   font-weight: 400;
@@ -35,57 +104,82 @@
   width: 100%;
 }
 
-.searchContainer>button {
+.searchContainer > button {
   all: unset;
   position: relative;
 }
 
-.searchContainer>button::before {
+.searchContainer > button::before {
   content: '';
   position: absolute;
   left: 2.3px;
   top: 2.7px;
+  font-size: 10px;
   width: 10px;
   height: 10px;
   border-radius: 50%;
 }
 
-.searchContainer>button>svg {
+.searchContainer > button > svg {
   width: 18px;
   height: 18px;
   transition: fill .1s;
 }
 
-.searchContainer:has(:focus)>button>svg {
+.searchContainer:has(:focus) > button > svg {
   fill: #757575;
 }
 
-.searchContainer>button:active svg {
+.searchContainer > button:active svg {
   fill: var(--black);
 }
 
-.searchContainer>button:active::before {
+.searchContainer > button:active::before {
   background-color: var(--white);
 }
 
-.searchContainer>button:focus svg {
-  fill: var(--black)
+.searchContainer > button:focus svg {
+  fill: var(--black);
 }
 
-// Arabic styles
-@include medium {
-  [lang=ar] .searchContainer {
-    padding: 6px 12px 6px 18px;
-    width: 200px;
-    margin-inline-end: 8px;
+@include small {
+  .searchContainer {
+    padding: 6px 6px 6px 6px;
+    width: auto;
+    gap: 5px;
+    margin-inline-end: 14px;
   }
-}
 
-// Hungarian styles
-@include medium {
-  [lang=hu] .searchContainer {
-    padding: 6px 12px 6px 18px;
-    width: 220px;
-    // margin-inline-end: 8px;
+  .searchDropdown {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: auto;
+  }
+
+  .dropdownItem {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s; /* Added transition for color */
+    gap: 10px;
+
+    .productImage {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      margin-right: 8px;
+    }
+
+    .productName {
+      font-size: 10px;
+      color: var(--dark-gray);
+    }
+
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.177);
+      color: var(--white); /* Ensure text color is white on hover */
+    }
   }
 }

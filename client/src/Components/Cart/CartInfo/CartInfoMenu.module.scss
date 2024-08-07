@@ -241,6 +241,7 @@
     justify-content: space-between; // Space between "Remove" button and discount value
     color: var(--tomato); // Default color for coupon text
     gap: 20px;
+    cursor: pointer;
     
     &.couponApplied {
       color: green; // Green color for applied coupon discount

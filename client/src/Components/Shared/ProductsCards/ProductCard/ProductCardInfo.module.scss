@@ -3,7 +3,7 @@
 .productInfo {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .productInfo .productName a {
@@ -39,12 +39,25 @@
   align-items: center;
   gap: 8px;
   user-select: none;
+
 }
 
 .productInfo .rateContainer .numOfVotes {
   font-weight: 600;
   font-size: .875rem;
   color: var(--primary);
+
+  @include large {
+    font-size: .8rem;
+  }
+  
+  @include medium {
+    font-size: .7rem;
+  }
+
+  @include small {
+    font-size: .7rem;
+  }
 }
 
 .productInfo .colors {

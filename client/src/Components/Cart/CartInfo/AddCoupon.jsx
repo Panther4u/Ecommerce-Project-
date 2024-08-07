@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { applyCoupon } from "src/Features/cartSlice"; // Import applyCoupon action from cartSlice
 import s from "./AddCoupon.module.scss";
 import { toast } from "react-toastify";
+import { API_BASE_URL } from 'src/api/index';
 
 const AddCoupon = () => {
   const couponInputRef = useRef(null); // Initialize with null
@@ -50,7 +51,7 @@ const AddCoupon = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/apply-coupon", { userId, couponCode });
+      const response = await axios.post(`${API_BASE_URL}/apply-coupon`, { userId, couponCode });
       const { discountPercentage, message } = response.data;
 
       dispatch(applyCoupon(discountPercentage)); // Dispatch action to apply coupon discount to Redux store

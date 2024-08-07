@@ -60,14 +60,14 @@
 //         return (
 //           // <Link to={`/details?product=${name}`} key={id} className={s.product}>
 //           //   <div className={s.wrapper}>
-//           //     <img src={`http://localhost:8000/${img}`} alt={shortName} />
+//           //     <img src={`${API_BASE_URL}/${img}`} alt={shortName} />
 //           //     <span>{shortName}</span>
 //           //   </div>
 //           //   <span className={s.price}>Rs. {subTotal}</span>
 //           // </Link>
 //           <>
 //               <div className={s.productContainer}>
-//       <img src={`http://localhost:8000/${img}`} alt={shortName || name} className={s.productImage} />
+//       <img src={`${API_BASE_URL}/${img}`} alt={shortName || name} className={s.productImage} />
 //       <div className={s.productDetails}>
 //         <p className={s.productName}>{shortName || name}</p>
 //         <p className={s.price}>Rs. {subTotal.toFixed(2)}</p>
@@ -95,6 +95,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import s from './PaymentProducts.module.scss';
 import { selectCartProducts } from 'src/Features/productsSlice';
+import { API_BASE_URL } from 'src/api/index';
 
 const PaymentProducts = () => {
   const cartProducts = useSelector(selectCartProducts) || [];
@@ -118,7 +119,7 @@ const PaymentProducts = () => {
           <div className={s.productContainer} key={id}>
             <div className={s.imageContainer}>
               <img 
-                src={`http://localhost:8000/${img}`} 
+                src={`${API_BASE_URL}/${img}`} 
                 alt={shortName || name} 
                 className={s.productImage} 
                 onError={(e) => e.target.src = '/path/to/fallback-image.jpg'} 
@@ -185,7 +186,7 @@ export default PaymentProducts;
 //           <div className={s.productContainer} key={id}>
 //             <div className={s.imageContainer}>
 //               <img 
-//                 src={`http://localhost:8000/${img}`} 
+//                 src={`${API_BASE_URL}/${img}`} 
 //                 alt={shortName || name} 
 //                 className={s.productImage} 
 //                 onError={(e) => e.target.src = '/path/to/fallback-image.jpg'} 

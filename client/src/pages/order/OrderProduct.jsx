@@ -14,7 +14,7 @@
 //   useEffect(() => {
 //     const fetchOrderDetails = async () => {
 //       try {
-//         const response = await axios.get(`http://localhost:8000/api/orders/${orderId}`);
+//         const response = await axios.get(`${API_BASE_URL}/api/orders/${orderId}`);
 //         setOrder(response.data);
 //         setLoading(false);
 //       } catch (error) {
@@ -69,6 +69,7 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './OrderProduct.scss';
+import { API_BASE_URL } from 'src/api/index';
 
 const OrderProduct = () => {
   const { orderId } = useParams();
@@ -78,7 +79,7 @@ const OrderProduct = () => {
 
   const fetchOrderDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/orders/${orderId}`);
+      const response = await axios.get(`${API_BASE_URL}/api/orders/${orderId}`);
       setOrder(response.data);
       setLoading(false);
     } catch (error) {
@@ -96,7 +97,7 @@ const OrderProduct = () => {
   const updateOrderStatus = async (newStatus) => {
     try {
       console.log(`Updating order status to ${newStatus} for order ID ${orderId}`);
-      const response = await axios.put(`http://localhost:8000/api/orders/${orderId}/status`, { status: newStatus });
+      const response = await axios.put(`${API_BASE_URL}/api/orders/${orderId}/status`, { status: newStatus });
       console.log('Response:', response.data);
       setOrder(prevOrder => ({ ...prevOrder, status: newStatus })); // Update order status in local state
       toast.success('Order status updated successfully');
@@ -132,7 +133,7 @@ const OrderProduct = () => {
               order.cartProducts.map(product => (
                 <div key={product.id} className="product">
                   <img 
-                    src={`http://localhost:8000/${product.img}`} 
+                    src={`${API_BASE_URL}/${product.img}`} 
                     alt={product.name} 
                     onError={(e) => e.target.src = '/path/to/fallback-image.jpg'} 
                   />

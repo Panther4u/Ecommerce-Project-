@@ -96,6 +96,7 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { API_BASE_URL } from 'src/api/index';
 
 // Helper function to safely retrieve and parse JSON from localStorage
 function getLocalStorageItem(key) {
@@ -124,7 +125,7 @@ export const fetchAvailableCoupons = createAsyncThunk(
   'cart/fetchAvailableCoupons',
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/coupons/available', {
+      const response = await axios.get(`${API_BASE_URL}/api/coupons/available`, {
         params: { userId }
       });
       console.log('Fetched Coupons:', response.data); // Debugging line
@@ -141,7 +142,7 @@ export const applyCoupon = createAsyncThunk(
   'cart/applyCoupon',
   async ({ couponCode, userId }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/coupons/apply', { couponCode, userId });
+      const response = await axios.post(`${API_BASE_URL}/api/coupons/apply`, { couponCode, userId });
       return response.data;
     } catch (error) {
       console.error('Error applying coupon:', error); // Detailed error logging

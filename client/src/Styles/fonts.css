@@ -130,3 +130,12 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* GreenSnake */
+@font-face {
+  font-family: 'GreenSnake';
+  src: url('../Fonts/green-snake-green-snakesvg-400.ttf') format("ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

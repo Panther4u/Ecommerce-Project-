@@ -6,6 +6,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { API_BASE_URL } from 'src/api/index';
 
 const Widget = ({ type }) => {
   const [data, setData] = useState(null);
@@ -32,7 +33,7 @@ const Widget = ({ type }) => {
       let response;
       switch (type) {
         case 'user':
-          response = await axios.get('http://localhost:8000/api/totalUserCount');
+          response = await axios.get(`${API_BASE_URL}/api/totalUserCount`);
           setData({
             title: 'USERS',
             isMoney: false,
@@ -42,7 +43,7 @@ const Widget = ({ type }) => {
           setAmount(response.data.count); // Assuming response structure { count: ... }
           break;
         case 'order':
-          response = await axios.get('http://localhost:8000/api/totalUserOrderCount');
+          response = await axios.get(`${API_BASE_URL}/api/totalUserOrderCount`);
           setData({
             title: 'ORDERS',
             isMoney: false,
@@ -52,7 +53,7 @@ const Widget = ({ type }) => {
           setAmount(response.data.count); // Assuming response structure { count: ... }
           break;
         case 'earning':
-          response = await axios.get('http://localhost:8000/api/totalBillAmount');
+          response = await axios.get(`${API_BASE_URL}/api/totalBillAmount`);
           setData({
             title: 'EARNINGS',
             isMoney: true,
@@ -62,7 +63,7 @@ const Widget = ({ type }) => {
           setAmount(response.data.amount); // Assuming response structure { amount: ... }
           break;
         case 'balance':
-          response = await axios.get('http://localhost:8000/api/totalBalanceAmount');
+          response = await axios.get(`${API_BASE_URL}/api/totalBalanceAmount`);
           setData({
             title: 'BALANCE',
             isMoney: true,

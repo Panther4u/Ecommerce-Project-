@@ -6,6 +6,7 @@ import s from "./AdminAccountPage.module.scss";
 import { useNavigate } from "react-router-dom";
 import Avatar from '@mui/material/Avatar'; // Make sure to install @material-ui/core
 import DEFAULT_AVATAR from "src/Assets/Images/Avatar.jpg"; // Provide the correct path to the default avatar
+import { API_BASE_URL } from 'src/api/index';
 
 const AdminAccountPage = () => {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const AdminAccountPage = () => {
 
     try {
       // Make a POST request to create a new admin account
-      const response = await axios.post("http://localhost:8000/api/admin/create", formData, {
+      const response = await axios.post(`${API_BASE_URL}/api/admin/create`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

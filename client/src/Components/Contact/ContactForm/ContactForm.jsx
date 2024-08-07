@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import s from './ContactForm.module.scss';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from 'src/api/index';
 
 const ContactForm = () => {
   const { t } = useTranslation();
@@ -53,7 +54,7 @@ const ContactForm = () => {
       const formData = new FormData(formRef.current);
       const data = Object.fromEntries(formData.entries());
 
-      const response = await axios.post('http://localhost:8000/api/contact', data, {
+      const response = await axios.post(`${API_BASE_URL}/api/contact`, data, {
         headers: {
           'Content-Type': 'application/json',
         },

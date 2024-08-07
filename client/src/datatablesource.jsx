@@ -37,6 +37,8 @@
 //     },
 //   },
 // ];
+import { API_BASE_URL } from 'src/api/index';
+import axios from 'axios';
 
 export const userColumns = [
   {
@@ -54,7 +56,7 @@ export const userColumns = [
     width: 230,
     renderCell: (params) => {
       const profileImage = params.row.profileImage;
-      const imgSrc = profileImage ? `http://localhost:8000/${profileImage}` : "src/Assets/Images/Avatar.jpg";
+      const imgSrc = profileImage ? `${API_BASE_URL}/${profileImage}` : "src/Assets/Images/Avatar.jpg";
       const username = params.row.username || "-";
       return (
         <div className="cellWithImg">

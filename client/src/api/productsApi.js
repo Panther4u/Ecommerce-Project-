@@ -1,8 +1,7 @@
 // productsApi.js
 
 import axios from 'axios';
-
-const API_BASE_URL = 'http://localhost:8000'; // Replace with your API base URL
+import { API_BASE_URL } from 'src/api/index';
 
 // Example function to fetch products from backend
 export const fetchProductsFromBackend = async () => {

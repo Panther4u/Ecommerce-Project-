@@ -111,7 +111,7 @@ import { isItemFound } from "src/Functions/helper";
 import SvgIcon from "../../Shared/MiniComponents/SvgIcon";
 import ToolTip from "../../Shared/MiniComponents/ToolTip";
 import s from "./ProductDealingControls.module.scss";
-
+import { API_BASE_URL } from 'src/api/index';
 
 const InstagramIcon = () => (
   <svg
@@ -257,7 +257,7 @@ const ProductDealingControls = ({ data }) => {
     try {
       const productImage =
         data.otherImages.length > 0 ? data.otherImages[0] : data.img;
-      const message = `Check out this product: ${data.name} - ${data.description} \n\n${window.location.origin}/details?product=${encodeURIComponent(
+      const message = ` ${data.name}  \n\n${window.location.origin}/details?product=${encodeURIComponent(
         data.shortName
       )}`;
       setShareImage(productImage); // Only for preview
@@ -358,7 +358,7 @@ const ProductDealingControls = ({ data }) => {
             <button className={s.closeButton} onClick={() => setShowPreview(false)}>
               &times;
             </button>
-            <img src={shareImage} alt="Shared Product" className={s.previewImage} />
+            <img  src={`${API_BASE_URL}/${shareImage}`} alt="Shared Product" className={s.previewImage} />
             <p>{shareMessage}</p>
             <button className={s.shareButton} onClick={confirmShare}>
               Share

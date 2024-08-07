@@ -89,6 +89,7 @@ import { simpleValidationCheck } from '../../../Functions/componentsFunctions'; 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import s from './LogInForm.module.scss'; // Adjust path based on your project structure
+import { API_BASE_URL } from 'src/api/index';
 
 const LogInForm = () => {
   const navigateTo = useNavigate();
@@ -106,7 +107,7 @@ const LogInForm = () => {
     if (!isFormValid) return;
 
     try {
-      const response = await axios.post('http://localhost:8000/auth/login', {
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       });

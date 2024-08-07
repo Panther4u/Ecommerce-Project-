@@ -12,7 +12,7 @@
   // useEffect(() => {
   //   const fetchBillingInfo = async () => {
   //     try {
-  //       const response = await axios.get("http://localhost:8000/api/user/save-billing");
+  //       const response = await axios.get("${API_BASE_URL}/api/user/save-billing");
   //       setBillingValues(response.data); // Update billingValues state with fetched data
   //       setEditable(true); // Enable editing if data is fetched successfully
   //     } catch (error) {
@@ -108,7 +108,7 @@
 //     }
 
 //     try {
-//       const response = await axios.post('http://localhost:8000/api/user/save-billing', {
+//       const response = await axios.post('${API_BASE_URL}/api/user/save-billing', {
 //         ...formValues,
 //         userId,
 //         addressList
@@ -146,7 +146,7 @@
 //     setAddressList(updatedAddressList);
 
 //     try {
-//       await axios.post('http://localhost:8000/api/user/save-billing', {
+//       await axios.post('${API_BASE_URL}/api/user/save-billing', {
 //         ...formValues,
 //         userId,
 //         addressList: updatedAddressList
@@ -209,7 +209,7 @@
 //     setAddressList(updatedAddressList);
 
 //     try {
-//       await axios.post('http://localhost:8000/api/user/save-billing', {
+//       await axios.post('${API_BASE_URL}/api/user/save-billing', {
 //         ...formValues,
 //         userId,
 //         addressList: updatedAddressList
@@ -379,7 +379,7 @@ import { selectCartProducts, clearCart, clearCoupon } from 'src/Features/product
 import Modal from './Modal';
 import InvoiceModal from './InvoiceModal';
 import { capitalizeFirstLetter } from 'src/Functions/helper'; // Adjust the path accordingly
-
+import { API_BASE_URL } from 'src/api/index';
 
 const BillingDetails = ({ totalAmount }) => {
   const dispatch = useDispatch();
@@ -409,7 +409,7 @@ const BillingDetails = ({ totalAmount }) => {
     const fetchAddresses = async () => {
       if (!userId) return;
       try {
-        const response = await axios.get(`http://localhost:8000/api/user/get-addresses/${userId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/user/get-addresses/${userId}`);
         setAddressList(response.data.addresses || []);
       } catch (error) {
         console.error('Error fetching addresses:', error);
@@ -440,7 +440,7 @@ const BillingDetails = ({ totalAmount }) => {
     }
   
     try {
-      const response = await axios.post('http://localhost:8000/api/user/save-billing', {
+      const response = await axios.post('${API_BASE_URL}/api/user/save-billing', {
         ...formValues,
         userId,
         addressIndex: isEditing ? editingIndex : undefined
@@ -465,7 +465,7 @@ const BillingDetails = ({ totalAmount }) => {
     );
   
     try {
-      const { data, status } = await axios.post('http://localhost:8000/api/invoice/generate', {
+      const { data, status } = await axios.post('${API_BASE_URL}/api/invoice/generate', {
         billingInfo: formValues,
         userId,
         cartProducts: filteredCartProducts,
@@ -488,76 +488,6 @@ const BillingDetails = ({ totalAmount }) => {
     }
   };
   
-  // const handleProceedPayment = async () => {
-  //   const { streetAddress, pincode } = formValues;
-  
-  //   if (selectedAddressIndex !== null || (streetAddress && pincode)) {
-  //     setError('');
-  //     try {
-  //       await saveBillingInfo();
-  //       const { success, invoiceId } = await generateInvoice();
-  
-  //       if (success) {
-  //         // Filter out empty objects from cartProducts
-          // const modifiedCartProducts = cartProducts
-          //   .filter(product => product.id) // Ensure product has an ID
-          //   .map(product => ({
-          //     id: product.id,
-          //     img: product.img,
-          //     description: product.description,
-          //     price: product.price,
-          //     category: product.category,
-          //     name: product.name,
-          //     shortName: product.shortName,
-          //     discount: product.discount,
-          //     quantity: product.quantity
-          //   }));
-  
-  //         console.log('Request Payload:', {
-  //           userId,
-  //           cartProducts: modifiedCartProducts,
-  //           totalAmount,
-  //           invoiceId,
-  //           billingInfo: formValues
-  //         });
-  
-  //         const response = await axios.post('http://localhost:8000/api/orders/save', {
-  //           userId,
-  //           cartProducts: modifiedCartProducts,
-  //           totalAmount,
-  //           invoiceId,
-  //           billingInfo: formValues
-  //         });
-  
-  //         if (response.status === 200) {
-  //           handlePaymentSuccess();
-  //           navigate('/ordersuccess', {
-  //             state: {
-  //               billingInfo: formValues,
-  //               invoiceDetails: { invoiceId },
-  //               cartProducts: modifiedCartProducts,
-  //               totalAmount,
-  //               invoiceId
-  //             }
-  //           });
-  //         } else {
-  //           toast.error('Failed to save order. Please try again.');
-  //         }
-  //       } else {
-  //         toast.error('Invoice generation failed. Please try again.');
-  //       }
-  //     } catch (err) {
-  //       console.error('Error proceeding to payment:', err);
-  //       toast.error('Failed to proceed to payment.');
-  //     }
-  //   } else {
-  //     toast.error(addressList.length === 0
-  //       ? 'No saved addresses available. Please add a new address.'
-  //       : 'Please select an address or complete the billing form.');
-  //   }
-  // };
-
-
 
   const handleProceedPayment = async (e) => {
     e.preventDefault();
@@ -571,7 +501,7 @@ const BillingDetails = ({ totalAmount }) => {
   
     try {
       // Create order with Razorpay
-      const { data: order } = await axios.post('http://localhost:8000/api/payment/create-order', {
+      const { data: order } = await axios.post('${API_BASE_URL}/api/payment/create-order', {
         amount: amountInPaise,
         currency: 'INR'
       });
@@ -607,7 +537,7 @@ const BillingDetails = ({ totalAmount }) => {
                   quantity: product.quantity
                 }));
   
-              await axios.post('http://localhost:8000/api/orders/save', {
+              await axios.post('${API_BASE_URL}/api/orders/save', {
                 userId,
                 cartProducts: modifiedCartProducts,
                 totalAmount,
@@ -676,7 +606,7 @@ const BillingDetails = ({ totalAmount }) => {
   
       // Clear the cart and coupon data in the backend
       if (userId) {
-        const response = await axios.post('http://localhost:8000/api/cart/clear', { userId });
+        const response = await axios.post('${API_BASE_URL}/api/cart/clear', { userId });
         if (response.status === 200) {
           toast.success('Cart cleared successfully!');
           // Also clear the cart and coupon data in local storage
@@ -770,7 +700,7 @@ const BillingDetails = ({ totalAmount }) => {
     setAddressList(updatedAddressList);
 
     try {
-      await axios.post('http://localhost:8000/api/user/remove-billing-address', {
+      await axios.post('${API_BASE_URL}/api/user/remove-billing-address', {
         userId,
         addressIndex: index
       });

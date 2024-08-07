@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import axios from "axios";
+import { API_BASE_URL } from 'src/api/index';
 
 const Chart = ({ aspect = 16 / 9, title = "Chart Title" }) => {
   const [data, setData] = useState([]);
@@ -16,7 +17,7 @@ const Chart = ({ aspect = 16 / 9, title = "Chart Title" }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/revenue');
+        const response = await axios.get(`${API_BASE_URL}/api/revenue`);
         setData(response.data);
       } catch (error) {
         console.error('Error fetching chart data', error);

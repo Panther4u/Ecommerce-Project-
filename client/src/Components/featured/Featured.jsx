@@ -6,6 +6,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
+import { API_BASE_URL } from 'src/api/index';
 
 const Featured = () => {
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -20,19 +21,19 @@ const Featured = () => {
   const fetchRevenueData = async () => {
     try {
       // Fetch total revenue
-      const totalResponse = await axios.get('http://localhost:8000/api/totalBillAmount');
+      const totalResponse = await axios.get(`${API_BASE_URL}/api/totalBillAmount`);
       setTotalRevenue(totalResponse.data.amount);
 
       // Fetch target revenue
-      const targetResponse = await axios.get('http://localhost:8000/api/targetRevenue');
+      const targetResponse = await axios.get(`${API_BASE_URL}/api/targetRevenue`);
       setTargetRevenue(targetResponse.data.amount);
 
       // Fetch last week's revenue
-      const lastWeekResponse = await axios.get('http://localhost:8000/api/lastWeekRevenue');
+      const lastWeekResponse = await axios.get(`${API_BASE_URL}/api/lastWeekRevenue`);
       setLastWeekRevenue(lastWeekResponse.data.amount);
 
       // Fetch last month's revenue
-      const lastMonthResponse = await axios.get('http://localhost:8000/api/lastMonthRevenue');
+      const lastMonthResponse = await axios.get(`${API_BASE_URL}/api/lastMonthRevenue`);
       setLastMonthRevenue(lastMonthResponse.data.amount);
     } catch (error) {
       console.error('Error fetching revenue data:', error);

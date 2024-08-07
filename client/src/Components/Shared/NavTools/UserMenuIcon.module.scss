@@ -1,3 +1,5 @@
+@import "src/Styles/mixins";
+
 .userContainer {
   position: relative;
   padding: 6px;
@@ -6,7 +8,7 @@
   outline-offset: 0;
 
   &:focus-visible {
-    transition: opacity .3s, var(--outline-transition);
+    transition: opacity 0.3s, var(--outline-transition);
     outline: 2px dashed var(--very-dark-gray);
     outline-offset: 3px;
     color: var(--very-dark-gray);
@@ -20,18 +22,24 @@
     align-items: center;
     justify-content: center;
   }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    transition: fill 0.2s;
+  }
+
+  &:not(.active):hover svg {
+    fill: #6f6f6f;
+  }
+
+  &.active svg {
+    transform: scale(0.7);
+  }
 }
 
-.userContainer>svg {
-  width: 20px;
-  height: 20px;
-  transition: fill .2s;
-}
-
-.userContainer:not(.active):hover>svg {
-  fill: #6f6f6f;
-}
-
-.userContainer.active>svg {
-  scale: .7;
+@include small {
+  .userContainer {
+    display: none;
+  }
 }

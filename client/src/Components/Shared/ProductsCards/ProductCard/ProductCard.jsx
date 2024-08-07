@@ -217,7 +217,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { addToArray, removeById, selectProducts, addProductToWishlist, removeProductFromWishlist } from 'src/Features/productsSlice';
 import {
   checkDateBeforeMonthToPresent,
@@ -231,10 +231,12 @@ import {
 import SvgIcon from '../../MiniComponents/SvgIcon';
 import ToolTip from '../../MiniComponents/ToolTip';
 import AddToCartButton from './AddToCartButton';
-import s from './ProductCard.module.scss';
 import ProductCardInfo from './ProductCardInfo';
-import cookies from "js-cookie";
+import ProductCardLoader from './ProductCardLoader'; // Import the loader
+import s from './ProductCard.module.scss';
+import cookies from 'js-cookie';
 import { selectUserId } from 'src/Features/userSlice';
+import { API_BASE_URL } from 'src/api/index';
 
 const ProductCard = ({
   product,
@@ -250,7 +252,6 @@ const ProductCard = ({
   },
   removeFrom,
 }) => {
-  // Destructure product and customization properties
   const {
     name,
     price,
@@ -284,7 +285,7 @@ const ProductCard = ({
   const wishList = useSelector((state) => state.products.wishList);
   const isAddedToWishList = wishList?.some((wishProduct) => wishProduct.id === id);
   const isAddedToFavorites = favoritesProducts?.find((favProduct) => favProduct.id === id);
-  const userId = useSelector(selectUserId); // Get userId from Redux state
+  const userId = useSelector(selectUserId);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const lang = cookies.get('i18next');
@@ -293,12 +294,10 @@ const ProductCard = ({
   const trashcanIconLeftToolTipPos = trashcanIconToolTipLeftPos(lang);
   const navigateTo = useNavigate();
 
-  // Determine whether to hide the "New" label
   function shouldHideNewWord() {
     return checkDateBeforeMonthToPresent(addedDate) || !showNewText ? s.hide : '';
   }
 
-  // Add or remove product from favorites
   function addProductToFavorite() {
     const isProductAlreadyExist = isItemFound(favoritesProducts, product, 'id');
     if (!loginInfo.isSignIn) navigateTo('/signup');
@@ -309,35 +308,20 @@ const ProductCard = ({
     dispatch(addToArray({ key: 'favoritesProducts', value: product }));
   }
 
-  // Navigate to product details page
   function navigateToProductDetails() {
     if (loadingProductDetails) return;
     navigateTo(`/details?product=${name.toLowerCase()}`);
   }
 
-
-  // function addProductToWishList() {
-  //   const isProductAlreadyExist = isItemFound(wishList, product, "id");
-  //   if (!loginInfo.isSignIn) navigateTo("/signup");
-  //   if (isProductAlreadyExist) {
-  //     dispatch(removeById({ key: "wishList", id: product.id }));
-  //     return;
-  //   }
-
-  //   dispatch(addToArray({ key: "wishList", value: product }));
-  // }
-
-
-  // Handle adding/removing product to/from wishlist
   const handleWishlistClick = async () => {
     if (!userId) {
       navigateTo('/signup');
       return;
     }
-  
+
     try {
       const productExists = wishList.some(item => item.id === product.id);
-  
+
       if (productExists) {
         await dispatch(removeProductFromWishlist({ userId, productId: product.id })).unwrap();
         console.log('Product removed from wishlist.');
@@ -358,8 +342,7 @@ const ProductCard = ({
         })).unwrap();
         console.log('Product added to wishlist.');
       }
-  
-      // Optionally, you can verify the state change here
+
       console.log('Updated wishlist:', wishList);
     } catch (error) {
       console.error('Error updating wishlist:', error.message);
@@ -374,20 +357,23 @@ const ProductCard = ({
       }
     }
   };
-  
 
-  // Handle image loading error
   const handleImageError = (event) => {
     event.target.onerror = null;
-    event.target.src = '/src/Assets/Images/Avatar.jpg'; // Placeholder image
+    event.target.src = '/src/Assets/Images/Avatar.jpg';
   };
+
+  // Conditionally render the loader if product data is loading
+  if (loadingProductDetails) {
+    return <ProductCardLoader />;
+  }
 
   return (
     <div className={`${s.card} ${noHoverClass}`}>
       <div className={s.productImg}>
         <div className={s.imgHolder}>
           <img
-            src={img ? `http://localhost:8000/${img}` : '/src/Assets/Images/Avatar.jpg'}
+            src={img ? `${API_BASE_URL}/${img}` : '/src/Assets/Images/Avatar.jpg'}
             alt={name}
             aria-label={name}
             onClick={navigateToProductDetails}
@@ -462,4 +448,3 @@ const ProductCard = ({
 };
 
 export default ProductCard;
-

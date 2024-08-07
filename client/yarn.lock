@@ -12293,6 +12293,11 @@ react-circular-progressbar@^2.1.0:
   resolved "https://registry.npmjs.org/react-circular-progressbar/-/react-circular-progressbar-2.1.0.tgz"
   integrity sha512-xp4THTrod4aLpGy68FX/k1Q3nzrfHUjUe5v6FsdwXBl3YVMwgeXYQKDrku7n/D6qsJA9CuunarAboC2xCiKs1g==
 
+react-content-loader@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.npmjs.org/react-content-loader/-/react-content-loader-7.0.2.tgz"
+  integrity sha512-773S98JTyC8VB2nu7LXUhpHx8tZMieGxMcx3qTe7IkohT6Br7d9AXnIXs/wQ6IhlUdKQcw6JLKk1QKigYCWDRA==
+
 react-cookie@^7.1.4:
   version "7.1.4"
   resolved "https://registry.npmjs.org/react-cookie/-/react-cookie-7.1.4.tgz"
@@ -14642,6 +14647,11 @@ url-parse@^1.5.3:
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
+
+use-debounce@^10.0.2:
+  version "10.0.2"
+  resolved "https://registry.npmjs.org/use-debounce/-/use-debounce-10.0.2.tgz"
+  integrity sha512-MwBiJK2dk+2qhMDVDCPRPeLuIekKfH2t1UYMnrW9pwcJJGFDbTLliSMBz2UKGmE1PJs8l3XoMqbIU1MemMAJ8g==
 
 use-sync-external-store@^1.0.0:
   version "1.2.2"

@@ -88,6 +88,11 @@
     border-color: #ff7b00;
   }
 }
+.previewImgHolder>img {
+  background-color: var(--very-light-gray2);
+  border-radius: inherit;
+  object-fit: contain;
+}
 
 @include large {
   .previewImgHolder {
@@ -112,8 +117,3 @@
   }
 }
 
-.previewImgHolder>img {
-  background-color: var(--very-light-gray2);
-  border-radius: inherit;
-  object-fit: contain;
-}

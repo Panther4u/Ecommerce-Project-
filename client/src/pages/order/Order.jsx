@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Order.scss';
 import { useSelector } from 'react-redux';
+import { API_BASE_URL } from 'src/api/index';
 
 const OrderDatatable = () => {
   const [data, setData] = useState([]);
@@ -19,7 +20,7 @@ const OrderDatatable = () => {
 
   const fetchOrderData = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/orders/all', {
+      const response = await axios.get(`${API_BASE_URL}/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -41,7 +42,7 @@ const OrderDatatable = () => {
 
   const handleDelete = async (orderId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/orders/${orderId}`, {
+      await axios.delete(`${API_BASE_URL}/api/orders/${orderId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

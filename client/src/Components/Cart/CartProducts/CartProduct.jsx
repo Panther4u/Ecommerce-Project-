@@ -73,7 +73,7 @@
 
 //         const productData = { userId, id, img, name, shortName, afterDiscount, quantity };
 
-//         const response = await axios.post('http://localhost:8000/api/cart/add', productData);
+//         const response = await axios.post('${API_BASE_URL}/api/cart/add', productData);
 
 //         if (response.data.message) {
 //           console.log(response.data.message);
@@ -147,7 +147,7 @@
 //     <tr className={s.productContainer}>
 //       <td className={s.product}>
 //         <div className={s.imgHolder}>
-//           <img src={`http://localhost:8000/${img}`} alt={shortName} />
+//           <img src={`${API_BASE_URL}/${img}`} alt={shortName} />
 //           <RemoveCartProductBtn productId={id} />
 //         </div>
 //         <Link to={`/details?product=${name}`}>
@@ -210,7 +210,7 @@
 //     <tr className={s.productContainer}>
 //       <td className={s.product}>
 //         <div className={s.imgHolder}>
-//           <img src={`http://localhost:8000/${img}`} alt={shortName} />
+//           <img src={`${API_BASE_URL}/${img}`} alt={shortName} />
 //           <RemoveCartProductBtn productId={id} />
 //         </div>
 //         <Link className={s.productName} to={`/details?product=${name}`}>
@@ -250,6 +250,7 @@ import CustomNumberInput from '../../Shared/MiniComponents/CustomNumberInput/Cus
 import { FaHeart } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { selectUserId } from 'src/Features/userSlice';
+import { API_BASE_URL } from 'src/api/index';
 
 const CartProduct = ({ data }) => {
   const { img, name, shortName = '', discount = 0, quantity = 0, id, price = 0 } = data;
@@ -330,7 +331,7 @@ const CartProduct = ({ data }) => {
     <div className={s.productContainer}>
       <div className={s.imageContainer}>
         <img 
-          src={`http://localhost:8000/${img}`} 
+          src={`${API_BASE_URL}/${img}`} 
           alt={shortName || name} 
           className={s.productImage} 
           onError={(e) => e.target.src = '/path/to/fallback-image.jpg'} 

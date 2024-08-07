@@ -8,6 +8,7 @@ import s from './MobileNav.module.scss';
 import axios from 'axios';
 import { signOut } from '../../../Features/userSlice'; // Assuming this is your userSlice where signOut action is defined
 import Avatar from "src/Assets/Images/Avatar.jpg";
+import { API_BASE_URL } from 'src/api/index';
 
 const MobileNav = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const MobileNav = () => {
   //   const fetchProfileImage = async () => {
   //     if (username) {
   //       try {
-  //         const endpoint = role === 'admin' ? `http://localhost:8000/admin/${username}` : `http://localhost:8000/user/${username}`;
+  //         const endpoint = role === 'admin' ? `${API_BASE_URL}/admin/${username}` : `${API_BASE_URL}/user/${username}`;
   //         const response = await axios.get(endpoint);
   //         setProfileImage(response.data.profileImage);
   //       } catch (error) {
@@ -63,7 +64,7 @@ const MobileNav = () => {
       <div className={s.userInfo}>
         <Link to="/profile" title="Profile" className={s.img}>
           {profileImage ? (
-            <img src={`http://localhost:8000/${profileImage}`} alt="user's picture" />
+            <img src={`${API_BASE_URL}/${profileImage}`} alt="user's picture" />
           ) : (
             <img src={Avatar} alt="default user picture" />
           )}
@@ -135,7 +136,7 @@ export default MobileNav;
 //     const fetchProfileImage = async () => {
 //       if (username) {
 //         try {
-//           const endpoint = role === 'admin' ? `http://localhost:8000/admin/${username}` : `http://localhost:8000/user/${username}`;
+//           const endpoint = role === 'admin' ? `${API_BASE_URL}/admin/${username}` : `${API_BASE_URL}/user/${username}`;
 //           const response = await axios.get(endpoint);
 //           setProfileImage(response.data.profileImage);
 //         } catch (error) {
@@ -178,7 +179,7 @@ export default MobileNav;
 //       <div className={s.userInfo}>
 //         <Link to="/profile" title="Profile" className={s.img}>
 //           {profileImage ? (
-//             <img src={`http://localhost:8000/${profileImage}`} alt="user's picture" />
+//             <img src={`${API_BASE_URL}/${profileImage}`} alt="user's picture" />
 //           ) : (
 //             <img src={Avatar} alt="default user picture" />
 //           )}

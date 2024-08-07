@@ -1,128 +1,276 @@
+// @import "src/Styles/mixins";
+// @import 'src/Styles/fonts';
+
+// .header {
+//   padding: 4px 4px 4px 4px;
+//   border-bottom: 1px var(--medium-light-gray) solid;
+// }
+
+// @include medium {
+//   .header {
+//     padding: 4px 4px 4px 4px;
+//   }
+// }
+
+// @include small {
+//   .header {
+//     padding: 4px 4px 4px 4px;
+//   }
+// }
+
+
+// .left{
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// .logoContainer {
+//   /* Adjust as needed */
+//   display: flex;
+//   align-items: center;
+// }
+
+// .logo {
+//   text-decoration: none;
+//   width: 60px; /* Adjust width as needed */
+//   height: 60px; /* Maintain aspect ratio */
+// }
+
+// .logoImage {
+//   // width: 130px; /* Adjust width as needed */
+//   // height: 130px; /* Maintain aspect ratio */
+// }
+
+
+// .container {
+//   width: calc(var(--container-width) + 10%);
+//   margin: 0 auto;
+//   display: grid;
+//   align-items: center;
+//   grid-template-columns:  1fr;
+// }
+
+// @include large {
+//   .container {
+//     grid-template-columns: unset;
+//   }
+// }
+
+// @include small {
+//   .container {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     width: var(--container-mobile-width);
+//   }
+// }
+
+// .container h1 {
+//   width: fit-content;
+//   font-size: 1.5rem;
+// }
+
+// .container h1>a {
+//   outline: none;
+//   color: var(--black);
+//   position: relative;
+// }
+
+// .container>h1::first-letter {
+//   transition: color .2s;
+// }
+
+// .container>h1:has(:focus)::first-letter {
+//   color: var(--orange-degree2);
+// }
+
+// .container h1>a::before {
+//   content: '';
+//   position: absolute;
+//   left: 0;
+//   bottom: -2px;
+//   width: 0;
+//   height: 2px;
+//   background-color: var(--orange-degree2);
+//   transition: width .3s .1s;
+// }
+
+// .container h1:has(:focus)>a::before {
+//   width: 100%;
+// }
+
+// .headerContent {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   margin-top: 20px;
+// }
+
+// @include medium {
+//   .headerContent {
+//     margin-top: 10px;
+//   }
+// }
+
+// @include small {
+//   .headerContent {
+
+//     .lefts{
+//       display: none;
+//     }
+
+//   }
+// }
+
+// // Arabic & Japanese styles
+// @media (max-width: 1500px) {
+//   :where([lang=ar], [lang=ja]) .container {
+//     grid-template-columns: 17% 1fr;
+//   }
+// }
+
+// @include large {
+//   :where([lang=ar], [lang=ja]) .container {
+//     grid-template-columns: unset;
+//   }
+// }
+
+// // Japanese styles
+// @include medium {
+//   [lang=ja] .headerContent {
+//     flex-direction: column;
+//     align-items: flex-start;
+//     gap: 20px;
+//   }
+// }
+
+
+
+
+
+
 @import "src/Styles/mixins";
+@import 'src/Styles/fonts';
 
 .header {
-  padding: 4px 14px 18px 14px;
-  margin-top: 10px;
+  padding: 4px;
   border-bottom: 1px var(--medium-light-gray) solid;
+  display: flex; /* Ensure the header content is aligned in one line */
+  align-items: center; /* Center align items vertically */
+  justify-content: space-between; /* Space out items */
 }
 
-@include medium {
-  .header {
-    padding: 10px 0 14px 10px;
-  }
-}
-
-@include small {
-  .header {
-    padding: 10px 0 14px 0px;
-  }
-}
-
-
-.left{
+.left {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.left h1{
-  margin-left: 1rem;
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  text-decoration: none;
+  display: flex; /* Ensure the logo is aligned with other items */
+  align-items: center;
+  width: 60px; /* Adjust width as needed */
+  height: 60px; /* Maintain aspect ratio */
+}
+
+.logoImage {
+  width: 100%; /* Adjust to fit the container */
+  height: auto; /* Maintain aspect ratio */
 }
 
 .container {
   width: calc(var(--container-width) + 10%);
-  margin: 0 auto;
-  display: grid;
+  margin: 0;
+  display: flex; /* Ensure container items are in a single row */
   align-items: center;
-  grid-template-columns:  1fr;
-}
-
-@include large {
-  .container {
-    grid-template-columns: unset;
-  }
-}
-
-@include small {
-  .container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: var(--container-mobile-width);
-  }
-}
-
-.container h1 {
-  width: fit-content;
-  font-size: 1.5rem;
-}
-
-.container h1>a {
-  outline: none;
-  color: var(--black);
-  position: relative;
-}
-
-.container>h1::first-letter {
-  transition: color .2s;
-}
-
-.container>h1:has(:focus)::first-letter {
-  color: var(--orange-degree2);
-}
-
-.container h1>a::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0;
-  height: 2px;
-  background-color: var(--orange-degree2);
-  transition: width .3s .1s;
-}
-
-.container h1:has(:focus)>a::before {
-  width: 100%;
+  justify-content: space-between; /* Space items out */
 }
 
 .headerContent {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 0; /* Reset margin-top for one-line layout */
+  width: 100%; /* Ensure it spans full width */
+}
+
+.lefts {
+  display: flex; /* Ensure alignment for Nav component */
+}
+
+.right {
+  display: flex; /* Ensure alignment for NavTools component */
 }
 
 @include medium {
+  .header {
+    padding: 4px;
+  }
+  
   .headerContent {
-    margin-top: 10px;
+    margin-top: 0; /* Adjust as needed */
+    // flex-direction: column; /* Stack items vertically on small screens */
+    // align-items: flex-end;
+  }
+
+  .lefts {
+    // display: none; /* Hide .lefts on medium screens */
   }
 }
 
 @include small {
+  .header {
+    padding: 4px;
+  }
+
   .headerContent {
-    display: none;
+    flex-direction: column; /* Stack items vertically on small screens */
+    align-items: flex-end;
+  }
+
+  .lefts {
+    display: none; /* Hide .lefts on medium screens */
+  }
+  .container {
+    padding: 0px;
   }
 }
 
-// Arabic & Japanese styles
+// @media (max-width: 1500px) {
+//   :where([lang=ar], [lang=ja]) .container {
+//     grid-template-columns: 17% 1fr;
+//   }
+// }
+// @media (max-width: 1500px) {
+//   .container {
+//     grid-template-columns: 17% 1fr;
+//   }
+// }
+
+// @include large {
+//   :where([lang=ar], [lang=ja]) .container {
+//     grid-template-columns: unset;
+//   }
+// }
+
+// @include medium {
+//   [lang=ja] .headerContent {
+//     flex-direction: column;
+//     align-items: flex-start;
+//     gap: 20px;
+//   }
+// }
+
 @media (max-width: 1500px) {
-  :where([lang=ar], [lang=ja]) .container {
-    grid-template-columns: 17% 1fr;
-  }
-}
-
-@include large {
-  :where([lang=ar], [lang=ja]) .container {
-    grid-template-columns: unset;
-  }
-}
-
-// Japanese styles
-@include medium {
-  [lang=ja] .headerContent {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
+  .container {
+    width:100%;
+    padding: 0px 5px;
   }
 }

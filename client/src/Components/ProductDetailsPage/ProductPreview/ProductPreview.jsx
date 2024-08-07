@@ -64,12 +64,13 @@
 // };
 
 
+
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { updateGlobalState } from "../../../Features/globalSlice";
 import s from "./ProductPreview.module.scss";
-
+import { API_BASE_URL } from 'src/api/index';
 
 const ProductPreview = ({ data, handleZoomInEffect }) => {
   const { previewImg } = useSelector((state) => state.global);
@@ -108,7 +109,7 @@ const ProductPreview = ({ data, handleZoomInEffect }) => {
 
       <div className={s.previewImgHolder}>
         <img
-          src={`http://localhost:8000/${previewImg}`} // Adjust base URL as per your backend setup
+          src={`${API_BASE_URL}/${previewImg}`} // Adjust base URL as per your backend setup
           alt={name}
           onMouseMove={handleZoomInEffect}
           onMouseEnter={() => setZoomInPreview(true)}
@@ -132,7 +133,7 @@ const PreviewImages = ({ data, setPreviewImg }) => {
           className={`${s.imgHolder} ${previewImg === img ? s.active : ""}`}
           onClick={() => setPreviewImg(img)}
         >
-          <img src={`http://localhost:8000/${img}`} alt="product's image" />
+          <img src={`${API_BASE_URL}/${img}`} alt="product's image" />
         </div>
       ))}
     </div>

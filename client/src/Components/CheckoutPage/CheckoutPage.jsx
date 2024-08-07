@@ -12,8 +12,7 @@ import BillingDetails from './BillingDetails/BillingDetails';
 import PaymentSection from './PaymentSection/PaymentSection';
 import s from './CheckoutPage.module.scss';
 import PagesHistory from '../Shared/MiniComponents/PagesHistory/PagesHistory';
-
-const BASE_URL = 'http://localhost:8000/api'; // Define base URL
+import { API_BASE_URL } from 'src/api/index';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -71,7 +70,7 @@ const CheckoutPage = () => {
         await handleSaveBillingInfo();
       }
 
-      const orderResponse = await axios.post(`${BASE_URL}/checkout`, {
+      const orderResponse = await axios.post(`${API_BASE_URL}/api/checkout`, {
         userId,
         cartProducts,
         billingDetails: billingValues,
@@ -216,7 +215,7 @@ export default CheckoutPage;
 //         await handleSaveBillingInfo();
 //       }
 
-//       const orderResponse = await axios.post('http://localhost:8000/api/checkout', {
+//       const orderResponse = await axios.post('${API_BASE_URL}/api/checkout', {
 //         userId: _id,
 //         cartProducts,
 //         billingDetails: billingValues,
@@ -254,7 +253,7 @@ export default CheckoutPage;
 //   //       await handleSaveBillingInfo();
 //   //     }
   
-//   //     const orderResponse = await axios.post('http://localhost:8000/api/checkout', {
+//   //     const orderResponse = await axios.post('${API_BASE_URL}/api/checkout', {
 //   //       userId: _id,
 //   //       cartProducts,
 //   //       billingDetails: billingValues,
@@ -297,7 +296,7 @@ export default CheckoutPage;
 //   //       await handleSaveBillingInfo();
 //   //     }
   
-//   //     const orderResponse = await axios.post('http://localhost:8000/api/checkout', {
+//   //     const orderResponse = await axios.post('${API_BASE_URL}/api/checkout', {
 //   //       userId: _id,
 //   //       cartProducts,
 //   //       billingDetails: billingValues,

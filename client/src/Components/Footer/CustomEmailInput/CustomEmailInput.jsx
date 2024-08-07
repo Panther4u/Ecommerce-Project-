@@ -5,6 +5,7 @@ import s from './CustomEmailInput.module.scss';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { API_BASE_URL } from 'src/api/index';
 
 const CustomEmailInput = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ const CustomEmailInput = () => {
     e.preventDefault();
     setLoading(true); // Set loading to true when the request starts
     try {
-      const response = await axios.post('http://localhost:8000/api/contact', { email });
+      const response = await axios.post(`${API_BASE_URL}/api/contact`, { email });
 
       if (response.status === 200) {
         toast.success('Email sent successfully');

@@ -5,6 +5,8 @@ import s from "./Header.module.scss";
 import MobileNavIcon from "./MobileNavIcon";
 import Nav from "./Nav";
 import SectionsMenu from "./SectionsMenu";
+import SearchProductsInput from "../../Shared/NavTools/SearchProductsInput";
+import logo from "src/Assets/Images/logo.png"; // Adjust path as needed
 
 const Header = () => {
   const navToolsProps = useNavToolsProps();
@@ -13,18 +15,25 @@ const Header = () => {
     <header className={s.header}>
       <div className={s.container} dir="ltr">
         <div className={s.left}>
-            <SectionsMenu/>
-            <h1>
-              <Link to="/">Exclusive</Link>
-            </h1>
+          {/* <SectionsMenu/> */}
+          <MobileNavIcon />
+          <h3 className={s.logoContainer}>
+            <Link to="/" className={s.logo}>
+              <img src={logo} alt="TheFrameshoppy Logo" className={s.logoImage} />
+            </Link>
+          </h3>
         </div>
 
         <div className={s.headerContent}>
-          <Nav />
-          <NavTools {...navToolsProps} />
+          <div className={s.lefts}>
+            <Nav />
+          </div>
+          <div className={s.right}>
+            <NavTools {...navToolsProps} />
+          </div>
         </div>
-
-        <MobileNavIcon />
+        {/* <SearchProductsInput /> */}
+        {/* <MobileNavIcon /> */}
       </div>
     </header>
   );

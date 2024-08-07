@@ -11,10 +11,11 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 30vh; // Use viewport height for full centering
+    height: auto; // Use viewport height for full centering
     background-color: transparent;
     font-family: "Rubik";
     border-radius: 8px;
+    padding: 15px 0px;
     // padding: 25px;
     border: 1px solid rgb(225, 221, 221);
 }
@@ -95,7 +96,7 @@
     stroke-width: 5;
     stroke: #33bb11;
     stroke-miterlimit: 10;
-    margin: 10% auto;
+    // margin: 10% auto;
     -webkit-box-shadow: inset 0px 0px 0px #33bb11;
     box-shadow: inset 0px 0px 0px #33bb11;
     -webkit-animation: fill 0.4s ease-in-out 0.4s forwards,

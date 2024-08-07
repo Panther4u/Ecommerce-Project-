@@ -18,7 +18,7 @@
 
 //   useEffect(() => {
 //     if (loginInfo && loginInfo.profileImage) {
-//       setImagePreview(`http://localhost:8000/${loginInfo.profileImage}`);
+//       setImagePreview(`${API_BASE_URL}/${loginInfo.profileImage}`);
 //     } else {
 //       setImagePreview('src/Assets/Images/Avatar.jpg'); // Replace with your default image path
 //     }
@@ -114,6 +114,7 @@ import Avatar from '@mui/material/Avatar';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import s from './EditProfileForm.module.scss'; // Adjust path based on your project structure
+import { API_BASE_URL } from 'src/api/index';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -125,7 +126,7 @@ const EditProfileForm = () => {
 
   useEffect(() => {
     if (loginInfo && loginInfo.profileImage) {
-      setImagePreview(`http://localhost:8000/${loginInfo.profileImage}`);
+      setImagePreview(`${API_BASE_URL}/${loginInfo.profileImage}`);
     } else {
       setImagePreview('/src/Assets/Images/Avatar.jpg'); // Adjust default image path based on your project structure
     }
@@ -134,7 +135,7 @@ const EditProfileForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!loginInfo || !loginInfo._id) {
+    if (!loginInfo || !loginInfo.userId) {
       toast.error('User ID is missing.');
       return;
     }

@@ -7,6 +7,7 @@ import { googleIcon } from "src/Assets/Images/Images";
 import { toast } from "react-toastify";
 import s from "./SignUpForm.module.scss";
 import Avatar from '@mui/material/Avatar';
+import { API_BASE_URL } from 'src/api/index';
 
 // Default avatar image path
 const DEFAULT_AVATAR = 'src/Assets/Images/Avatar.jpg'; // Ensure this path is correct
@@ -38,7 +39,7 @@ const SignUpForm = () => {
             });
             const googleUser = await auth2.signIn();
             const idToken = googleUser.getAuthResponse().id_token;
-            const response = await axios.post('http://localhost:8000/auth/google', { token: idToken });
+            const response = await axios.post(`${API_BASE_URL}/auth/google`, { token: idToken });
             dispatch(setLoginData(response.data));
             localStorage.setItem("userSliceData", JSON.stringify(response.data));
             navigateTo("/", { replace: true });
@@ -82,7 +83,7 @@ const SignUpForm = () => {
     formData.append('pincode', pincodeRef.current.value);
   
     try {
-      const response = await axios.post('http://localhost:8000/auth/signup', formData, {
+      const response = await axios.post(`${API_BASE_URL}/auth/signup`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

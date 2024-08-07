@@ -1,10 +1,11 @@
 // user.js
-
+import { API_BASE_URL } from 'src/api/index';
+import axios from 'axios';
 // Assume this function fetches user profile data from the backend API
 export const fetchUserProfile = async (userId) => {
     try {
       // Make an HTTP request to fetch user profile data based on userId
-      const response = await fetch(`http://localhost:8000/api/users/${userId}`);
+      const response = await fetch(`${API_BASE_URL}/api/users/${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch user profile');
       }
