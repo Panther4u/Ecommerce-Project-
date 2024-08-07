@@ -106,7 +106,7 @@ import ProductCard from "../../ProductsCards/ProductCard/ProductCard";
 
 const ProductsSlider = ({ filterFun = () => productsData, customization }) => {
   // Ensure products is initialized as an empty array
-  const filteredProducts = useSelector((state) => state.products.products || []);
+  const filteredProducts = useSelector((state) => Array.isArray(state.products.products) ? state.products.products : []);
 
   const settings = {
     dots: false,
@@ -157,11 +157,15 @@ const ProductsSlider = ({ filterFun = () => productsData, customization }) => {
   return (
     <div className={s.productsSlider}>
       <Slider {...settings}>
-        {filteredProducts.map((product) => (
-          <div key={product.id} className={s.slideItem}>
-            <ProductCard key={product.id} product={product} customization={customization} />
-          </div>
-        ))}
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <div key={product.id} className={s.slideItem}>
+              <ProductCard product={product} customization={customization} />
+            </div>
+          ))
+        ) : (
+          <p>No products available.</p>
+        )}
       </Slider>
     </div>
   );

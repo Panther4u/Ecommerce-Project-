@@ -268,9 +268,12 @@
 //   }
 // }
 
-@media (max-width: 1500px) {
+@media (max-width: 2560px) {
   .container {
     width:100%;
     padding: 0px 5px;
+  }
+  .header {
+    width:100%;
   }
 }
