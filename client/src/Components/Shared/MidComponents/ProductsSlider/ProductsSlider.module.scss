@@ -42,7 +42,17 @@
 .productsSlider>*:last-child {
   margin-right: 0;
 }
+.sliderLoading {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
 
+.sliderLoading > div {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 250px;
+}
 .productsSlider {
 
     .slick-list {

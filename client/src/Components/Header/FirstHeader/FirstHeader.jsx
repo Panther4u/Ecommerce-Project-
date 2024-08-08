@@ -17,7 +17,7 @@ const FirstHeader = () => {
             <Link to="/products">{t("firstHeader.shopNow")}</Link>
           </p>
 
-          <LanguageSelector />
+          {/* <LanguageSelector /> */}
         </div>
       </div>
     </div>

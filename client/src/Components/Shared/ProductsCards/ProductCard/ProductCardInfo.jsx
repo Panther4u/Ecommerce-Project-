@@ -76,10 +76,10 @@ const ProductCardInfo = ({ product, showColors, navigateToProductDetails }) => {
         </a>
       </strong>
       <div className={s.price}>
-      ₹ {formattedPrice} {/* Display formatted price with two decimal places */}
         {discount > 0 && (
-          <del className={s.afterDiscount}>RS.{price}</del> // Display original price with strike-through if discounted
+          <del className={s.afterDiscount}> ₹ {price}</del> // Display original price with strike-through if discounted
         )}
+              ₹ {formattedPrice} {/* Display formatted price with two decimal places */}
       </div>
 
       <div className={s.rateContainer}>
