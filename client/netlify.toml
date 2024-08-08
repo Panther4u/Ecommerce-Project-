@@ -1,5 +1,5 @@
 [build]
-  base = "client"
-  publish = "client/build"
-  functions = "client/netlify/functions"
-  command = "npm run build"
+  base = "client"                  # Base directory for your project
+  publish = "client/dist"          # Directory where Vite outputs the build
+  functions = "client/netlify/functions" # Directory for Netlify functions
+  command = "npm run build"        # Command to build your project
