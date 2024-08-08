@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import s from './SuccessMessage.module.scss';
 import { useNavigate } from 'react-router-dom';
+import useScrollOnMount from "src/Hooks/App/useScrollOnMount";
 
 // PathLoader class definition
 class PathLoader {
@@ -66,7 +67,7 @@ const SuccessMessage = ({ invoiceId }) => {
   };
 
   console.log('SuccessMessage invoiceId:', invoiceId); // Debugging line
-
+  useScrollOnMount();
   return (
     <div className={`${s.fundsSuccessMessageContainer} ${active ? s.active : ''}`}>
       <div className={s.fundsContainer}>

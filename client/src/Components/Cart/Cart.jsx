@@ -172,6 +172,7 @@ import CartProducts from './CartProducts/CartProducts';
 import { addProductToCart, clearCart, selectCartProducts, selectWishList } from 'src/Features/productsSlice';
 import { selectUserId } from 'src/Features/userSlice';
 import WishList from '../WishList/WishList';
+import useScrollOnMount from "src/Hooks/App/useScrollOnMount";
 
 const Cart = () => {
   const { t } = useTranslation();
@@ -238,7 +239,7 @@ const Cart = () => {
       </div>
     );
   }
-
+  useScrollOnMount();
   // Check if there are any products in the wishlist
   const hasWishListProducts = wishListProducts.length > 0;
 

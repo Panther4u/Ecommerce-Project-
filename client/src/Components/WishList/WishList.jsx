@@ -80,7 +80,7 @@ import s from './WishList.module.scss';
 import WishProducts from './WishProducts/WishProducts';
 import { selectUserId } from 'src/Features/userSlice';
 import emptyCartImage from 'src/Assets/Images/empty-cart.png';
-
+import useScrollOnMount from "src/Hooks/App/useScrollOnMount";
 const WishList = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -102,7 +102,8 @@ const WishList = () => {
   };
 
   const isEmptyWishlist = status !== 'loading' && numberOfWishlist === 0;
-
+  useScrollOnMount();
+  
   return (
     <>
       <Helmet>

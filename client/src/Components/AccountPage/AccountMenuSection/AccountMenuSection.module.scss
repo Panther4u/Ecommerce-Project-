@@ -1,8 +1,8 @@
 @import "src/Styles/mixins";
 
 .menuSection {
-  max-width: 300px;
-  min-width: 250px;
+  max-width: 250px;
+  min-width: 180px;
   left: -200%;
   transition: left .5s ease;
 
@@ -14,39 +14,45 @@
 .menuSection.mobile {
   position: fixed;
   top: 0;
-  background-color: var(--white);
+  background-color:white;
   height: calc(100vh - (100vh - 100%));
-  padding: 20px;
+  padding: 15px;
   z-index: 1000;
 }
 
 .section>h2 {
   font-weight: 500;
-  font-size: 1rem;
+  font-size: .9rem;
+  text-align: start;
+  padding-left: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  color: var(--dark-tomato);
 }
 
 .section>ul {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin: 20px 0;
+  margin: 10px 0;
+  font-size: 11px;
 }
 
 .section>ul>li>a {
   outline: none;
-  color: var(--dark-gray);
+  color: gray;
 
   &:hover {
     color: var(--dark-tomato);
   }
 
-  &:not(:focus-visible)[class=active] {
-    color: var(--dark-tomato);
+  // &:not(:focus-visible)[class=active] {
+  //   color: var(--dark-tomato);
 
-    &:hover {
-      color: var(--tomato);
-    }
-  }
+  //   &:hover {
+  //     color: var(--tomato);
+  //   }
+  // }
 
   &:focus-visible {
     text-decoration: underline;

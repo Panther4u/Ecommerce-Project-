@@ -380,6 +380,7 @@ import Modal from './Modal';
 import InvoiceModal from './InvoiceModal';
 import { capitalizeFirstLetter } from 'src/Functions/helper'; // Adjust the path accordingly
 import { API_BASE_URL } from 'src/api/index';
+import useScrollOnMount from "src/Hooks/App/useScrollOnMount";
 
 const BillingDetails = ({ totalAmount }) => {
   const dispatch = useDispatch();
@@ -406,6 +407,7 @@ const BillingDetails = ({ totalAmount }) => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    
     const fetchAddresses = async () => {
       if (!userId) return;
       try {
@@ -741,6 +743,7 @@ const BillingDetails = ({ totalAmount }) => {
     }
   };
 
+  useScrollOnMount();
   return (
     <div className={s.BillingDetails}>
       <ToastContainer />

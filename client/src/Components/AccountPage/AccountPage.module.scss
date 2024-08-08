@@ -63,5 +63,23 @@
 @media (max-width:768px) {
   .wrapper {
     margin-left: 30px;
+    
   }
+
+.accountPage {
+  margin: 22px 0;
+}
+.accountPageContent {
+  display: flex;
+  justify-content: space-between;
+  margin: var(--page-margin);
+  gap: 10px;
+}
+.welcomeMessage {
+  font-weight: 400;
+  font-size: .875rem;
+  margin: 0;
+}
+
+
 }

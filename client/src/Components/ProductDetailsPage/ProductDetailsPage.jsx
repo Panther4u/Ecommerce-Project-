@@ -67,7 +67,6 @@
 // export default ProductDetailsPage;
 
 
-
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
@@ -122,7 +121,7 @@ const ProductDetailsPage = () => {
     dependencies: [productName],
   });
 
-  useScrollOnMount(200);
+  useScrollOnMount();
 
   return (
     <>
