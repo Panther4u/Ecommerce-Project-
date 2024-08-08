@@ -14,6 +14,7 @@
   border: 1px solid var(--gray);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+  max-width : 100%;
   max-height: 200px; /* Optional: Set a max height for scrollable dropdown */
   overflow-y: auto; /* Optional: Allow scrolling if content exceeds max height */
   display: flex;
@@ -93,6 +94,7 @@
     outline-color: var(--turquoise);
     border-color: var(--white);
     background-color: rgba(74, 195, 232, .07);
+    
   }
 }
 
@@ -145,16 +147,16 @@
 @include small {
   .searchContainer {
     padding: 6px 6px 6px 6px;
-    width: auto;
+    width: 100%;
     gap: 5px;
     margin-inline-end: 14px;
   }
 
   .searchDropdown {
     position: absolute;
-    top: 50px;
+    top: 40px;
     left: 0;
-    width: auto;
+    width: 100%;
   }
 
   .dropdownItem {
