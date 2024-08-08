@@ -115,6 +115,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import s from './EditProfileForm.module.scss'; // Adjust path based on your project structure
 import { API_BASE_URL } from 'src/api/index';
+import DefaultImage from '../../../Assets/Images/Avatar.jpg';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -122,13 +123,13 @@ const EditProfileForm = () => {
   const fileInputRef = useRef(null);
   const { loginInfo } = useSelector((state) => state.user) || {};
   const [profileImage, setProfileImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState('');
+  const [imagePreview, setImagePreview] = useState(DefaultImage);
 
   useEffect(() => {
     if (loginInfo && loginInfo.profileImage) {
       setImagePreview(`${API_BASE_URL}/${loginInfo.profileImage}`);
     } else {
-      setImagePreview('/src/Assets/Images/Avatar.jpg'); // Adjust default image path based on your project structure
+      setImagePreview(DefaultImage); // Set to default image if no profile image
     }
   }, [loginInfo]);
 

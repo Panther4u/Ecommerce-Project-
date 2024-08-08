@@ -155,6 +155,7 @@ import { selectUserId } from 'src/Features/userSlice';
 import s from './CouponModal.module.scss';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import image from '../../../Assets/Images/special-offer-sale-sign.png';
 
 const CouponModal = ({ isOpen, onClose, onApply }) => {
   const [selectedCoupon, setSelectedCoupon] = useState('');
@@ -263,7 +264,7 @@ const CouponModal = ({ isOpen, onClose, onApply }) => {
           {coupons.length > 0 ? (
             coupons.map((coupon) => (
               <div key={coupon.code} className={s.couponCard}>
-                <img src="src/Assets/Images/special-offer-sale-sign.png" className={s.logo} alt="Coupon Logo" />
+                <img src={image} className={s.logo} alt="Coupon Logo" />
                 <p className={s.couponhead}>{coupon.discountPercent}% off on all rides within the city</p>
                 <div className={s.couponRow}>
                   <span className={s.cpnCode} onClick={() => handleCouponClick(coupon.code)}>
