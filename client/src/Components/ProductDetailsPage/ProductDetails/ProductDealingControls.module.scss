@@ -13,6 +13,14 @@
   }
 }
 
+@include very-small {
+  .wrappers {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+}
+
 .customNumberInput {
   display: flex;
   align-items: center;

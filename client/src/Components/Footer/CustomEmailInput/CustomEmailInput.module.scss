@@ -5,7 +5,10 @@
   align-items: center;
   border-radius: 4px;
   border: 1px solid var(--medium-light-gray);
-  width: 222px;
+  width: 100%; // Make width responsive
+  max-width: 100%; // Adjust max-width for better responsiveness
+  position: relative;
+  margin: 0 auto; // Center align the input
 
   &:has(:focus) {
     border-color: var(--white);
@@ -21,8 +24,9 @@
   border: none;
   color: var(--medium-light-gray);
   background-color: transparent;
-  padding: 12px 0 12px 16px;
-  flex: 1; /* Make input take up available space */
+  padding: 10px; // Adjust padding for better alignment
+  flex: 1; // Make input take up available space
+  font-size: 1rem; // Adjust font size for better readability
 }
 
 .input>label {
@@ -38,11 +42,20 @@
   padding: 10px;
   display: flex;
   align-items: center;
+  justify-content: center; // Center align button content
+  transition: background-color 0.3s; // Smooth background color transition
+}
+
+.input button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6; // Make button look disabled
 }
 
 .input svg {
-  width: 22px;
-  height: 22px;
+  width: 1.5em; // Use relative units
+  height: 1.5em; // Use relative units
+  max-width: 22px; // Ensure maximum width
+  max-height: 22px; // Ensure maximum height
 }
 
 .input svg path {
@@ -57,11 +70,10 @@
   background-color: var(--white) !important;
 }
 
-
 .loader {
   position: relative;
-  width: 16px; /* Reduced width */
-  height: 16px; /* Reduced height */
+  width: 16px; /* Adjust size for better visibility */
+  height: 16px; /* Adjust size for better visibility */
   animation: spin 1s linear infinite;
 }
 
@@ -91,4 +103,19 @@
 @keyframes glow {
   0%, 100% { box-shadow: 0 0 6px 3px rgba(255, 255, 255, 0.5); } /* Reduced glow effect */
   50% { box-shadow: 0 0 12px 6px rgba(255, 255, 255, 0.9); } /* Increased glow effect */
+}
+
+@include very-small {
+  .input {
+    width: 100%; // Ensure full width on very small screens
+  }
+
+  .input svg {
+    width: 1.2em; // Adjust size for very small screens
+    height: 1.2em; // Adjust size for very small screens
+  }
+  .input>input {
+    font-size: .7rem; // Adjust font size for better readability
+    width: 0;
+  }
 }

@@ -51,6 +51,7 @@ const CustomEmailInput = () => {
           )}
         </button>
       </form>
+      <ToastContainer />
     </>
   );
 };

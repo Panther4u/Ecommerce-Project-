@@ -296,7 +296,7 @@ const ProductDealingControls = ({ data }) => {
   return (
     <section className={s.dealing}>
       {/* Quantity input section */}
-      <div className={s.wrapper}>
+      <div className={`${s.wrapper} ${s.wrappers}`}>
         <div className={s.customNumberInput}>
                   <button onClick={decreaseQuantity} type="button">
           <label htmlFor="quantity-input">-</label>
