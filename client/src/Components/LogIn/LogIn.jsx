@@ -2,8 +2,10 @@ import { Helmet } from "react-helmet-async";
 import { signUpImg } from "src/Assets/Images/Images";
 import s from "./LogIn.module.scss";
 import LogInForm from "./LogInForm/LogInForm";
+import useScrollOnMount from "src/Hooks/App/useScrollOnMount";
 
 const LogIn = () => {
+  useScrollOnMount();
   return (
     <>
       <Helmet>

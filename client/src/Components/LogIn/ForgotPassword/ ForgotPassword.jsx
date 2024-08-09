@@ -58,7 +58,7 @@
 //           />
 //           <button
 //             onClick={handleSendOTP}
-//             style={{ marginTop: "10px", padding: "10px 20px", fontSize: "16px", border: "none", borderRadius: "4px", backgroundColor: "#007bff", color: "#fff", cursor: "pointer" }}
+//             style={{ marginTop: "10px", padding: "10px 20px", fontSize: "16px", border: "none", borderRadius: "4px", backgroundColor: "#B40404", color: "#fff", cursor: "pointer" }}
 //           >
 //             Send OTP
 //           </button>
@@ -88,7 +88,7 @@
 //           />
 //           <button
 //             onClick={handleResetPassword}
-//             style={{ marginTop: "10px", padding: "10px 20px", fontSize: "16px", border: "none", borderRadius: "4px", backgroundColor: "#007bff", color: "#fff", cursor: "pointer" }}
+//             style={{ marginTop: "10px", padding: "10px 20px", fontSize: "16px", border: "none", borderRadius: "4px", backgroundColor: "#B40404", color: "#fff", cursor: "pointer" }}
 //           >
 //             Reset Password
 //           </button>
@@ -205,12 +205,8 @@
 // export default ForgotPassword;
 
 
-
-
 import React, { useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from 'src/api/index';
 
@@ -221,52 +217,72 @@ const ForgotPassword = () => {
   const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [sending, setSending] = useState(false); // State for sending status
+  const [validating, setValidating] = useState(false); // State for validating OTP
+  const [updating, setUpdating] = useState(false); // State for updating password
   const navigate = useNavigate();
 
   const handleSendOTP = () => {
+    setSending(true); // Set sending status to true
     axios
       .get(`${API_BASE_URL}/api/generateOTP`, { params: { email, name: "User", reason: "FORGOTPASSWORD" } })
       .then(() => {
-        toast.success("OTP sent successfully");
         setOtpSent(true);
+        setSending(false); // Reset sending status
+        setTimeout(() => {
+          // Enable the button again after 90 seconds
+          setOtpSent(false);
+        }, 90000);
       })
       .catch((error) => {
         console.error("Error sending OTP:", error.response?.data?.message);
-        toast.error("Error sending OTP. Please try again later.");
+        setSending(false); // Reset sending status
       });
   };
 
   const handleValidateOTP = () => {
+    setValidating(true); // Set validating status to true
     axios
       .post(`${API_BASE_URL}/api/validateOTP`, { email, otp })
       .then(() => {
-        toast.success("OTP validated successfully");
         setOtpValidated(true);
+        setValidating(false); // Reset validating status
+        // Show success message and then navigate
+        // setTimeout(() => {
+        //   // // Navigate after 2 seconds
+        //   // navigate("/reset-success"); // Change to your success page route if necessary
+        // }, 2000);
       })
       .catch((error) => {
         console.error("Error validating OTP:", error.response?.data?.message);
-        toast.error("Invalid OTP. Please try again.");
+        setValidating(false); // Reset validating status
       });
   };
 
   const handleResetPassword = async () => {
+    setUpdating(true); // Set updating status to true
     try {
       if (password !== confirmPassword) {
-        toast.error("Passwords do not match");
+        alert("Passwords do not match"); // Change from toast to alert
+        setUpdating(false); // Reset updating status
         return;
       }
 
       const response = await axios.post(`${API_BASE_URL}/api/resetPassword`, { email, password });
 
       if (response.status === 200) {
-        toast.success("Password reset successfully");
-        navigate("/login");
+        setTimeout(() => {
+          // Show success message and then navigate
+          navigate("/login");
+        }, 0);
       } else {
-        toast.error("Unexpected error occurred. Please try again later.");
+        alert("Unexpected error occurred. Please try again later."); // Change from toast to alert
       }
     } catch (error) {
       console.error("Error resetting password:", error);
-      toast.error(error.response?.data?.message || "Error resetting password. Please try again later.");
+      alert(error.response?.data?.message || "Error resetting password. Please try again later."); // Change from toast to alert
+    } finally {
+      setUpdating(false); // Reset updating status
     }
   };
 
@@ -286,18 +302,19 @@ const ForgotPassword = () => {
           />
           <button
             onClick={handleSendOTP}
+            disabled={sending} // Disable button while sending
             style={{
               marginTop: "10px",
               padding: "10px 20px",
               fontSize: "16px",
               border: "none",
               borderRadius: "4px",
-              backgroundColor: "#007bff",
+              backgroundColor: sending ? "#B40404" : "#B40404", // Change color when sending
               color: "#fff",
-              cursor: "pointer"
+              cursor: sending ? "not-allowed" : "pointer" // Change cursor when sending
             }}
           >
-            Send OTP
+            {sending ? "Sending..." : "Send OTP"} {/* Change button text based on sending status */}
           </button>
         </div>
       ) : (
@@ -313,18 +330,19 @@ const ForgotPassword = () => {
               />
               <button
                 onClick={handleValidateOTP}
+                disabled={validating} // Disable button while validating
                 style={{
                   marginTop: "10px",
                   padding: "10px 20px",
                   fontSize: "16px",
                   border: "none",
                   borderRadius: "4px",
-                  backgroundColor: "#007bff",
+                  backgroundColor: "#B40404", // Change to your preferred color
                   color: "#fff",
-                  cursor: "pointer"
+                  cursor: validating ? "not-allowed" : "pointer" // Change cursor when validating
                 }}
               >
-                Validate OTP
+                {validating ? "Validating..." : "Validate OTP"} {/* Change button text based on validating status */}
               </button>
             </div>
           ) : (
@@ -345,18 +363,19 @@ const ForgotPassword = () => {
               />
               <button
                 onClick={handleResetPassword}
+                disabled={updating} // Disable button while updating
                 style={{
                   marginTop: "10px",
                   padding: "10px 20px",
                   fontSize: "16px",
                   border: "none",
                   borderRadius: "4px",
-                  backgroundColor: "#007bff",
+                  backgroundColor: "#B40404", // Change to your preferred color
                   color: "#fff",
-                  cursor: "pointer"
+                  cursor: updating ? "not-allowed" : "pointer" // Change cursor when updating
                 }}
               >
-                Reset Password
+                {updating ? "Updating..." : "Reset Password"} {/* Change button text based on updating status */}
               </button>
             </div>
           )}
