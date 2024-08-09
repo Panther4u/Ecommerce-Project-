@@ -53,47 +53,47 @@ export const introductionSliderData = [
 export const categoriesData = [
   {
     iconName: "mobile",
-    title: "Phones",
+    title: "phones",
     id: uuid(),
   },
   {
     iconName: "computer",
-    title: "Computers",
+    title: "computers",
     id: uuid(),
   },
   {
     iconName: "smartWatch",
-    title: "SmartWatch",
+    title: "smartWatch",
     id: uuid(),
   },
   {
     iconName: "camera",
-    title: "Camera",
+    title: "camera",
     id: uuid(),
   },
   {
     iconName: "headphone",
-    title: "HeadPhones",
+    title: "headPhones",
     id: uuid(),
   },
   {
     iconName: "gamepad",
-    title: "Gaming",
+    title: "gaming",
     id: uuid(),
   },
   {
     iconName: "furniture",
-    title: "Furniture",
+    title: "furniture",
     id: uuid(),
   },
   {
     iconName: "shirt",
-    title: "Clothes",
+    title: "clothes",
     id: uuid(),
   },
   {
     iconName: "dogHand",
-    title: "Animal",
+    title: "animal",
     id: uuid(),
   },
   {

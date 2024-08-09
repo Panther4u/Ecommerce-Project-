@@ -1938,6 +1938,38 @@ app.get('/api/orders', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+
+
+// Route to add a product
+app.post('/api/add-product', upload.fields([{ name: 'img' }, { name: 'otherImages' }]), async (req, res) => {
+  try {
+    console.log('Files:', req.files); // Debugging line to check uploaded files
+
+    const productData = {
+      shortName: req.body.shortName,
+      name: req.body.name,
+      category: req.body.category,
+      price: req.body.price,
+      discount: req.body.discount,
+      description: req.body.description,
+      rate: req.body.rate,
+      votes: req.body.votes,
+      quantity: req.body.quantity,
+      sold: req.body.sold,
+      img: req.files['img'] ? req.files['img'][0].path : '', // Path to main image
+      otherImages: req.files['otherImages'] ? req.files['otherImages'].map(file => file.path) : [], // Paths to additional images
+    };
+
+    const product = new Product(productData);
+    await product.save();
+    res.status(201).json({ message: 'Product added successfully', product });
+  } catch (error) {
+    console.error('Error adding product:', error);
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
+
 // // Function to read slider data from JSON file
 // const getSliderData = () => {
 //   const filePath = path.join(__dirname, 'data/sliderData.json');

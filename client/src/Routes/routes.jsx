@@ -61,6 +61,7 @@ import ProductsPage from "../Components/ProductsPage/ProductsPage";
 import SearchPage from "../Components/Search/SearchPage";
 import SignUp from "../Components/SignUp/SignUp";
 import WishList from "../Components/WishList/WishList";
+import AddProduct from "../pages/addProduct/AddProduct";
 import DashHome from "../pages/home/Home";
 import List from "../pages/list/List";
 import New from "../pages/new/New";
@@ -74,6 +75,7 @@ export const ROUTES_CONFIG = [
   { path: "/users", element: <List /> },
   { path: "/new", element: <New/> },
   { path: "/orderlist", element: <OrderList /> },
+  { path: "/add-product", element: <AddProduct /> },
   { path: "/orderdetails/:orderId", element: <OrderDetails /> },
   // { path: "/user/:id", element: <Single /> },
   // {
