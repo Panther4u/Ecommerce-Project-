@@ -67,6 +67,11 @@ export const categoriesData = [
     id: uuid(),
   },
   {
+    iconName: "frame",
+    title: "frame",
+    id: uuid(),
+  },
+  {
     iconName: "camera",
     title: "camera",
     id: uuid(),

@@ -2,7 +2,7 @@
   padding: 20px;
   background-color: #fff;
 
-  .head{
+  .head {
     width: 100%;
     display: flex;
     align-items: center;
@@ -11,6 +11,7 @@
     font-size: 1.5rem;
     font-weight: 600;
   }
+
   .header {
     display: flex;
     justify-content: space-between;
@@ -22,8 +23,6 @@
       font-weight: 600;
       color: rgb(30, 29, 29);
     }
-
-
   }
 
   .header-actions {
@@ -55,11 +54,11 @@
   .product-details {
     display: grid;
     grid-template-columns: 60% 40%;
-    gap: 5px;
+    gap: 20px; /* Increased gap for better spacing */
 
     .general-info,
     .upload-img,
-    .pricing-stock{
+    .pricing-stock {
       padding: 15px;
       border-radius: 12px;
       background-color: transparent;
@@ -189,6 +188,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      
       input {
         margin-bottom: 15px;
       }
@@ -199,76 +199,224 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  
+margin-bottom: 20px;
     select {
       flex: 1;
       padding: 12px 20px;
       border-radius: 8px;
       border: 1px dashed #ccc;
       cursor: pointer;
-      font-size: 14px; // Apply font size to the select box
-  
+      font-size: 14px; /* Font size for select box */
+
       option {
-        font-size: 14px; // Apply font size to the option text
-        width: 100%;
+        font-size: 14px; /* Font size for option text */
       }
     }
   }
-  
+
+  .frame-details {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column; /* Stack vertically on small screens */
+    align-items: stretch;
+
+    gap: 0px;
+
+    @media (min-width: 768px) { /* Medium screens and up */
+      flex-direction: row;
+      justify-content: center;
+      justify-content: space-around;
+    }
+  }
+
+  .custom-select {
+    position: relative;
+    display: inline-block;
+    width: 100%; /* Full width on smaller screens */
+    min-width: 160px; /* Set minimum width */
+
+    @media (min-width: 768px) { /* Medium screens and up */
+      width: auto; /* Adjust width for larger screens */
+      
+    }
+  }
+
+  .selected-frame {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: 1px dashed #ccc;
+    background-color: #fff;
+    padding: 12px;
+    margin-bottom: 15px;
+    width: 100%; /* Full width on smaller screens */
+    min-width: 160px; /* Set minimum width */
+
+    @media (min-width: 768px) { /* Medium screens and up */
+      width: auto; /* Adjust width for larger screens */
+    }
+  }
+
+  .selected-frame span {
+    color: #333;
+    max-width: 100%; /* Ensure text doesn’t overflow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+  }
+
+  .dropdown-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .frame-style-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 768px) { /* Small screens */
+      width: 100%; /* Full width on smaller screens */
+    }
+  }
+
+  .frame-style-option {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 10px;
+
+    &:hover {
+      background-color: #f1f1f1;
+    }
+  }
+
+  .frame-style-img {
+    width: 24px; /* Adjusted size for better fit on small screens */
+    height: 24px; /* Adjusted size for better fit on small screens */
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .colors {
+    margin-bottom: 2rem;
+
+    h2 {
+      margin-bottom: 0.5rem;
+    }
+
+    input {
+      display: inline-block;
+      width: calc(100% - 100px);
+      margin-right: 10px;
+    }
+
+    button {
+      width: 80px;
+      padding: 0.5rem;
+    }
+
+    .color-list {
+      margin-top: 1rem;
+
+      .color-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem;
+        background-color: #f4f4f4;
+        border-radius: 5px;
+        margin-bottom: 0.5rem;
+
+        span {
+          font-size: 0.9rem;
+        }
+
+        .remove-color {
+          background: none;
+          border: none;
+          font-size: 1.2rem;
+          color: #d9534f;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 
   // Responsive Styles
   @media (max-width: 968px) {
     .product-details {
       grid-template-columns: 1fr;
-      gap: 5px;
+      gap: 10px; /* Increased gap for better spacing */
+    }
 
-      .upload-img, .general-info, .pricing-stock, .category {
-padding: 0;
-margin: 0;
+    .upload-img {
+      margin-bottom: 3rem;
+    }
 
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+
+      h1 {
+        font-size: 1rem;
       }
-      .upload-img{
-        margin-bottom: 3rem;
+
+      .header-actions {
+        flex-direction: column;
+        align-items: flex-start;
+
+        button {
+          width: 100%;
+          margin-top: 10px;
+          padding: 10px;
+        }
       }
     }
-    
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    
-        h1 {
-          font-size: 1rem;
-          font-weight: 600;
-          color: rgb(30, 29, 29);
-        }
-    
-        .header-actions {
-          display: flex;
-    
-          button {
-            padding: 10px 16px;
-            margin-left: 10px;
-            border-radius: 8px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-          }
-    
-          .save-draft {
-            background-color: #f0f0f0;
-            font-size: .7rem;
-          }
-    
-          .add-product-btn {
-            background-color: #4caf50;
-            color: white;
-            font-size: .7rem;
-          }
-        }
-      }
+
+    .frame-details {
+      flex-direction: column; /* Stack vertically on smaller screens */
+    }
+
+    .custom-select {
+      width: 100%; /* Full width on smaller screens */
+    }
+
+    .selected-frame {
+      width: 100%; /* Full width on smaller screens */
+    }
   }
 
-  
+  @media (max-width: 768px) {
+    .product-details {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .header-actions {
+      flex-direction: column;
+      align-items: flex-start;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
 }
