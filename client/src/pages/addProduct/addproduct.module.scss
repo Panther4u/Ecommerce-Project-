@@ -1,6 +1,7 @@
 .add-product {
-  padding: 20px;
+  // padding: 20px;
   background-color: #fff;
+  margin-top: 20px;
 
   .head {
     width: 100%;
@@ -407,10 +408,13 @@ margin-bottom: 20px;
 
     .header-actions {
       flex-direction: column;
-      align-items: flex-start;
-
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+      padding: 10px 60px;
       button {
         width: 100%;
+
       }
     }
 

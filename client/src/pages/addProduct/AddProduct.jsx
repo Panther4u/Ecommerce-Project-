@@ -194,7 +194,7 @@ const AddProduct = () => {
       <h1 className={s.head}>Add New Product</h1>
       <div className={s['product-details']}>
         <div className={s['general-info']}>
-          <h2>General Information</h2>
+          {/* <h2>General Information</h2> */}
           <input
             type="text"
             placeholder="Short Name"

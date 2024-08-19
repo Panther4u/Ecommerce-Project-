@@ -25,7 +25,7 @@ const OrderDatatable = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log('Fetched orders:', response.data);
+      // console.log('Fetched orders:', response.data);
       const ordersWithId = response.data.map((order) => ({
         ...order,
         id: order._id,

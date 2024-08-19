@@ -62,12 +62,14 @@ import SearchPage from "../Components/Search/SearchPage";
 import SignUp from "../Components/SignUp/SignUp";
 import WishList from "../Components/WishList/WishList";
 import AddProduct from "../pages/addProduct/AddProduct";
+import Product from "../pages/addProduct/Product";
 import DashHome from "../pages/home/Home";
 import List from "../pages/list/List";
 import New from "../pages/new/New";
 import OrderDetails from "../pages/order/OrderDetails";
 import OrderList from "../pages/order/Orderlist";
 import Single from "../pages/single/Single";
+import Stat from "../pages/Stats/Stat";
 
 
 export const ROUTES_CONFIG = [
@@ -75,8 +77,9 @@ export const ROUTES_CONFIG = [
   { path: "/users", element: <List /> },
   { path: "/new", element: <New/> },
   { path: "/orderlist", element: <OrderList /> },
-  { path: "/add-product", element: <AddProduct /> },
+  { path: "/add-product", element: <Product /> },
   { path: "/orderdetails/:orderId", element: <OrderDetails /> },
+  { path: "/stat", element: <Stat /> },
   // { path: "/user/:id", element: <Single /> },
   // {
   //   path: "/users/new",

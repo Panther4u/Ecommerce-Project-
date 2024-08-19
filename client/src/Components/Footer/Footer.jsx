@@ -5,6 +5,7 @@ import CustomEmailInput from "./CustomEmailInput/CustomEmailInput";
 import s from "./Footer.module.scss";
 // import RepoStarsForks from "./RepoStarsForks/RepoStarsForks";
 import DownloadAppInfo from "./WebsiteSocialMedia/DownloadAppInfo";
+import logoImage from "src/Assets/Images/logo.png"; // Adjust the path to your image
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -16,7 +17,9 @@ const Footer = () => {
         <section className={s.sections}>
           <section className={s.section1}>
             <b>
-              <Link to="/">Exclusive</Link>
+              <Link to="/">
+                <img src={logoImage} alt="Exclusive Logo" className={s.logoImage} />
+              </Link>
             </b>
             <span>{t(`${section}1.subscribe`)}</span>
             <p>{t(`${section}1.getOffer`)}</p>
@@ -29,9 +32,9 @@ const Footer = () => {
 
             <ul>
               {/* <li>{t(`${section}2.address`)}</li> */}
-              <li>New Address: 123 New Street, City, Country</li>
+              <li>New Address: 123 New Street, Karur, India</li>
               <li>
-                <a href="mailto:exclusive@gmail.com">exclusive@gmail.com</a>
+                <a href="mailto:exclusive@gmail.com">theframeshoppy@gmail.com</a>
               </li>
               <li>
                 <a href="tel:+(91)-99999-9999">+91 xxxxx - xxxxx</a>
@@ -44,7 +47,7 @@ const Footer = () => {
 
             <ul>
               <li>
-                <Link to="/profile">{t(`${section}3.myAccount`)}</Link>
+                <Link to="/profile">{t(`${section}3.myAccount`)}</Link>s
               </li>
               <li>
                 <Link to="/signup">{t(`${section}3.loginRegister`)}</Link>

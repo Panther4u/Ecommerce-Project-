@@ -72,7 +72,7 @@ const Datatable = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("${API_BASE_URL}/api/users");
+      const response = await axios.get(`${API_BASE_URL}/api/users`);
       const usersWithId = response.data.map((user) => ({
         ...user,
         id: user._id, // Use _id for DataGrid

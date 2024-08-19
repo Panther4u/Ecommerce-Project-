@@ -78,10 +78,12 @@ const Sidebar = ({ showSidebar, closeSidebar }) => {
             <span>Delivery</span>
           </li>
           <p className="title">USEFUL</p>
+          <Link to="/stat" style={{ textDecoration: "none" }}>
           <li>
             <InsertChartIcon className="icon" />
             <span>Stats</span>
           </li>
+          </Link>
           <li>
             <NotificationsNoneIcon className="icon" />
             <span>Notifications</span>
@@ -104,10 +106,12 @@ const Sidebar = ({ showSidebar, closeSidebar }) => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
+          <Link to="/signup" style={{ textDecoration: "none" }}>
           <li>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
           </li>
+          </Link>
         </ul>
       </div>
     </div>

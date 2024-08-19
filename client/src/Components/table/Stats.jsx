@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import s from "./table.module.scss";
+import s from "./Stats.module.scss";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import axios from 'axios';
 import { API_BASE_URL } from 'src/api/index';
 
-const List = () => {
+const Stats = () => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
@@ -31,13 +31,13 @@ const List = () => {
       <Table sx={{ minWidth: 1000 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell className={s.tableCell}>PaymentId</TableCell>
-            <TableCell className={s.tableCell}>Product</TableCell>
-            <TableCell className={s.tableCell}>Customer</TableCell>
-            <TableCell className={s.tableCell}>Date</TableCell>
-            <TableCell className={s.tableCell}>Amount</TableCell>
-            <TableCell className={s.tableCell}>Payment Method</TableCell>
-            <TableCell className={s.tableCell}>Status</TableCell>
+            <TableCell className={`${s.tableCell} ${s.header}`}>PaymentId</TableCell>
+            <TableCell className={`${s.tableCell} ${s.header}`}>Product</TableCell>
+            <TableCell className={`${s.tableCell} ${s.header}`}>Customer</TableCell>
+            <TableCell className={`${s.tableCell} ${s.header}`}>Date</TableCell>
+            <TableCell className={`${s.tableCell} ${s.header}`}>Amount</TableCell>
+            <TableCell className={`${s.tableCell} ${s.header}`}>Payment Method</TableCell>
+            <TableCell className={`${s.tableCell} ${s.header}`}>Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -79,4 +79,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default Stats;

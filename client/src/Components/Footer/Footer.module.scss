@@ -6,11 +6,17 @@
   padding: 20px 0;
   position: relative;
 }
-
+.logoImage {
+  width: 100px; // Adjust width as needed
+  height: auto;
+  margin-right: 8px; // Adjust space between image and text
+  // vertical-align: middle; // Align image with text
+}
 @include medium {
   .footer {
     padding: 20px 0;
   }
+  
 }
 
 .sections {
@@ -30,7 +36,16 @@
 @include small {
   .sections {
     justify-content: center;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    font-size: 10px;
+    gap: 20px;
+  }
+
+  b{
+    margin: 0;
+    padding: 0;
   }
 }
 
@@ -90,9 +105,10 @@
 
 .sections>section>b {
   display: block;
-  margin-bottom: 24px;
+  margin-bottom: 10px;
   font-weight: 500;
   position: relative;
+  font-size: 20px;
 }
 
 .sections>section :where(p, li, a) {

@@ -6,6 +6,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { Link } from 'react-router-dom';
 import { API_BASE_URL } from 'src/api/index';
 
 const Widget = ({ type }) => {
@@ -16,15 +17,13 @@ const Widget = ({ type }) => {
 
   useEffect(() => {
     fetchData();
-  }, [type]); // Fetch data whenever type changes
+  }, [type]);
 
   useEffect(() => {
-    // Calculate percentage difference whenever the amount changes
     if (prevAmount !== null && amount !== null && prevAmount !== 0) {
       const difference = ((amount - prevAmount) / prevAmount) * 100;
       setDiff(difference.toFixed(2));
     }
-    // Update previous amount to current amount after calculation
     setPrevAmount(amount);
   }, [amount]);
 
@@ -40,7 +39,7 @@ const Widget = ({ type }) => {
             link: 'See all users',
             icon: <PersonOutlinedIcon className="icon" style={{ color: 'crimson', backgroundColor: 'rgba(255, 0, 0, 0.2)' }} />,
           });
-          setAmount(response.data.count); // Assuming response structure { count: ... }
+          setAmount(response.data.count);
           break;
         case 'order':
           response = await axios.get(`${API_BASE_URL}/api/totalUserOrderCount`);
@@ -50,7 +49,7 @@ const Widget = ({ type }) => {
             link: 'View all orders',
             icon: <ShoppingCartOutlinedIcon className="icon" style={{ backgroundColor: 'rgba(218, 165, 32, 0.2)', color: 'goldenrod' }} />,
           });
-          setAmount(response.data.count); // Assuming response structure { count: ... }
+          setAmount(response.data.count);
           break;
         case 'earning':
           response = await axios.get(`${API_BASE_URL}/api/totalBillAmount`);
@@ -60,7 +59,7 @@ const Widget = ({ type }) => {
             link: 'View net earnings',
             icon: <MonetizationOnOutlinedIcon className="icon" style={{ backgroundColor: 'rgba(0, 128, 0, 0.2)', color: 'green' }} />,
           });
-          setAmount(response.data.amount); // Assuming response structure { amount: ... }
+          setAmount(response.data.amount);
           break;
         case 'balance':
           response = await axios.get(`${API_BASE_URL}/api/totalBalanceAmount`);
@@ -70,27 +69,30 @@ const Widget = ({ type }) => {
             link: 'See details',
             icon: <AccountBalanceWalletOutlinedIcon className="icon" style={{ backgroundColor: 'rgba(128, 0, 128, 0.2)', color: 'purple' }} />,
           });
-          setAmount(response.data.amount); // Assuming response structure { amount: ... }
+          setAmount(response.data.amount);
           break;
         default:
           break;
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      // Handle error state or display a message
     }
   };
 
-  if (!data) return null; // Handle loading state or wait for initial fetch
+  if (!data) return null;
 
   return (
     <div className="widget">
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney ? `₹ ${amount !== null ? amount.toLocaleString() : 'Loading...'} -` : amount !== null ? amount : 'Loading...'}
+          {data.isMoney ? `₹ ${amount !== null ? amount.toLocaleString() : 'Loading...'}` : amount !== null ? amount : 'Loading...'}
         </span>
-        <span className="link">{data.link}</span>
+        <span className="link">
+          {type === 'order' && <Link to="/orderlist">{data.link}</Link>}
+          {type === 'user' && <Link to="/users">{data.link}</Link>}
+          {/* Add more conditions here for other types if needed */}
+        </span>
       </div>
       <div className="right">
         <div className={`percentage ${diff >= 0 ? 'positive' : 'negative'}`}>

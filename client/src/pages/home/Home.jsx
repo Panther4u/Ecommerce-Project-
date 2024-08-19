@@ -5,7 +5,7 @@ import "./home.scss";
 import Widget from "../../Components/widget/Widget";
 import Featured from "../../Components/featured/Featured";
 import Chart from "../../Components/chart/Chart";
-import Table from "../../Components/table/Table";
+import Stats from "../../Components/table/Stats";
 
 const DashHome = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -35,7 +35,7 @@ const DashHome = () => {
         </div>
         <div className="listContainer">
           <div className="listTitle">Latest Transactions</div>
-          <Table />
+          <Stats />
         </div>
       </div>
     </div>

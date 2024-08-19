@@ -3,6 +3,11 @@
 
 .table {
   .tableCell{
+
+      &.header {
+        font-weight: bold;
+      }
+    
     @include large {
       font-size: .8rem;
     }

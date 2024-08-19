@@ -98,7 +98,7 @@ const OrderProduct = () => {
     try {
       console.log(`Updating order status to ${newStatus} for order ID ${orderId}`);
       const response = await axios.put(`${API_BASE_URL}/api/orders/${orderId}/status`, { status: newStatus });
-      console.log('Response:', response.data);
+      // console.log('Response:', response.data);
       setOrder(prevOrder => ({ ...prevOrder, status: newStatus })); // Update order status in local state
       toast.success('Order status updated successfully');
     } catch (error) {
