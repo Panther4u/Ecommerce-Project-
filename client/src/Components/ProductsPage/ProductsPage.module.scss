@@ -18,7 +18,7 @@
   margin-top: 10px;
   gap: 10px;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
   display: flex;
   width: 100%;
 }
@@ -36,13 +36,24 @@
   gap: 30px;
   margin-bottom: 50px;
 }
-
+.sortOptions {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
 @media (max-width: 1300px) {
   .SkeletonCards {
     grid-template-columns: repeat(3, 1fr);
   }
   .priceInput {
     width: 15%;
+  }
+  .sortOptions {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
   }
 }
 
@@ -53,6 +64,9 @@
   .priceInput {
     width: 15%;
   }
+  .sortOptions {
+    width: 30%;
+  }
 }
 
 @media (max-width: 600px) {
@@ -62,33 +76,11 @@
   .priceInput {
     width: 10%;
   }
+  .sortOptions {
+    width: 50%;
+  }
 }
 
-.sortOptions {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-}
 
-.sortOptions label {
-  font-size: 12px; // Adjust font size as needed
-  color: #333; // Adjust color as needed
-  margin-right: 10px; // Space between label and select dropdown
-}
 
-.sortOptions select {
-  padding: 8px 12px; // Adjust padding for better appearance
-  border: 1px solid #ddd; // Border color and style
-  border-radius: 4px; // Rounded corners
-  background-color: #fff; // Background color
-  font-size: 12px; // Adjust font size as needed
-  color: #555; // Text color
-  cursor: pointer; // Pointer cursor on hover
-  outline: none; // Remove default outline on focus
-  transition: border-color 0.3s; // Smooth transition for border color
-}
 
-.sortOptions select:focus {
-  border-color: #007bff; // Highlight border color on focus
-}

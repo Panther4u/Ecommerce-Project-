@@ -61,6 +61,7 @@ import PagesHistory from "../Shared/MiniComponents/PagesHistory/PagesHistory";
 import SkeletonCards from "../Shared/SkeletonLoaders/ProductCard/SkeletonCards";
 import s from "./ProductsPage.module.scss";
 import CategorySelector from "../Home/ProductPoster/CategorySelector";
+import CustomDropdown from "../Home/ProductPoster/CustomDropdown"; // Adjust path as needed
 
 const ProductsPage = () => {
   const { loadingProductsPage } = useSelector((state) => state.global);
@@ -85,9 +86,15 @@ const ProductsPage = () => {
   const [sortOrder, setSortOrder] = useState(''); // Add state for sorting order
 
   // Function to handle sorting order change
-  const handleSortChange = (event) => {
-    setSortOrder(event.target.value);
+  const handleSortChange = (value) => {
+    setSortOrder(value);
   };
+
+  const sortOptions = [
+    { value: '', label: 'Default' },
+    { value: 'lowToHigh', label: 'Price: Low to High' },
+    { value: 'highToLow', label: 'Price: High to Low' },
+  ];
 
   return (
     <div className={s.container}>
@@ -110,17 +117,16 @@ const ProductsPage = () => {
             className={s.priceInput}
           /> */}
           <CategorySelector
-            categories={categoriesData} // Use categoriesData
+            categories={categoriesData}
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
           />
           <div className={s.sortOptions}>
-            <label htmlFor="sort">Sort by:</label>
-            <select id="sort" value={sortOrder} onChange={handleSortChange}>
-              <option value="">Default</option>
-              <option value="lowToHigh">Price: Low to High</option>
-              <option value="highToLow">Price: High to Low</option>
-            </select>
+            <CustomDropdown
+              options={sortOptions}
+              value={sortOrder}
+              onChange={handleSortChange}
+            />
           </div>
         </section>
 
