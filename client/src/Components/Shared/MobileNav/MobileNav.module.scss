@@ -25,7 +25,7 @@
 /* Responsive styles for smaller screens */
 @include small {
   .mobileMenu {
-    padding-right: 100px; /* Adjust padding for smaller screens */
+    padding-right: 40px; /* Adjust padding for smaller screens */
   }
 }
 
@@ -91,7 +91,7 @@
   all: unset;
   color: var(--medium-light-gray);
   padding: 10px;
-  min-width: 126px;
+  min-width: 166px;
   display: flex;
   align-items: center;
   border-radius: 10px;
@@ -100,11 +100,13 @@
 
   &[class=active],
   &:hover {
-    background-color: rgba(87, 87, 87, .5);
+    background-color: #db4444;
+    color: #fff;
   }
 
   &[class=active]:hover {
-    background-color: rgba(87, 87, 87, .8);
+    background-color: #db4444;
+    color: #fff;
   }
 }
 

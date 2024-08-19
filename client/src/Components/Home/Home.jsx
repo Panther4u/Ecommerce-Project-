@@ -11,8 +11,9 @@ import ProductPoster from "./ProductPoster/ProductPoster";
 import ThisMonthSection from "./ThisMonthSection/ThisMonthSection";
 import TodaySection from "./TodaySection/TodaySection";
 
+
 const Home = () => {
-  useScrollOnMount(0);
+  useScrollOnMount();
 
   return (
     <>
